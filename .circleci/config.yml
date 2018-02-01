@@ -11,7 +11,7 @@ whitelist: &whitelist
     - test/
     - tools/
     - .babelrc
-    - .eslintrc.jsom
+    - .eslintrc.json
     - .gitignore
     - package.json
     - yarn.lock
@@ -52,7 +52,7 @@ jobs:
           at: ~/react-file-input
       - run:
           name: Test
-          command: yarn lint
+          command: yarn test
 
 workflows:
   version: 2
