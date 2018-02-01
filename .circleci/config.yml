@@ -44,7 +44,7 @@ jobs:
           at: ~/react-file-input
       - run:
           name: Lint
-          command: yarn lint
+          command: yarn lint -- --no-cache
   test:
     <<: *defaults
     steps:
