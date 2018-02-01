@@ -21,7 +21,7 @@
     "build": "node tools/build.js",
     "test": "BABEL_DISABLE_CACHE=1 node --trace-warnings ./tools/runTests.js",
     "test:cucumber": "rm -rf ./screenshots && NODE_PATH=src wdio wdio.conf.js",
-    "test:coverage": "NODE_PATH=src babel-node ./node_modules/.bin/isparta cover _mocha -- --require ./tools/testSetup.js \"./test/**/*.js\" && open coverage/lcov-report/index.html",
+    "test:coverage": "yarn jest --coverage",
     "test:watch": "npm run test -- --watch",
     "selenium:install": "selenium-standalone install",
     "selenium": "selenium-standalone start"
