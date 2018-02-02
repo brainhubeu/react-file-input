@@ -60,8 +60,6 @@
     "file-loader": "^1.1.5",
     "history": "^4.7.2",
     "html-webpack-plugin": "^2.29.0",
-    "isparta": "^4.0.0",
-    "istanbul": "^0.4.5",
     "jest": "^22.1.4",
     "json-loader": "^0.5.4",
     "lodash": "^4.17.4",
