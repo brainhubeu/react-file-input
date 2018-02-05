@@ -161,7 +161,7 @@ class FileInput extends Component {
         />
         <button onClick={this.openFileDialog}>Select File</button>
         <div className={!isDragging && 'BrainhubFileInput__dropInfo--hidden' || ''}>
-          <p>drop here to select file</p>
+          <p>Drop here to select file</p>
         </div>
       </div>
     );
