@@ -9,7 +9,6 @@ const defaultProps = {};
 const setup = (props = {}) => {
   const fileInput = shallow(<FileInput {...defaultProps} {...props} />);
 
-
   return {
     fileInput,
     input: fileInput.find('input'),
