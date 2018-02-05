@@ -1,17 +1,25 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { getDataTransfer, preventDefault } from '../helpers/event';
+import { handleChangeEvent, handleDropEvent, preventDefault } from '../helpers/event';
+import { selectIsDragging, selectIsDraggingOver } from '../helpers/fileInputSelectors';
+
+import '../styles/FileInput.scss';
 
 class FileInput extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      isDraggingOnDocument: 0,
-      isDraggingOver: 0,
+      enteredInDocument: 0,
+      isOver: 0,
       value: null,
     };
+
+    this.input = null;
+
+    this.openFileDialog = this.openFileDialog.bind(this);
+    this.selectFile = this.selectFile.bind(this);
 
     this.onDocumentDragEnter = this.onDocumentDragEnter.bind(this);
     this.onDocumentDragLeave = this.onDocumentDragLeave.bind(this);
@@ -51,66 +59,110 @@ class FileInput extends Component {
     }
   }
 
+  openFileDialog() {
+    if (this.input) {
+      this.input.click();
+    }
+  }
+  selectFile(event) {
+    const { onChangeCallback } = this.props;
+
+    const files = handleChangeEvent(event);
+
+    if (files) {
+      const file = files[0]; // get only one
+
+      this.setState(state => ({
+        ...state,
+        enteredInDocument: 0,
+        isOver: 0,
+        value: file,
+      }), () => {
+        if (onChangeCallback) {
+          onChangeCallback(this.state);
+        }
+      });
+    }
+  }
+
   onDocumentDragEnter(event) {
-    this.setState(state => ({ ...state, isDraggingOnDocument: state.isDraggingOnDocument + 1 }));
+    this.setState(state => ({ ...state, enteredInDocument: state.enteredInDocument + 1 }));
   }
   onDocumentDragLeave(event) {
-    this.setState(state => ({ ...state, isDraggingOnDocument: state.isDraggingOnDocument - 1 }));
+    this.setState(state => ({ ...state, enteredInDocument: state.enteredInDocument - 1 }));
   }
   onDocumentDrop(event) {
-    this.setState(state => ({ ...state, isDraggingOnDocument: 0 }));
+    this.setState(state => ({ ...state, enteredInDocument: 0 }));
   }
 
   onDragEnter(event) {
     const { onDragEnterCallback } = this.props;
-    const { isDraggingOver: prevIsDraggingOver } = this.state;
+    const wasDraggingOver = selectIsDraggingOver(this.state);
 
-    this.setState(state => ({ ...state, isDraggingOver: state.isDraggingOver + 1 }), () => {
-      if (onDragEnterCallback && prevIsDraggingOver === 0) {
+    this.setState(state => ({ ...state, isOver: state.isOver + 1 }), () => {
+      if (onDragEnterCallback && !wasDraggingOver) {
         onDragEnterCallback(this.state);
       }
     });
   }
   onDragLeave(event) {
     const { onDragLeaveCallback } = this.props;
-    const { isDraggingOver: prevIsDraggingOver } = this.state;
+    const wasDraggingOver = selectIsDraggingOver(this.state);
 
-    this.setState(state => ({ ...state, isDraggingOver: state.isDraggingOver - 1 }), () => {
-      if (onDragLeaveCallback && prevIsDraggingOver > 0) {
+    this.setState(state => ({ ...state, isOver: state.isOver - 1 }), () => {
+      if (onDragLeaveCallback && wasDraggingOver) {
         onDragLeaveCallback(this.state);
       }
     });
   }
   onDrop(event) {
     const { onDropCallback } = this.props;
-    event.preventDefault();
 
-    const file = getDataTransfer(event);
+    const files = handleDropEvent(event);
 
-    this.setState(state => ({
-      ...state,
-      isDraggingOnDocument: 0,
-      isDraggingOver: 0,
-      value: file,
-    }), () => {
-      if (onDropCallback) {
-        onDropCallback(this.state);
-      }
-    });
+    if (files) {
+      const file = files[0]; // get only one
+
+      this.setState(state => ({
+        ...state,
+        enteredInDocument: 0,
+        isOver: 0,
+        value: file,
+      }), () => {
+        if (onDropCallback) {
+          onDropCallback(this.state);
+        }
+      });
+    }
   }
+
   render() {
-    const { isDraggingOnDocument } = this.state;
+    const isDragging = selectIsDragging(this.state);
+
+    const wrapperClassname = isDragging
+      ? 'BrainhubFileInput__wrapper BrainhubFileInput__wrapper--selected'
+      : 'BrainhubFileInput__wrapper';
+
     return (
       <div
+        className={wrapperClassname}
         onDragEnter={this.onDragEnter}
         onDragOver={this.onDragOver}
         onDragLeave={this.onDragLeave}
         onDrop={this.onDrop}
       >
-        {isDraggingOnDocument
-          ?(<p>drop here to select file</p>)
-          : null
-        }
+        <input
+          className="BrainhubFileInput__input--hidden"
+          type="file"
+          ref={ref => {
+            this.input = ref;
+          }}
+          onChange={this.selectFile}
+        />
+        <button onClick={this.openFileDialog}>Select File</button>
+        <div className={!isDragging && 'BrainhubFileInput__dropInfo--hidden' || ''}>
+          <p>drop here to select file</p>
+        </div>
       </div>
     );
   }
@@ -119,6 +171,7 @@ class FileInput extends Component {
 FileInput.defaultProps = {
   dragOnDocument: true,
   dropOnDocument: false,
+  onChangeCallback: null,
   onDragEnterCallback: null,
   onDragLeaveCallback: null,
   onDropCallback: null,
@@ -127,6 +180,7 @@ FileInput.defaultProps = {
 FileInput.propTypes = {
   dragOnDocument: PropTypes.bool,
   dropOnDocument: PropTypes.bool,
+  onChangeCallback: PropTypes.func,
   onDragEnterCallback: PropTypes.func,
   onDragLeaveCallback: PropTypes.func,
   onDropCallback: PropTypes.func,
