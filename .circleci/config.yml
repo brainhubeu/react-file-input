@@ -1,0 +1,68 @@
+
+defaults: &defaults
+  working_directory: ~/react-file-input
+  docker:
+    - image: circleci/node:8.9-stretch
+
+whitelist: &whitelist
+  paths:
+    - node_modules/
+    - src/
+    - test/
+    - tools/
+    - .babelrc
+    - .eslintrc.json
+    - .gitignore
+    - package.json
+    - yarn.lock
+    
+
+version: 2
+jobs:
+  checkout:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - dependency-cache--{{ checksum "package.json" }}
+          - dependency-cache--
+      - run:
+          name: Install Dependencies
+          command: yarn install
+      - save_cache:
+          paths:
+            - node_modules
+          key: dependency-cache--{{ checksum "package.json" }}
+      - persist_to_workspace:
+          root: ~/react-file-input
+          <<: *whitelist
+  lint:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/react-file-input
+      - run:
+          name: Lint
+          command: yarn lint -- --no-cache
+  test:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/react-file-input
+      - run:
+          name: Test
+          command: yarn test
+
+workflows:
+  version: 2
+  lint_and_test:
+    jobs:
+      - checkout
+      - lint:
+          requires:
+            - checkout
+      - test:
+          requires:
+            - checkout
+

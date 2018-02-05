@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components FileInput should match exact snapshot 1`] = `
+<div>
+  <input
+    type="file"
+  />
+</div>
+`;
