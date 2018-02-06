@@ -28,7 +28,7 @@ const FileInputMetadata = props => {
 
     </div>
     <div className="brainhub-file-input__metadata__info">
-      <span className="brainhub-file-input__metadata__info_name">{name}</span>{extension} {size} {mimeType}
+      <span className="brainhub-file-input__metadata__info_name">{name}</span>{extension} ({size}) {mimeType}
     </div>
   </div>);
 };
