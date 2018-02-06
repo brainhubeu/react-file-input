@@ -57,9 +57,10 @@ exports[`components FileInputMetadata should match exact snapshot 1`] = `
         tes
       </span>
       t
-       (
+       
       1000 B
-      )
+       
+      
     </div>
   </div>
 </div>

@@ -138,7 +138,7 @@ class FileInput extends Component {
   }
 
   render() {
-    const { name, size } = this.state.value || '';
+    const { name, type, size } = this.state.value || '';
     const customMetadata = this.props.customMetadata({ name, size });
 
     const isDragging = selectIsDragging(this.state);
@@ -151,7 +151,7 @@ class FileInput extends Component {
     if (name && size) {
       renderMetadata = customMetadata
         ? customMetadata
-        : <FileInputMetadata name={name} size={size}/>;
+        : <FileInputMetadata name={name} type={type} size={size}/>;
     }
 
     return (
