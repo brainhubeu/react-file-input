@@ -60,6 +60,7 @@
     "file-loader": "^1.1.5",
     "history": "^4.7.2",
     "html-webpack-plugin": "^2.29.0",
+    "identity-obj-proxy": "^3.0.0",
     "jest": "^22.1.4",
     "json-loader": "^0.5.4",
     "lodash": "^4.17.4",
@@ -95,6 +96,9 @@
     "url": ""
   },
   "jest": {
+    "moduleNameMapper": {
+      "\\.(css|less|sass|scss)$": "identity-obj-proxy"
+    },
     "moduleFileExtensions": [
       "js"
     ],
