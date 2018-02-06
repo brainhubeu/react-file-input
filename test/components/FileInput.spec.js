@@ -40,7 +40,7 @@ describe('components', () => {
       const { input } = setup();
       expect(input).toHaveLength(1);
       expect(input.prop('type')).toBe('file');
-      expect(input.hasClass('BrainhubFileInput__input--hidden')).toBeTruthy();
+      expect(input.hasClass('brainhub-file-input__input--hidden')).toBeTruthy();
     });
 
     it('should render a button to select files', () => {
@@ -54,18 +54,18 @@ describe('components', () => {
       button.simulate('click');
 
       expect(inputClickSpy).toHaveBeenCalled();
-      expect(input.hasClass('BrainhubFileInput__input--hidden')).toBeTruthy();
+      expect(input.hasClass('brainhub-file-input__input--hidden')).toBeTruthy();
     });
 
     it('should render a `drop here` message when files are dragging', () => {
       const { fileInput, div } = setup();
 
-      expect(div.last().hasClass('BrainhubFileInput__dropInfo--hidden')).toBeTruthy();
+      expect(div.last().hasClass('brainhub-file-input__dropInfo--hidden')).toBeTruthy();
       expect(div.last().find('p').text()).toBe('Drop here to select file');
 
       fileInput.setState({ enteredInDocument: 1, isOver: 1 });
 
-      expect(fileInput.find('div').last().hasClass('BrainhubFileInput__dropInfo--hidden')).toBeFalsy();
+      expect(fileInput.find('div').last().hasClass('brainhub-file-input__dropInfo--hidden')).toBeFalsy();
     });
 
     it('should increase `isOver` state when drag enters', () => {

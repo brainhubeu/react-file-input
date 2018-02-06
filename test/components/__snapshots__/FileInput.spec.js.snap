@@ -3,14 +3,14 @@
 exports[`components FileInput should match exact snapshot 1`] = `
 <div>
   <div
-    className="BrainhubFileInput__wrapper"
+    className="brainhub-file-input__wrapper"
     onDragEnter={[Function]}
     onDragLeave={[Function]}
     onDragOver={undefined}
     onDrop={[Function]}
   >
     <input
-      className="BrainhubFileInput__input--hidden"
+      className="brainhub-file-input__input--hidden"
       onChange={[Function]}
       type="file"
     />
@@ -20,7 +20,7 @@ exports[`components FileInput should match exact snapshot 1`] = `
       Select File
     </button>
     <div
-      className="BrainhubFileInput__dropInfo--hidden"
+      className="brainhub-file-input__dropInfo--hidden"
     >
       <p>
         Drop here to select file
