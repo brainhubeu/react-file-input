@@ -15,8 +15,6 @@ class FileInput extends Component {
       enteredInDocument: 0,
       isOver: 0,
       value: null,
-      filename: null,
-      size: null,
     };
 
     this.input = null;
@@ -32,7 +30,7 @@ class FileInput extends Component {
     this.onDragLeave = this.onDragLeave.bind(this);
     this.onDrop = this.onDrop.bind(this);
 
-    this.getInputMetadata = this.getInputMetadata.bind(this);
+    // this.getInputMetadata = this.getInputMetadata.bind(this);
   }
   componentDidMount() {
     const { dragOnDocument, dropOnDocument } = this.props;
@@ -141,37 +139,21 @@ class FileInput extends Component {
     }
   }
 
-  getInputMetadata(arg) {
-    const { target } = arg;
-
-    if (target.files[0]) {
-      const filename = target.files[0].name;
-      const size = target.files[0].size;
-
-      return this.setState({
-        filename, size,
-      });
-    }
-  }
-
   render() {
-    // TODO: add posibility to passing custom component as props.
-    const { filename, size } = this.state;
-    const childrenWithExtraProp = React.Children.map(this.props.children, child => React.cloneElement(child, {
-      filename, size,
-    }));
-    const isDragging = selectIsDragging(this.state);
+    const { name, size } = this.state.value || '';
+    const childrenWithExtraProp = this.props.customMetadata({ name, size });
 
+    const isDragging = selectIsDragging(this.state);
     const wrapperClassname = isDragging
       ? 'BrainhubFileInput__wrapper BrainhubFileInput__wrapper--selected'
       : 'BrainhubFileInput__wrapper';
 
     let renderMetadata = null;
 
-    if (filename && size) {
+    if (name && size) {
       renderMetadata = childrenWithExtraProp
         ? childrenWithExtraProp
-        : <FileInputMetadata filename={filename} size={size}/>;
+        : <FileInputMetadata name={name} size={size}/>;
     }
 
     return (
@@ -207,6 +189,7 @@ FileInput.defaultProps = {
   onDragEnterCallback: null,
   onDragLeaveCallback: null,
   onDropCallback: null,
+  customMetadata: () => null,
 };
 
 FileInput.propTypes = {
@@ -216,7 +199,7 @@ FileInput.propTypes = {
   onDragEnterCallback: PropTypes.func,
   onDragLeaveCallback: PropTypes.func,
   onDropCallback: PropTypes.func,
-  children: PropTypes.element,
+  customMetadata: PropTypes.func,
 };
 
 export default FileInput;

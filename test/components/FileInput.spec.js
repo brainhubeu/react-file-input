@@ -1,6 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import renderer from 'react-test-renderer';
+import PropTypes from 'prop-types';
 
 import FileInput from '../../src/components/FileInput';
 
@@ -15,6 +16,12 @@ const setup = (props = {}) => {
     input: fileInput.find('input'),
     button: fileInput.find('button'),
   };
+};
+
+const CustomComponent = ({ name, size }) => <div className="test">{name}:{size}</div>;
+CustomComponent.propTypes = {
+  name: PropTypes.string,
+  size: PropTypes.number,
 };
 
 describe('components', () => {
@@ -131,6 +138,30 @@ describe('components', () => {
         value: file,
       });
       expect(onDropCallback).toHaveBeenCalledWith(fileInput.state());
+    });
+
+    it('should render metadata from default component', () => {
+      const data = {
+        name: 'Cute puppies',
+        size: 1000,
+      };
+
+      const { fileInput } = setup();
+      fileInput.setState({ value: data });
+
+      expect(fileInput.find('FileInputMetadata').length).toEqual(1);
+    });
+
+    it('should render metadata from custom component', () => {
+      const data = {
+        name: 'Cute puppies',
+        size: 1000,
+      };
+
+      const { fileInput } = setup({ customMetadata: CustomComponent });
+      fileInput.setState({ value: data });
+
+      expect(fileInput.find('div').last().hasClass('test')).toBeTruthy();
     });
 
     it('should match exact snapshot', () => {
