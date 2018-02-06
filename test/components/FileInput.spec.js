@@ -140,30 +140,6 @@ describe('components', () => {
       expect(onDropCallback).toHaveBeenCalledWith(fileInput.state());
     });
 
-    it('should render metadata from default component', () => {
-      const data = {
-        name: 'Cute puppies',
-        size: 1000,
-      };
-
-      const { fileInput } = setup();
-      fileInput.setState({ value: data });
-
-      expect(fileInput.find('FileInputMetadata').length).toEqual(1);
-    });
-
-    it('should render metadata from custom component', () => {
-      const data = {
-        name: 'Cute puppies',
-        size: 1000,
-      };
-
-      const { fileInput } = setup({ customMetadata: CustomComponent });
-      fileInput.setState({ value: data });
-
-      expect(fileInput.find('div').last().hasClass('test')).toBeTruthy();
-    });
-
     it('should match exact snapshot', () => {
       const tree = renderer.create(
         <div>
@@ -172,6 +148,34 @@ describe('components', () => {
       ).toJSON();
 
       expect(tree).toMatchSnapshot();
+    });
+  });
+
+  describe('Metadata', () => {
+    const data = {
+      name: 'Cute puppies',
+      size: 1000,
+    };
+
+    it('should render metadata from default component', () => {
+      const { fileInput } = setup();
+      fileInput.setState({ value: data });
+
+      expect(fileInput.find('FileInputMetadata').length).toEqual(1);
+    });
+
+    it('should render metadata from custom component', () => {
+      const { fileInput } = setup({ customMetadata: CustomComponent });
+      fileInput.setState({ value: data });
+
+      expect(fileInput.find('div').last().hasClass('test')).toBeTruthy();
+    });
+
+    it('should not render metadata when user pass false to displayMetadata props', () => {
+      const { fileInput } = setup({ displayMetadata: false });
+      fileInput.setState({ value: data });
+
+      expect(fileInput.find('FileInputMetadata').length).toEqual(0);
     });
   });
 });

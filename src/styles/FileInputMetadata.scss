@@ -1,17 +1,16 @@
 .brainhubFileInput__metadata {
   background: rgb(137, 137, 214);
-  display: grid;
-  grid-template-columns: repeat(2 1fr);
-  grid-template-rows: 50px;
-  grid-template-areas:
-    "fn"
-    "s";
+  // display: grid;
+  // grid-template-columns: repeat(2 1fr);
+  // grid-template-rows: 50px;
+  // grid-template-areas:
+  //   "fn"
+  //   "s";
   width: 400px;
   height: 100px;
 
   .brainhubFileInput__metadata__name {
-      grid-area: fn;
-      text-align: center;
+      font-weight: bold;
   }
   .brainhubFileInput__metadata__size {
       grid-area: s;

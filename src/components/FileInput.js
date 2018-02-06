@@ -29,8 +29,6 @@ class FileInput extends Component {
     this.onDragEnter = this.onDragEnter.bind(this);
     this.onDragLeave = this.onDragLeave.bind(this);
     this.onDrop = this.onDrop.bind(this);
-
-    // this.getInputMetadata = this.getInputMetadata.bind(this);
   }
   componentDidMount() {
     const { dragOnDocument, dropOnDocument } = this.props;
@@ -176,7 +174,7 @@ class FileInput extends Component {
         <div className={!isDragging && 'BrainhubFileInput__dropInfo--hidden' || ''}>
           <p>Drop here to select file</p>
         </div>
-        {renderMetadata}
+        {this.props.displayMetadata && renderMetadata}
       </div>
     );
   }
@@ -189,6 +187,7 @@ FileInput.defaultProps = {
   onDragEnterCallback: null,
   onDragLeaveCallback: null,
   onDropCallback: null,
+  displayMetadata: true,
   customMetadata: () => null,
 };
 
@@ -199,6 +198,7 @@ FileInput.propTypes = {
   onDragEnterCallback: PropTypes.func,
   onDragLeaveCallback: PropTypes.func,
   onDropCallback: PropTypes.func,
+  displayMetadata: PropTypes.bool,
   customMetadata: PropTypes.func,
 };
 

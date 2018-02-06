@@ -3,8 +3,7 @@ import { string, number } from 'prop-types';
 import '../styles/FileInputMetadata.scss';
 
 const FileInputMetadata = props => <div className="brainhubFileInput__metadata">
-  <div className="brainhubFileInput__metadata__name">name: {props.name}</div>
-  <div className="brainhubFileInput__metadata__size">Size: {props.size}</div>
+  <div className="brainhubFileInput__metadata__name">{props.name}</div> ({props.size})
 </div>;
 
 FileInputMetadata.propTypes = {
