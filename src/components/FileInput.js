@@ -140,8 +140,8 @@ class FileInput extends Component {
     const isDragging = selectIsDragging(this.state);
 
     const wrapperClassname = isDragging
-      ? 'BrainhubFileInput__wrapper BrainhubFileInput__wrapper--selected'
-      : 'BrainhubFileInput__wrapper';
+      ? 'brainhub-file-input__wrapper brainhub-file-input__wrapper--selected'
+      : 'brainhub-file-input__wrapper';
 
     return (
       <div
@@ -152,7 +152,7 @@ class FileInput extends Component {
         onDrop={this.onDrop}
       >
         <input
-          className="BrainhubFileInput__input--hidden"
+          className="brainhub-file-input__input--hidden"
           type="file"
           ref={ref => {
             this.input = ref;
@@ -160,7 +160,7 @@ class FileInput extends Component {
           onChange={this.selectFile}
         />
         <button onClick={this.openFileDialog}>Select File</button>
-        <div className={!isDragging && 'BrainhubFileInput__dropInfo--hidden' || ''}>
+        <div className={!isDragging && 'brainhub-file-input__dropInfo--hidden' || ''}>
           <p>Drop here to select file</p>
         </div>
       </div>
