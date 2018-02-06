@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components Droparea should match exact snapshot 1`] = `
+<div>
+  <div
+    className="brainhub-droparea"
+    onDragEnter={[Function]}
+    onDragLeave={[Function]}
+    onDrop={[Function]}
+  >
+    <div
+      className="brainhub-drpoparea__button"
+      onClick={[Function]}
+      role="button"
+      tabIndex={-1}
+    >
+      + Add File
+    </div>
+  </div>
+</div>
+`;
+
+exports[`components Droparea should match exact snapshot when dragging 1`] = `
+<div>
+  <div
+    className="brainhub-droparea  brainhub-droparea--dragging"
+    onDragEnter={[Function]}
+    onDragLeave={[Function]}
+    onDrop={[Function]}
+  >
+    <div
+      className="brainhub-drpoparea__info"
+    >
+      Drop here to select file.
+    </div>
+  </div>
+</div>
+`;

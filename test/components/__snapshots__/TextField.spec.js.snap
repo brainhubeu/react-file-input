@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components TextField should match exact snapshot 1`] = `
+<div>
+  <div
+    className="brainhub-text-field"
+  >
+    <div
+      className="brainhub-text-field__label"
+    >
+      Test Label
+    </div>
+    <div>
+      <input
+        className="brainhub-text-field__input"
+        onChange={[Function]}
+        placeholder="Test Placeholder"
+        type="text"
+        value=""
+      />
+    </div>
+  </div>
+</div>
+`;

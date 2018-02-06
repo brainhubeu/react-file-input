@@ -170,16 +170,4 @@ describe('components', () => {
       expect(tree).toMatchSnapshot();
     });
   });
-
-  describe('FileInputMetadata', () => {
-    it('should match exact snapshot', () => {
-      const tree = renderer.create(
-        <div>
-          <FileInputMetadata name="test" size={1000}/>
-        </div>
-      ).toJSON();
-
-      expect(tree).toMatchSnapshot();
-    });
-  });
 });
