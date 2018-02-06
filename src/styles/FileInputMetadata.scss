@@ -1,4 +1,4 @@
-.brainhubFileInput__metadata {
+.brainhub-file-input__metadata {
   font-size: 0.8em;
   display: grid;
   grid-template-columns: 0.05fr 0.95fr;
@@ -9,12 +9,12 @@
   height: 25px;
   margin: 5px;
 
-  .brainhubFileInput__metadata__image {
+  .brainhub-file-input__metadata__image {
       grid-area: image;
       text-align: center;
       margin: auto;
   }
-  .brainhubFileInput__metadata__info{
+  .brainhub-file-input__metadata__info{
       grid-area: info;
       text-align: left;
       margin: auto;
@@ -22,7 +22,7 @@
       margin-right: 0px;
   }
 
-  .brainhubFileInput__metadata__info_name {
+  .brainhub-file-input__metadata__info_name {
     font-weight: bold;
   }
 }
