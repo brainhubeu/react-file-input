@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 
 import Droparea from '../../src/components/Droparea';
 import FileInput from '../../src/components/FileInput';
-import FileInputMetadata from '../../src/components/FileInputMetadata';
 import TextField from '../../src/components/TextField';
 
 const defaultProps = {
