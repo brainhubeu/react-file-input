@@ -29,7 +29,8 @@
   "author": "Brainhub",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.15.2"
+    "express": "^4.15.2",
+    "filesize": "^3.6.0"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.6",
