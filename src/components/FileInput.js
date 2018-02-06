@@ -4,6 +4,9 @@ import PropTypes from 'prop-types';
 import { handleChangeEvent, handleDropEvent, preventDefault } from '../helpers/event';
 import { selectIsDragging, selectIsDraggingOver } from '../helpers/fileInputSelectors';
 
+import Droparea from './Droparea';
+import TextField from './TextField';
+
 import '../styles/FileInput.scss';
 
 class FileInput extends Component {
@@ -13,6 +16,7 @@ class FileInput extends Component {
     this.state = {
       enteredInDocument: 0,
       isOver: 0,
+      textValue: '',
       value: null,
     };
 
@@ -28,6 +32,8 @@ class FileInput extends Component {
     this.onDragEnter = this.onDragEnter.bind(this);
     this.onDragLeave = this.onDragLeave.bind(this);
     this.onDrop = this.onDrop.bind(this);
+
+    this.onTextInputChange = this.onTextInputChange.bind(this);
   }
   componentDidMount() {
     const { dragOnDocument, dropOnDocument } = this.props;
@@ -136,21 +142,21 @@ class FileInput extends Component {
     }
   }
 
+  onTextInputChange(event) {
+    if (event.target && event.target.value) {
+      const textValue = event.target.value;
+
+      this.setState(state => ({ ...state, textValue }));
+    }
+  }
+
   render() {
+    const { label, placeholder } = this.props;
+    const { textValue } = this.state;
     const isDragging = selectIsDragging(this.state);
 
-    const wrapperClassname = isDragging
-      ? 'brainhub-file-input__wrapper brainhub-file-input__wrapper--selected'
-      : 'brainhub-file-input__wrapper';
-
     return (
-      <div
-        className={wrapperClassname}
-        onDragEnter={this.onDragEnter}
-        onDragOver={this.onDragOver}
-        onDragLeave={this.onDragLeave}
-        onDrop={this.onDrop}
-      >
+      <div className="brainhub-file-input__wrapper">
         <input
           className="brainhub-file-input__input--hidden"
           type="file"
@@ -159,10 +165,20 @@ class FileInput extends Component {
           }}
           onChange={this.selectFile}
         />
-        <button onClick={this.openFileDialog}>Select File</button>
-        <div className={!isDragging && 'brainhub-file-input__dropInfo--hidden' || ''}>
-          <p>Drop here to select file</p>
-        </div>
+        <TextField
+          label={label}
+          placeholder={placeholder}
+          value={textValue}
+          onChange={this.onTextInputChange}
+        />
+        <Droparea
+          dragging={isDragging}
+          onDragEnter={this.onDragEnter}
+          onDragLeave={this.onDragLeave}
+          onDrop={this.onDrop}
+          openFileDialog={this.openFileDialog}
+        />
+        <code>{JSON.stringify(this.state, null, 2)}</code>
       </div>
     );
   }
@@ -171,6 +187,7 @@ class FileInput extends Component {
 FileInput.defaultProps = {
   dragOnDocument: true,
   dropOnDocument: false,
+  placeholder: 'Placeholder',
   onChangeCallback: null,
   onDragEnterCallback: null,
   onDragLeaveCallback: null,
@@ -180,6 +197,8 @@ FileInput.defaultProps = {
 FileInput.propTypes = {
   dragOnDocument: PropTypes.bool,
   dropOnDocument: PropTypes.bool,
+  label: PropTypes.string.isRequired,
+  placeholder: PropTypes.string,
   onChangeCallback: PropTypes.func,
   onDragEnterCallback: PropTypes.func,
   onDragLeaveCallback: PropTypes.func,
