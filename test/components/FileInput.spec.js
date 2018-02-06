@@ -1,10 +1,12 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import renderer from 'react-test-renderer';
+import PropTypes from 'prop-types';
 
-import FileInput from '../../src/components/FileInput';
-import TextField from '../../src/components/TextField';
 import Droparea from '../../src/components/Droparea';
+import FileInput from '../../src/components/FileInput';
+import FileInputMetadata from '../../src/components/FileInputMetadata';
+import TextField from '../../src/components/TextField';
 
 const defaultProps = {
   label: 'Test',
@@ -12,7 +14,6 @@ const defaultProps = {
 
 const setup = (props = {}) => {
   const fileInput = mount(<FileInput {...defaultProps} {...props} />);
-
 
   return {
     fileInput,
@@ -22,8 +23,19 @@ const setup = (props = {}) => {
   };
 };
 
+const CustomComponent = ({ name, size }) => <div>{name}:{size}</div>;
+CustomComponent.propTypes = {
+  name: PropTypes.string,
+  size: PropTypes.number,
+};
+
 describe('components', () => {
   describe('FileInput', () => {
+    const data = {
+      name: 'Cute puppies',
+      size: 1000,
+    };
+
     it('should render with a default state', () => {
       const { fileInput } = setup();
 
@@ -127,10 +139,43 @@ describe('components', () => {
       expect(onDropCallback).toHaveBeenCalledWith(fileInput.state());
     });
 
+    it('should render metadata from default component', () => {
+      const { fileInput } = setup();
+      fileInput.setState({ value: data });
+
+      expect(fileInput.find('FileInputMetadata')).toHaveLength(1);
+    });
+
+    it('should render metadata from custom component', () => {
+      const { fileInput } = setup({ customMetadata: CustomComponent });
+      fileInput.setState({ value: data });
+
+      expect(fileInput.find(CustomComponent)).toBeTruthy();
+    });
+
+    it('should not render metadata when user pass false to displayMetadata prop', () => {
+      const { fileInput } = setup({ displayMetadata: false });
+      fileInput.setState({ value: data });
+
+      expect(fileInput.find('FileInputMetadata').length).toEqual(0);
+    });
+
     it('should match exact snapshot', () => {
       const tree = renderer.create(
         <div>
           <FileInput {...defaultProps} />
+        </div>
+      ).toJSON();
+
+      expect(tree).toMatchSnapshot();
+    });
+  });
+
+  describe('FileInputMetadata', () => {
+    it('should match exact snapshot', () => {
+      const tree = renderer.create(
+        <div>
+          <FileInputMetadata name="test" size={1000}/>
         </div>
       ).toJSON();
 

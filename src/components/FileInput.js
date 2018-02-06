@@ -5,6 +5,7 @@ import { handleChangeEvent, handleDropEvent, preventDefault } from '../helpers/e
 import { selectIsDragging, selectIsDraggingOver } from '../helpers/fileInputSelectors';
 
 import Droparea from './Droparea';
+import FileInputMetadata from './FileInputMetadata';
 import TextField from './TextField';
 
 import '../styles/FileInput.scss';
@@ -153,7 +154,19 @@ class FileInput extends Component {
   render() {
     const { label, placeholder } = this.props;
     const { textValue } = this.state;
+
+    const { name, size } = this.state.value || '';
+    const customMetadata = this.props.customMetadata({ name, size });
+
     const isDragging = selectIsDragging(this.state);
+
+    let renderMetadata = null;
+
+    if (name && size) {
+      renderMetadata = customMetadata
+        ? customMetadata
+        : <FileInputMetadata name={name} size={size}/>;
+    }
 
     return (
       <div className="brainhub-file-input__wrapper">
@@ -171,6 +184,7 @@ class FileInput extends Component {
           value={textValue}
           onChange={this.onTextInputChange}
         />
+        {this.props.displayMetadata && renderMetadata}
         <Droparea
           dragging={isDragging}
           onDragEnter={this.onDragEnter}
@@ -178,7 +192,6 @@ class FileInput extends Component {
           onDrop={this.onDrop}
           openFileDialog={this.openFileDialog}
         />
-        <code>{JSON.stringify(this.state, null, 2)}</code>
       </div>
     );
   }
@@ -192,6 +205,8 @@ FileInput.defaultProps = {
   onDragEnterCallback: null,
   onDragLeaveCallback: null,
   onDropCallback: null,
+  displayMetadata: true,
+  customMetadata: () => null,
 };
 
 FileInput.propTypes = {
@@ -203,6 +218,8 @@ FileInput.propTypes = {
   onDragEnterCallback: PropTypes.func,
   onDragLeaveCallback: PropTypes.func,
   onDropCallback: PropTypes.func,
+  displayMetadata: PropTypes.bool,
+  customMetadata: PropTypes.func,
 };
 
 export default FileInput;
