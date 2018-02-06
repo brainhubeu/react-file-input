@@ -1,19 +1,28 @@
 .brainhubFileInput__metadata {
-  background: rgb(137, 137, 214);
-  // display: grid;
-  // grid-template-columns: repeat(2 1fr);
-  // grid-template-rows: 50px;
-  // grid-template-areas:
-  //   "fn"
-  //   "s";
-  width: 400px;
-  height: 100px;
+  font-size: 0.8em;
+  display: grid;
+  grid-template-columns: 0.05fr 0.95fr;
+  grid-template-rows: 1fr;
+  grid-template-areas:
+    "image info";
+  width: 500px;
+  height: 25px;
+  margin: 5px;
 
-  .brainhubFileInput__metadata__name {
-      font-weight: bold;
-  }
-  .brainhubFileInput__metadata__size {
-      grid-area: s;
+  .brainhubFileInput__metadata__image {
+      grid-area: image;
       text-align: center;
+      margin: auto;
+  }
+  .brainhubFileInput__metadata__info{
+      grid-area: info;
+      text-align: left;
+      margin: auto;
+      margin-left: 5px;
+      margin-right: 0px;
+  }
+
+  .brainhubFileInput__metadata__info_name {
+    font-weight: bold;
   }
 }
