@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import { handleChangeEvent, handleDropEvent, preventDefault } from '../helpers/event';
 import { selectIsDragging, selectIsDraggingOver } from '../helpers/fileInputSelectors';
+import FileInputMetadata from './FileInputMetadata';
 
 import '../styles/FileInput.scss';
 
@@ -137,11 +138,21 @@ class FileInput extends Component {
   }
 
   render() {
-    const isDragging = selectIsDragging(this.state);
+    const { name, size } = this.state.value || '';
+    const customMetadata = this.props.customMetadata({ name, size });
 
+    const isDragging = selectIsDragging(this.state);
     const wrapperClassname = isDragging
       ? 'brainhub-file-input__wrapper brainhub-file-input__wrapper--selected'
       : 'brainhub-file-input__wrapper';
+
+    let renderMetadata = null;
+
+    if (name && size) {
+      renderMetadata = customMetadata
+        ? customMetadata
+        : <FileInputMetadata name={name} size={size}/>;
+    }
 
     return (
       <div
@@ -163,6 +174,7 @@ class FileInput extends Component {
         <div className={!isDragging && 'brainhub-file-input__dropInfo--hidden' || ''}>
           <p>Drop here to select file</p>
         </div>
+        {this.props.displayMetadata && renderMetadata}
       </div>
     );
   }
@@ -175,6 +187,8 @@ FileInput.defaultProps = {
   onDragEnterCallback: null,
   onDragLeaveCallback: null,
   onDropCallback: null,
+  displayMetadata: true,
+  customMetadata: () => null,
 };
 
 FileInput.propTypes = {
@@ -184,6 +198,8 @@ FileInput.propTypes = {
   onDragEnterCallback: PropTypes.func,
   onDragLeaveCallback: PropTypes.func,
   onDropCallback: PropTypes.func,
+  displayMetadata: PropTypes.bool,
+  customMetadata: PropTypes.func,
 };
 
 export default FileInput;
