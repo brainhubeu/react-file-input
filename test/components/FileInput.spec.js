@@ -161,7 +161,7 @@ describe('components', () => {
       const { fileInput } = setup();
       fileInput.setState({ value: data });
 
-      expect(fileInput.find('FileInputMetadata').length).toEqual(1);
+      expect(fileInput.find('FileInputMetadata')).toHaveLength(1);
     });
 
     it('should render metadata from custom component', () => {

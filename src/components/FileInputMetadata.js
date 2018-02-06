@@ -4,12 +4,11 @@ import { string, number } from 'prop-types';
 import '../styles/FileInputMetadata.scss';
 
 const styleName = name => {
-  const imageTypes = ['.jpg', '.jpeg', '.png', '.gif'];
-  const typeIndex = imageTypes.map(type => name.indexOf(type));
+  const typeIndex = name.lastIndexOf('.');
 
   return {
-    name: name.slice(0, typeIndex[0]),
-    type: name.slice(typeIndex[0]),
+    name: name.slice(0, typeIndex),
+    type: name.slice(typeIndex),
   };
 };
 
