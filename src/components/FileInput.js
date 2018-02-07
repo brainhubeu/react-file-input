@@ -24,6 +24,7 @@ class FileInput extends Component {
 
     this.openFileDialog = this.openFileDialog.bind(this);
     this.selectFile = this.selectFile.bind(this);
+    this.getImageThumbnail = this.getImageThumbnail.bind(this);
 
     this.onDocumentDragEnter = this.onDocumentDragEnter.bind(this);
     this.onDocumentDragLeave = this.onDocumentDragLeave.bind(this);
@@ -69,18 +70,19 @@ class FileInput extends Component {
       this.input.click();
     }
   }
+
+  getImageThumbnail(file) {
+    const reader = new FileReader();
+    reader.onload = e => {
+      this.setState({ image: e.target.result });
+    };
+    reader.readAsDataURL(file);
+  }
+
   selectFile(event) {
     const { onChangeCallback } = this.props;
 
     const files = handleChangeEvent(event);
-
-    const getImageThumbnail = file => {
-      const reader = new FileReader();
-      reader.onload = e => {
-        this.setState({ image: e.target.result });
-      };
-      reader.readAsDataURL(file);
-    };
 
     if (files) {
       const file = files[0]; // get only one
@@ -94,7 +96,7 @@ class FileInput extends Component {
         if (onChangeCallback) {
           onChangeCallback(this.state);
         }
-        getImageThumbnail(file);
+        this.getImageThumbnail(file);
       });
     }
   }
@@ -146,12 +148,12 @@ class FileInput extends Component {
         if (onDropCallback) {
           onDropCallback(this.state);
         }
+        this.getImageThumbnail(file);
       });
     }
   }
 
   render() {
-    // const { image } = this.state || '';
     const { value, image } = this.state;
     const { customMetadata: CustomMetadata, customImageThumbnail: CustomImageThumbnail, label } = this.props;
 
@@ -160,7 +162,8 @@ class FileInput extends Component {
 
     const isDragging = selectIsDragging(this.state);
 
-    const metadataComponent = value && <MetadataClass name={value.filename} size={value.size} extension={value.extension} type={value.mimeType}/>;
+    const metadataComponent = value
+      && <MetadataClass name={value.filename} size={value.size} extension={value.extension} type={value.mimeType}/>;
     const imageThumbnailComponent = image && <ImageThumbnailClass image={image}/>;
 
     return (
