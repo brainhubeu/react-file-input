@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 
 import FileInput from '../../src/components/FileInput';
 import FileInputMetadata from '../../src/components/FileInputMetadata';
-import ImageThumbnail from '../../src/components/ImageThumbnail';
 
 const defaultProps = {};
 
@@ -208,18 +207,6 @@ describe('components', () => {
       const tree = renderer.create(
         <div>
           <FileInputMetadata name="test" size={1000}/>
-        </div>
-      ).toJSON();
-
-      expect(tree).toMatchSnapshot();
-    });
-  });
-
-  describe('ImageThumbnail', () => {
-    it('should match exact snapshot', () => {
-      const tree = renderer.create(
-        <div>
-          <ImageThumbnail image="image_source"/>
         </div>
       ).toJSON();
 
