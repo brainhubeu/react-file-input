@@ -71,7 +71,7 @@ class FileInput extends Component {
     }
   }
 
-  getImageThumbnail(file) {
+  getImageThumbnail(file = { type: '' }) {
     const reader = new FileReader();
     if (file) {
       if (file.type.match('image.*')) {
