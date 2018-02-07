@@ -29,6 +29,8 @@ describe('components', () => {
   describe('FileInput', () => {
     const data = {
       name: 'Cute puppies',
+      filename: 'Cute puppies',
+      extension: 'as',
       size: 1000,
     };
 
@@ -133,7 +135,7 @@ describe('components', () => {
       const onDropCallback = jest.fn();
       const { fileInput } = setup({ onDropCallback });
 
-      const file = { filename: 'MockFile' };
+      const file = { name: 'MockFile.mkv', size: 5000 };
       fileInput.setState({ isOver: 2, enteredInDocument: 2 });
 
       fileInput.simulate('drop', { dataTransfer: { files: [file] } });

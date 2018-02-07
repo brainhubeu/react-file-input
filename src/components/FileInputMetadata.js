@@ -2,23 +2,11 @@ import React from 'react';
 import filesize from 'filesize';
 import { string, number } from 'prop-types';
 
-import findMimeTypeByFilename from '../helpers/mime';
-
 import '../styles/FileInputMetadata.scss';
 
-const styleName = name => {
-  const typeIndex = name.lastIndexOf('.');
-
-  return {
-    name: name.slice(0, typeIndex),
-    extension: name.slice(typeIndex),
-  };
-};
-
 const FileInputMetadata = props => {
-  const { name, extension } = styleName(props.name);
-  const mimeType = props.type || findMimeTypeByFilename(props.name);
-  const size = filesize(props.size, { separator: ',' });
+  const { extension, name, type, size } = props;
+  const formattedSize = filesize(size, { separator: ',' });
 
   return (<div className="brainhub-file-input__metadata">
     <div className="brainhub-file-input__metadata__image">
@@ -28,16 +16,18 @@ const FileInputMetadata = props => {
 
     </div>
     <div className="brainhub-file-input__metadata__info">
-      <span className="brainhub-file-input__metadata__info_name">{name}</span>{extension} ({size}) {mimeType}
+      <span className="brainhub-file-input__metadata__info_name">{name}</span>{extension ? `.${extension}`: ''} ({formattedSize}) {type}
     </div>
   </div>);
 };
 
 FileInputMetadata.defaultProps = {
+  extension: '',
   type: '',
 };
 
 FileInputMetadata.propTypes = {
+  extension: string,
   name: string.isRequired,
   type: string,
   size: number.isRequired,

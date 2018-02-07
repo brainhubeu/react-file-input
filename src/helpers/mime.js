@@ -14,21 +14,4 @@ const findMimeType = extension => {
     : '';
 };
 
-/**
- * Finds mimetype by filename
- * @param  {string} filename Filename
- * @return {string}           Returns mime type or an empty string
- */
-const findMimeTypeByFilename = filename => {
-  const nameParts = filename.split('.');
-
-  if (nameParts.length <= 1 ||!nameParts[nameParts.length -1]) {
-    return '';
-  }
-
-  const extension = nameParts[nameParts.length -1];
-
-  return findMimeType(extension);
-};
-
-export default findMimeTypeByFilename;
+export default findMimeType;
