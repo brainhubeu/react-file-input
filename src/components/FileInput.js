@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { handleChangeEvent, handleDropEvent, preventDefault } from '../helpers/event';
 import { selectIsDragging, selectIsDraggingOver } from '../helpers/fileInputSelectors';
 import FileInputMetadata from './FileInputMetadata';
+import ImageThumbnail from './ImageThumbnail';
 
 import '../styles/FileInput.scss';
 
@@ -70,6 +71,14 @@ class FileInput extends Component {
 
     const files = handleChangeEvent(event);
 
+    const getImageThumbnail = file => {
+      const reader = new FileReader();
+      reader.onload = e => {
+        this.setState({ image: e.target.result });
+      };
+      reader.readAsDataURL(file);
+    };
+
     if (files) {
       const file = files[0]; // get only one
 
@@ -82,6 +91,7 @@ class FileInput extends Component {
         if (onChangeCallback) {
           onChangeCallback(this.state);
         }
+        getImageThumbnail(file);
       });
     }
   }
@@ -139,20 +149,19 @@ class FileInput extends Component {
 
   render() {
     const { name, size } = this.state.value || '';
-    const customMetadata = this.props.customMetadata({ name, size });
+    const { image } = this.state || '';
+    const { customMetadata: CustomMetadata, customImageThumbnail: CustomImageThumbnail } = this.props;
+
+    const MetadataClass = CustomMetadata || FileInputMetadata;
+    const ImageThumbnailClass = CustomImageThumbnail || ImageThumbnail;
 
     const isDragging = selectIsDragging(this.state);
     const wrapperClassname = isDragging
       ? 'brainhub-file-input__wrapper brainhub-file-input__wrapper--selected'
       : 'brainhub-file-input__wrapper';
 
-    let renderMetadata = null;
-
-    if (name && size) {
-      renderMetadata = customMetadata
-        ? customMetadata
-        : <FileInputMetadata name={name} size={size}/>;
-    }
+    const metadataComponent = (name && size) && <MetadataClass name={name} size={size}/>;
+    const imageThumbnailComponent = image && <ImageThumbnailClass image={image}/>;
 
     return (
       <div
@@ -174,7 +183,10 @@ class FileInput extends Component {
         <div className={!isDragging && 'brainhub-file-input__dropInfo--hidden' || ''}>
           <p>Drop here to select file</p>
         </div>
-        {this.props.displayMetadata && renderMetadata}
+        <div className="brainhub-file-input__fileInfo">
+          {this.props.displayImageThumbnail && imageThumbnailComponent}
+          {this.props.displayMetadata && metadataComponent}
+        </div>
       </div>
     );
   }
@@ -188,7 +200,7 @@ FileInput.defaultProps = {
   onDragLeaveCallback: null,
   onDropCallback: null,
   displayMetadata: true,
-  customMetadata: () => null,
+  displayImageThumbnail: true,
 };
 
 FileInput.propTypes = {
@@ -199,7 +211,9 @@ FileInput.propTypes = {
   onDragLeaveCallback: PropTypes.func,
   onDropCallback: PropTypes.func,
   displayMetadata: PropTypes.bool,
+  displayImageThumbnail: PropTypes.bool,
   customMetadata: PropTypes.func,
+  customImageThumbnail: PropTypes.func,
 };
 
 export default FileInput;
