@@ -3,8 +3,7 @@
   display: grid;
   grid-template-columns: 0.05fr 0.95fr;
   grid-template-rows: 1fr;
-  grid-template-areas:
-    "image info";
+  grid-template-areas: "image info";
   width: 500px;
   height: 25px;
   margin: 5px;

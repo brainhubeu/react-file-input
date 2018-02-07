@@ -1,15 +1,16 @@
-.brainhub-file-input__wrapper {
-  border: 1px ;
-}
+@import 'global';
 
-.brainhub-file-input__wrapper--selected {
-  border: 1px solid #000;
+.brainhub-file-input__wrapper {
+  width: 25%;
 }
 
 .brainhub-file-input__input--hidden {
   display: none;
 }
 
-.brainhub-file-input__dropInfo--hidden {
-  display: none;
+.brainhub-file-input__label {
+  font-size: 16px;
+  line-height: 18px;
+  color: $BROWN_GRAY;
+  margin-bottom: 4px;
 }
