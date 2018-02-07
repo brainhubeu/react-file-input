@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components FileInputMetadata should match exact snapshot 1`] = `
+<div>
+  <div
+    className="brainhub-file-input__metadata"
+  >
+    <div
+      className="brainhub-file-input__metadata__info"
+    >
+      <span
+        className="brainhub-file-input__metadata__info_name"
+      >
+        test
+      </span>
+      
+       (
+      1000 B
+      ) 
+      
+    </div>
+  </div>
+</div>
+`;

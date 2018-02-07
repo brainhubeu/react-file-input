@@ -4,11 +4,12 @@ exports[`components FileInput should match exact snapshot 1`] = `
 <div>
   <div
     className="brainhub-file-input__wrapper"
-    onDragEnter={[Function]}
-    onDragLeave={[Function]}
-    onDragOver={undefined}
-    onDrop={[Function]}
   >
+    <div
+      className="brainhub-file-input__label"
+    >
+      Test
+    </div>
     <input
       className="brainhub-file-input__input--hidden"
       onChange={[Function]}
@@ -29,36 +30,21 @@ exports[`components FileInput should match exact snapshot 1`] = `
     <div
       className="brainhub-file-input__fileInfo"
     />
-  </div>
-</div>
-`;
-
-exports[`components FileInputMetadata should match exact snapshot 1`] = `
-<div>
-  <div
-    className="brainhub-file-input__metadata"
-  >
     <div
-      className="brainhub-file-input__metadata__info"
+      className="brainhub-drop-area"
+      onDragEnter={[Function]}
+      onDragLeave={[Function]}
+      onDrop={[Function]}
     >
-      <span
-        className="brainhub-file-input__metadata__info_name"
-      />
-      .
-      test
-       (
-      1000 B
-      )
+      <div
+        className="brainhub-drop-area__button"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        + Add File
+      </div>
     </div>
   </div>
-</div>
-`;
-
-exports[`components ImageThumbnail should match exact snapshot 1`] = `
-<div>
-  <img
-    className="brainhub-file-input__thumbnail"
-    src="image_source"
-  />
 </div>
 `;

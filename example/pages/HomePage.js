@@ -7,7 +7,9 @@ export default class HomePage extends Component {
       <div>
         <h1>React File Input</h1>
         <h2>By Brainhub</h2>
-        <FileInput/>
+        <div style={{ padding: '5px' }}>
+          <FileInput label="File Input"/>
+        </div>
       </div>
     );
   }
