@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 
 import FileInput from '../../src/components/FileInput';
 import FileInputMetadata from '../../src/components/FileInputMetadata';
+import ImageThumbnail from '../../src/components/ImageThumbnail';
 
 const defaultProps = {};
 
@@ -19,10 +20,11 @@ const setup = (props = {}) => {
   };
 };
 
-const CustomComponent = ({ name, size }) => <div>{name}:{size}</div>;
+const CustomComponent = ({ name = 'custom component', size = 1000, image = 'custom_image_source' }) => <div>{name}:{size}:{image}</div>;
 CustomComponent.propTypes = {
   name: PropTypes.string,
   size: PropTypes.number,
+  image: PropTypes.string,
 };
 
 describe('components', () => {
@@ -158,6 +160,7 @@ describe('components', () => {
       fileInput.setState({ value: data });
 
       expect(fileInput.find(CustomComponent)).toBeTruthy();
+      expect(fileInput.find('FileInputMetadata')).toHaveLength(0);
     });
 
     it('should not render metadata when user pass false to displayMetadata prop', () => {
@@ -165,6 +168,28 @@ describe('components', () => {
       fileInput.setState({ value: data });
 
       expect(fileInput.find('FileInputMetadata').length).toEqual(0);
+    });
+
+    it('should render image thumbnail from default component', () => {
+      const { fileInput } = setup();
+      fileInput.setState({ image: 'image_source' });
+
+      expect(fileInput.find('ImageThumbnail')).toHaveLength(1);
+    });
+
+    it('should render image thumbnail from custom component', () => {
+      const { fileInput } = setup({ customImageThumbnail: CustomComponent });
+      fileInput.setState({ image: 'image_source' });
+
+      expect(fileInput.find(CustomComponent)).toBeTruthy();
+      expect(fileInput.find('ImageThumbnail')).toHaveLength(0);
+    });
+
+    it('should not render mage thumbnail when user pass false to displayImageThumbnail prop', () => {
+      const { fileInput } = setup({ displayImageThumbnail: false });
+      fileInput.setState({ value: data });
+
+      expect(fileInput.find('ImageThumbnail').length).toEqual(0);
     });
 
     it('should match exact snapshot', () => {
@@ -183,6 +208,18 @@ describe('components', () => {
       const tree = renderer.create(
         <div>
           <FileInputMetadata name="test" size={1000}/>
+        </div>
+      ).toJSON();
+
+      expect(tree).toMatchSnapshot();
+    });
+  });
+
+  describe('ImageThumbnail', () => {
+    it('should match exact snapshot', () => {
+      const tree = renderer.create(
+        <div>
+          <ImageThumbnail image="image_source"/>
         </div>
       ).toJSON();
 
