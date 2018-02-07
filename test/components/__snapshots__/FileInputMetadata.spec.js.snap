@@ -24,12 +24,13 @@ exports[`components FileInputMetadata should match exact snapshot 1`] = `
       <span
         className="brainhub-file-input__metadata__info_name"
       >
-        tes
+        test
       </span>
-      t
+      
        (
       1000 B
-      )
+      ) 
+      
     </div>
   </div>
 </div>
