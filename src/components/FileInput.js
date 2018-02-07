@@ -76,7 +76,7 @@ class FileInput extends Component {
     reader.onload = e => {
       this.setState({ image: e.target.result });
     };
-    reader.readAsDataURL(file);
+    file && reader.readAsDataURL(file);
   }
 
   selectFile(event) {
