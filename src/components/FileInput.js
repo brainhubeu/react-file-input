@@ -6,7 +6,6 @@ import { selectIsDragging, selectIsDraggingOver } from '../helpers/fileInputSele
 
 import Droparea from './Droparea';
 import FileInputMetadata from './FileInputMetadata';
-import TextField from './TextField';
 
 import '../styles/FileInput.scss';
 
@@ -17,7 +16,6 @@ class FileInput extends Component {
     this.state = {
       enteredInDocument: 0,
       isOver: 0,
-      textValue: '',
       value: null,
     };
 
@@ -33,9 +31,8 @@ class FileInput extends Component {
     this.onDragEnter = this.onDragEnter.bind(this);
     this.onDragLeave = this.onDragLeave.bind(this);
     this.onDrop = this.onDrop.bind(this);
-
-    this.onTextInputChange = this.onTextInputChange.bind(this);
   }
+
   componentDidMount() {
     const { dragOnDocument, dropOnDocument } = this.props;
 
@@ -143,17 +140,8 @@ class FileInput extends Component {
     }
   }
 
-  onTextInputChange(event) {
-    if (event.target && event.target.value) {
-      const textValue = event.target.value;
-
-      this.setState(state => ({ ...state, textValue }));
-    }
-  }
-
   render() {
-    const { label, placeholder } = this.props;
-    const { textValue } = this.state;
+    const { label } = this.props;
 
     const { name, size } = this.state.value || '';
     const customMetadata = this.props.customMetadata({ name, size });
@@ -170,6 +158,7 @@ class FileInput extends Component {
 
     return (
       <div className="brainhub-file-input__wrapper">
+        <div className="brainhub-file-input__label">{label}</div>
         <input
           className="brainhub-file-input__input--hidden"
           type="file"
@@ -177,12 +166,6 @@ class FileInput extends Component {
             this.input = ref;
           }}
           onChange={this.selectFile}
-        />
-        <TextField
-          label={label}
-          placeholder={placeholder}
-          value={textValue}
-          onChange={this.onTextInputChange}
         />
         {this.props.displayMetadata && renderMetadata}
         <Droparea
@@ -200,7 +183,6 @@ class FileInput extends Component {
 FileInput.defaultProps = {
   dragOnDocument: true,
   dropOnDocument: false,
-  placeholder: 'Placeholder',
   onChangeCallback: null,
   onDragEnterCallback: null,
   onDragLeaveCallback: null,
@@ -213,7 +195,6 @@ FileInput.propTypes = {
   dragOnDocument: PropTypes.bool,
   dropOnDocument: PropTypes.bool,
   label: PropTypes.string.isRequired,
-  placeholder: PropTypes.string,
   onChangeCallback: PropTypes.func,
   onDragEnterCallback: PropTypes.func,
   onDragLeaveCallback: PropTypes.func,

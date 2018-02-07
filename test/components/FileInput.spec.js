@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 
 import Droparea from '../../src/components/Droparea';
 import FileInput from '../../src/components/FileInput';
-import TextField from '../../src/components/TextField';
 
 const defaultProps = {
   label: 'Test',
@@ -16,8 +15,8 @@ const setup = (props = {}) => {
 
   return {
     fileInput,
+    label: fileInput.find('.brainhub-file-input__label'),
     input: fileInput.find('input[type="file"]'),
-    textField: fileInput.find(TextField),
     droparea: fileInput.find(Droparea),
   };
 };
@@ -41,7 +40,6 @@ describe('components', () => {
       expect(fileInput.state()).toEqual({
         enteredInDocument: 0,
         isOver: 0,
-        textValue: '',
         value: null,
       });
     });
@@ -53,16 +51,11 @@ describe('components', () => {
       expect(input.hasClass('brainhub-file-input__input--hidden')).toBeTruthy();
     });
 
-    it('should render a text field', () => {
-      const { fileInput, textField } = setup();
+    it('should render a label', () => {
+      const { label } = setup();
 
-      expect(textField).toHaveLength(1);
-
-      const value = 'Test value';
-
-      textField.prop('onChange')({ target: { value } });
-
-      expect(fileInput.state('textValue')).toBe(value);
+      expect(label).toHaveLength(1);
+      expect(label.text()).toBe(defaultProps.label);
     });
 
     it('should render a droparea', () => {

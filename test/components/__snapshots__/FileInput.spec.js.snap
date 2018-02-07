@@ -5,29 +5,16 @@ exports[`components FileInput should match exact snapshot 1`] = `
   <div
     className="brainhub-file-input__wrapper"
   >
+    <div
+      className="brainhub-file-input__label"
+    >
+      Test
+    </div>
     <input
       className="brainhub-file-input__input--hidden"
       onChange={[Function]}
       type="file"
     />
-    <div
-      className="brainhub-text-field"
-    >
-      <div
-        className="brainhub-text-field__label"
-      >
-        Test
-      </div>
-      <div>
-        <input
-          className="brainhub-text-field__input"
-          onChange={[Function]}
-          placeholder="Placeholder"
-          type="text"
-          value=""
-        />
-      </div>
-    </div>
     <div
       className="brainhub-droparea"
       onDragEnter={[Function]}
