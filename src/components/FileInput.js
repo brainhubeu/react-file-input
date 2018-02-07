@@ -73,10 +73,10 @@ class FileInput extends Component {
 
   getImageThumbnail(file) {
     const reader = new FileReader();
-    reader.onload = e => {
-      this.setState({ image: e.target.result });
-    };
-    file && reader.readAsDataURL(file);
+    if (file && file.type.match('image.*')) {
+      reader.readAsDataURL(file);
+    }
+    reader.onload = e => this.setState({ image: e.target.result });
   }
 
   selectFile(event) {
