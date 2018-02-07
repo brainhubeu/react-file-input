@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { handleChangeEvent, handleDropEvent, preventDefault } from '../helpers/event';
 import { selectIsDragging, selectIsDraggingOver } from '../helpers/fileInputSelectors';
 
-import Droparea from './Droparea';
+import DropArea from './DropArea';
 import FileInputMetadata from './FileInputMetadata';
 
 import '../styles/FileInput.scss';
@@ -168,7 +168,7 @@ class FileInput extends Component {
           onChange={this.selectFile}
         />
         {this.props.displayMetadata && renderMetadata}
-        <Droparea
+        <DropArea
           dragging={isDragging}
           onDragEnter={this.onDragEnter}
           onDragLeave={this.onDragLeave}

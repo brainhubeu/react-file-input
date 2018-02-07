@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import renderer from 'react-test-renderer';
 
-import Droparea from '../../src/components/Droparea';
+import DropArea from '../../src/components/DropArea';
 
 const defaultProps = {
   onDragEnter: () => null,
@@ -12,7 +12,7 @@ const defaultProps = {
 };
 
 const setup = (props = {}) => {
-  const droparea = shallow(<Droparea {...defaultProps} {...props} />);
+  const droparea = shallow(<DropArea {...defaultProps} {...props} />);
 
   return {
     droparea,
@@ -20,12 +20,12 @@ const setup = (props = {}) => {
 };
 
 describe('components', () => {
-  describe('Droparea', () => {
+  describe('DropArea', () => {
     it('should render an add button by default', () => {
       const { droparea } = setup();
 
-      const button = droparea.find('.brainhub-drpoparea__button');
-      const info = droparea.find('.brainhub-drpoparea__info');
+      const button = droparea.find('.brainhub-drop-area__button');
+      const info = droparea.find('.brainhub-drop-area__info');
 
       expect(button).toHaveLength(1);
       expect(info).toHaveLength(0);
@@ -38,8 +38,8 @@ describe('components', () => {
     it('should render an info message if it is dragging', () => {
       const { droparea } = setup({ dragging: true });
 
-      const button = droparea.find('.brainhub-drpoparea__button');
-      const info = droparea.find('.brainhub-drpoparea__info');
+      const button = droparea.find('.brainhub-drop-area__button');
+      const info = droparea.find('.brainhub-drop-area__info');
 
       expect(button).toHaveLength(0);
       expect(info).toHaveLength(1);
@@ -50,7 +50,7 @@ describe('components', () => {
     it('should match exact snapshot', () => {
       const tree = renderer.create(
         <div>
-          <Droparea {...defaultProps} />
+          <DropArea {...defaultProps} />
         </div>
       ).toJSON();
 
@@ -59,7 +59,7 @@ describe('components', () => {
     it('should match exact snapshot when dragging', () => {
       const tree = renderer.create(
         <div>
-          <Droparea {...defaultProps} dragging />
+          <DropArea {...defaultProps} dragging />
         </div>
       ).toJSON();
 

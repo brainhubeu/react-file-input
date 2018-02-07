@@ -16,13 +16,13 @@ exports[`components FileInput should match exact snapshot 1`] = `
       type="file"
     />
     <div
-      className="brainhub-droparea"
+      className="brainhub-drop-area"
       onDragEnter={[Function]}
       onDragLeave={[Function]}
       onDrop={[Function]}
     >
       <div
-        className="brainhub-drpoparea__button"
+        className="brainhub-drop-area__button"
         onClick={[Function]}
         role="button"
         tabIndex={-1}

@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import '../styles/Droparea.scss';
+import '../styles/DropArea.scss';
 
 const Droparea = ({ dragging, onDragEnter, onDragLeave, onDrop, openFileDialog }) => {
   const className = dragging
-    ? `brainhub-droparea  brainhub-droparea--dragging`
-    : `brainhub-droparea`;
+    ? `brainhub-drop-area  brainhub-drop-area--dragging`
+    : `brainhub-drop-area`;
 
   return (
     <div
@@ -16,8 +16,8 @@ const Droparea = ({ dragging, onDragEnter, onDragLeave, onDrop, openFileDialog }
       onDrop={onDrop}
     >
       {dragging
-        ? (<div className="brainhub-drpoparea__info">Drop here to select file.</div>)
-        : (<div className="brainhub-drpoparea__button" role="button" tabIndex={-1} onClick={openFileDialog}>+ Add File</div>)
+        ? (<div className="brainhub-drop-area__info">Drop here to select file.</div>)
+        : (<div className="brainhub-drop-area__button" role="button" tabIndex={-1} onClick={openFileDialog}>+ Add File</div>)
       }
     </div>
   );
