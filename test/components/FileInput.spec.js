@@ -3,19 +3,21 @@ import { mount } from 'enzyme';
 import renderer from 'react-test-renderer';
 import PropTypes from 'prop-types';
 
+import DropArea from '../../src/components/DropArea';
 import FileInput from '../../src/components/FileInput';
-import FileInputMetadata from '../../src/components/FileInputMetadata';
 
-const defaultProps = {};
+const defaultProps = {
+  label: 'Test',
+};
 
 const setup = (props = {}) => {
   const fileInput = mount(<FileInput {...defaultProps} {...props} />);
 
   return {
     fileInput,
-    div: fileInput.find('div'),
-    input: fileInput.find('input'),
-    button: fileInput.find('button'),
+    label: fileInput.find('.brainhub-file-input__label'),
+    input: fileInput.find('input[type="file"]'),
+    DropArea: fileInput.find(DropArea),
   };
 };
 
@@ -51,64 +53,49 @@ describe('components', () => {
       expect(input.hasClass('brainhub-file-input__input--hidden')).toBeTruthy();
     });
 
-    it('should render a button to select files', () => {
-      const { input, button } = setup();
+    it('should render a label', () => {
+      const { label } = setup();
+
+      expect(label).toHaveLength(1);
+      expect(label.text()).toBe(defaultProps.label);
+    });
+
+    it('should render a DropArea', () => {
+      const { DropArea } = setup();
+
+      expect(DropArea).toHaveLength(1);
+    });
+
+    it('should render a DropArea that can open the file dialog', () => {
+      const { DropArea, input } = setup();
 
       const inputClickSpy = jest.spyOn(input.instance(), 'click');
 
-      expect(button).toHaveLength(1);
-      expect(button.text()).toBe('Select File');
-
-      button.simulate('click');
+      DropArea.prop('openFileDialog')();
 
       expect(inputClickSpy).toHaveBeenCalled();
-      expect(input.hasClass('brainhub-file-input__input--hidden')).toBeTruthy();
-    });
-
-    it('should render a `drop here` message when files are dragging', () => {
-      const { fileInput, div } = setup();
-
-      expect(div.last().hasClass('brainhub-file-input__dropInfo--hidden')).toBeTruthy();
-      expect(div.last().find('p').text()).toBe('Drop here to select file');
-
-      fileInput.setState({ enteredInDocument: 1, isOver: 1 });
-
-      expect(fileInput.find('div').last().hasClass('brainhub-file-input__dropInfo--hidden')).toBeFalsy();
-    });
-
-    it('should increase `isOver` state when drag enters', () => {
-      const { fileInput } = setup();
-
-      const state = fileInput.state();
-
-      fileInput.simulate('dragenter');
-
-      expect(fileInput.state()).toEqual({
-        ...state,
-        isOver: state.isOver + 1,
-      });
     });
 
     it('should call onDragEnter callback when drag enters for first time', () => {
       const onDragEnterCallback = jest.fn();
-      const { fileInput } = setup({ onDragEnterCallback });
+      const { DropArea, fileInput } = setup({ onDragEnterCallback });
 
-      fileInput.simulate('dragenter');
+      DropArea.simulate('dragenter');
 
       expect(onDragEnterCallback).toHaveBeenCalledWith(fileInput.state());
 
       onDragEnterCallback.mockClear();
-      fileInput.simulate('dragenter');
+      DropArea.simulate('dragenter');
 
       expect(onDragEnterCallback).not.toHaveBeenCalled();
     });
 
     it('should decreate `isOver` state when drag leaves', () => {
-      const { fileInput } = setup();
+      const { DropArea, fileInput } = setup();
 
       const state = fileInput.state();
 
-      fileInput.simulate('dragLeave');
+      DropArea.simulate('dragLeave');
 
       expect(fileInput.state()).toEqual({
         ...state,
@@ -118,33 +105,31 @@ describe('components', () => {
 
     it('should call onDragLeaves callback when drag leaves for last time', () => {
       const onDragLeaveCallback = jest.fn();
-      const { fileInput } = setup({ onDragLeaveCallback });
+      const { DropArea, fileInput } = setup({ onDragLeaveCallback });
 
       fileInput.setState({ isOver: 1 });
-      fileInput.simulate('dragLeave');
+      DropArea.simulate('dragLeave');
 
       expect(onDragLeaveCallback).toHaveBeenCalledWith(fileInput.state());
 
       onDragLeaveCallback.mockClear();
-      fileInput.simulate('dragLeave');
+      DropArea.simulate('dragLeave');
 
       expect(onDragLeaveCallback).not.toHaveBeenCalled();
     });
 
     it('should store the drop file in the state, and reset the rest, and call the callback', () => {
       const onDropCallback = jest.fn();
-      const { fileInput } = setup({ onDropCallback });
+      const { DropArea, fileInput } = setup({ onDropCallback });
 
       const file = { name: 'MockFile.mkv', size: 5000 };
       fileInput.setState({ isOver: 2, enteredInDocument: 2 });
 
-      fileInput.simulate('drop', { dataTransfer: { files: [file] } });
+      DropArea.simulate('drop', { dataTransfer: { files: [file] } });
 
-      expect(fileInput.state()).toEqual({
-        enteredInDocument: 0,
-        isOver: 0,
-        value: file,
-      });
+      expect(fileInput.state('enteredInDocument')).toBe(0);
+      expect(fileInput.state('isOver')).toBe(0);
+      expect(fileInput.state('value')).toBe(file);
       expect(onDropCallback).toHaveBeenCalledWith(fileInput.state());
     });
 
@@ -173,18 +158,6 @@ describe('components', () => {
       const tree = renderer.create(
         <div>
           <FileInput {...defaultProps} />
-        </div>
-      ).toJSON();
-
-      expect(tree).toMatchSnapshot();
-    });
-  });
-
-  describe('FileInputMetadata', () => {
-    it('should match exact snapshot', () => {
-      const tree = renderer.create(
-        <div>
-          <FileInputMetadata name="test" size={1000}/>
         </div>
       ).toJSON();
 

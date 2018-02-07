@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 
 import { handleChangeEvent, handleDropEvent, preventDefault } from '../helpers/event';
 import { selectIsDragging, selectIsDraggingOver } from '../helpers/fileInputSelectors';
+
+import DropArea from './DropArea';
 import FileInputMetadata from './FileInputMetadata';
 
 import '../styles/FileInput.scss';
@@ -30,6 +32,7 @@ class FileInput extends Component {
     this.onDragLeave = this.onDragLeave.bind(this);
     this.onDrop = this.onDrop.bind(this);
   }
+
   componentDidMount() {
     const { dragOnDocument, dropOnDocument } = this.props;
 
@@ -138,12 +141,10 @@ class FileInput extends Component {
   }
 
   render() {
+    const { label } = this.props;
     const { value } = this.state;
 
     const isDragging = selectIsDragging(this.state);
-    const wrapperClassname = isDragging
-      ? 'brainhub-file-input__wrapper brainhub-file-input__wrapper--selected'
-      : 'brainhub-file-input__wrapper';
 
     let renderMetadata = null;
 
@@ -165,13 +166,8 @@ class FileInput extends Component {
     }
 
     return (
-      <div
-        className={wrapperClassname}
-        onDragEnter={this.onDragEnter}
-        onDragOver={this.onDragOver}
-        onDragLeave={this.onDragLeave}
-        onDrop={this.onDrop}
-      >
+      <div className="brainhub-file-input__wrapper">
+        <div className="brainhub-file-input__label">{label}</div>
         <input
           className="brainhub-file-input__input--hidden"
           type="file"
@@ -180,11 +176,14 @@ class FileInput extends Component {
           }}
           onChange={this.selectFile}
         />
-        <button onClick={this.openFileDialog}>Select File</button>
-        <div className={!isDragging && 'brainhub-file-input__dropInfo--hidden' || ''}>
-          <p>Drop here to select file</p>
-        </div>
         {this.props.displayMetadata && renderMetadata}
+        <DropArea
+          dragging={isDragging}
+          onDragEnter={this.onDragEnter}
+          onDragLeave={this.onDragLeave}
+          onDrop={this.onDrop}
+          openFileDialog={this.openFileDialog}
+        />
       </div>
     );
   }
@@ -204,6 +203,7 @@ FileInput.defaultProps = {
 FileInput.propTypes = {
   dragOnDocument: PropTypes.bool,
   dropOnDocument: PropTypes.bool,
+  label: PropTypes.string.isRequired,
   onChangeCallback: PropTypes.func,
   onDragEnterCallback: PropTypes.func,
   onDragLeaveCallback: PropTypes.func,

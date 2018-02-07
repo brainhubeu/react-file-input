@@ -1,0 +1,28 @@
+@import "global";
+
+.brainhub-drop-area {
+  height: 90px;
+  font-family: $FONT_FAMILY;
+  display: flex;
+  box-sizing: border-box;
+  margin: 4px 0;
+}
+
+.brainhub-drop-area--dragging {
+  border: 1px dashed $LIGHT_GREEN;
+}
+
+.brainhub-drop-area__info {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  color: $LIGHT_GREEN;
+}
+
+.brainhub-drop-area__button {
+  font-size: 14px;
+  line-height: 18px;
+  color: $LIGHT_GREEN;
+}

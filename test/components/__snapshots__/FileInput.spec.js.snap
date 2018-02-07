@@ -4,63 +4,31 @@ exports[`components FileInput should match exact snapshot 1`] = `
 <div>
   <div
     className="brainhub-file-input__wrapper"
-    onDragEnter={[Function]}
-    onDragLeave={[Function]}
-    onDragOver={undefined}
-    onDrop={[Function]}
   >
+    <div
+      className="brainhub-file-input__label"
+    >
+      Test
+    </div>
     <input
       className="brainhub-file-input__input--hidden"
       onChange={[Function]}
       type="file"
     />
-    <button
-      onClick={[Function]}
-    >
-      Select File
-    </button>
     <div
-      className="brainhub-file-input__dropInfo--hidden"
-    >
-      <p>
-        Drop here to select file
-      </p>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`components FileInputMetadata should match exact snapshot 1`] = `
-<div>
-  <div
-    className="brainhub-file-input__metadata"
-  >
-    <div
-      className="brainhub-file-input__metadata__image"
+      className="brainhub-drop-area"
+      onDragEnter={[Function]}
+      onDragLeave={[Function]}
+      onDrop={[Function]}
     >
       <div
-        style={
-          Object {
-            "backgroundColor": "#5680BB",
-            "height": "20px",
-            "width": "20px",
-          }
-        }
-      />
-    </div>
-    <div
-      className="brainhub-file-input__metadata__info"
-    >
-      <span
-        className="brainhub-file-input__metadata__info_name"
+        className="brainhub-drop-area__button"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
       >
-        test
-      </span>
-      
-       (
-      1000 B
-      ) 
-      
+        + Add File
+      </div>
     </div>
   </div>
 </div>
