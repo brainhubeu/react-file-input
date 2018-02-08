@@ -80,7 +80,15 @@ class FileInput extends Component {
         this.setState({ image: '' });
       }
     }
-    reader.onload = event => this.setState({ image: event.target.result });
+    reader.onload = event => {
+      const image = this.props.scaleImageOptions
+        ? new Image(this.props.scaleImageOptions.width, this.props.scaleImageOptions.height)
+        : new Image();
+      image.src = event.target.result;
+      image.onload = event => {
+        this.setState({ image: event.path[0] });
+      };
+    };
   }
 
   selectFile(event) {
@@ -158,6 +166,7 @@ class FileInput extends Component {
   }
 
   render() {
+    console.log(this.state)
     const { value, image } = this.state;
     const { customMetadata: CustomMetadata, customImageThumbnail: CustomImageThumbnail, label } = this.props;
 
@@ -168,7 +177,7 @@ class FileInput extends Component {
 
     const metadataComponent = value
       && <MetadataClass name={value.filename} size={value.size} extension={value.extension} type={value.mimeType}/>;
-    const imageThumbnailComponent = image && <ImageThumbnailClass image={image}/>;
+    const imageThumbnailComponent = image && <ImageThumbnailClass image={image.src}/>;
 
     return (
       <div className="brainhub-file-input__wrapper">
@@ -210,6 +219,7 @@ FileInput.defaultProps = {
   onDropCallback: null,
   displayMetadata: true,
   displayImageThumbnail: true,
+  scaleImageOptions: null,
 };
 
 FileInput.propTypes = {
@@ -224,6 +234,10 @@ FileInput.propTypes = {
   displayImageThumbnail: PropTypes.bool,
   customMetadata: PropTypes.func,
   customImageThumbnail: PropTypes.func,
+  scaleImageOptions: PropTypes.shape({
+    width: PropTypes.number,
+    height: PropTypes.number,
+  }),
 };
 
 export default FileInput;
