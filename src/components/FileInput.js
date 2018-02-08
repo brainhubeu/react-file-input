@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import apsectRatio from 'aspectratio';
 
 import { handleChangeEvent, handleDropEvent, preventDefault } from '../helpers/event';
 import { selectIsDragging, selectIsDraggingOver } from '../helpers/fileInputSelectors';
@@ -81,8 +82,16 @@ class FileInput extends Component {
       }
     }
     reader.onload = event => {
+      const ratio = this.props.scaleImageOptions
+        && apsectRatio.crop(
+          this.props.scaleImageOptions.width,
+          this.props.scaleImageOptions.height,
+          this.props.scaleImageOptions.ratio);
+
+      const [width, height] = [ratio[2], ratio[3]];
+
       const image = this.props.scaleImageOptions
-        ? new Image(this.props.scaleImageOptions.width, this.props.scaleImageOptions.height)
+        ? new Image(width, height)
         : new Image();
       image.src = event.target.result;
       image.onload = event => {
@@ -166,7 +175,6 @@ class FileInput extends Component {
   }
 
   render() {
-    console.log(this.state)
     const { value, image } = this.state;
     const { customMetadata: CustomMetadata, customImageThumbnail: CustomImageThumbnail, label } = this.props;
 
@@ -237,6 +245,7 @@ FileInput.propTypes = {
   scaleImageOptions: PropTypes.shape({
     width: PropTypes.number,
     height: PropTypes.number,
+    ratio: PropTypes.string,
   }),
 };
 

@@ -8,7 +8,7 @@ export default class HomePage extends Component {
         <h1>React File Input</h1>
         <h2>By Brainhub</h2>
         <div style={{ padding: '5px' }}>
-          <FileInput label="File Input"/>
+          <FileInput scaleImageOptions={{ width: 150, height: 150, ratio: '3:2' }} label="File Input"/>
         </div>
       </div>
     );

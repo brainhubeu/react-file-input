@@ -21,7 +21,10 @@ const setup = (props = {}) => {
   };
 };
 
-const CustomComponent = ({ name = 'custom component', size = 1000, image = 'custom_image_source' }) => <div>{name}:{size}:{image}</div>;
+const DefaultImage = <img src="image_source" width={500} height={300} />;
+
+const CustomComponent = ({ name='custom component', size=1000, image='custom_image_source' }) =>
+  <div>{name}:{size}:{image ? image : DefaultImage}</div>;
 CustomComponent.propTypes = {
   name: PropTypes.string,
   size: PropTypes.number,
@@ -176,6 +179,29 @@ describe('components', () => {
       fileInput.setState({ value: data });
 
       expect(fileInput.find('ImageThumbnail').length).toEqual(0);
+    });
+
+    it('should render image in defined ratio when scaleImageOptions prop were pass', () => {
+      const scaleImageOptions = { width: 100, height: 100, ratio: '16:9' };
+      const { input, fileInput } = setup({ scaleImageOptions });
+      const data = {
+      //   name: 'Cute puppies',
+      //   filename: 'Cute puppies',
+      //   extension: 'as',
+      //   size: 1000,
+      // };
+      // const image = <img width={500} height={300} />;
+      // fileInput.setState({ image });
+
+      // input.simulate('change', {
+      //   target: {
+      //     files: [
+      //       data,
+      //     ],
+      //   },
+      // });
+      // // expect(fileInput.find('ImageThumbnail'))
+      // console.log(fileInput.state());
     });
 
     it('should match exact snapshot', () => {
