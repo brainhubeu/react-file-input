@@ -80,7 +80,7 @@ class FileInput extends Component {
         this.setState({ image: '' });
       }
     }
-    reader.onload = e => this.setState({ image: e.target.result });
+    reader.onload = event => this.setState({ image: event.target.result });
   }
 
   selectFile(event) {
