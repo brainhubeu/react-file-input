@@ -1,0 +1,80 @@
+.brainhub-image-editor {
+  position: relative;
+  //border: 2px solid green;
+  cursor: crosshair;
+  overflow: hidden;
+}
+
+.brainhub-image-editor__image {
+  max-width: 100%;
+  max-height: 100%;
+  display: block;
+  margin: 0 auto;
+}
+
+.brainhub-image-editor__selected-area {
+  position: absolute;
+  border: 1px dashed white;
+  cursor: move;
+  box-shadow: 0 0 0 9999em rgba(0, 0, 0, 0.5);
+  zIndex: 10;
+}
+
+$POINT_SIZE: 8px;
+
+.brainhub-image-editor__resize-point {
+  width:8px;
+  height: 8px;
+  position: absolute;
+  background-color: white;
+  border: 1px solid;
+  zIndex: 100;
+}
+
+.brainhub-image-editor__resize-point--t,
+.brainhub-image-editor__resize-point--b {
+  left: calc(50% - 6px); // border + point_size/2
+}
+
+.brainhub-image-editor__resize-point--r,
+.brainhub-image-editor__resize-point--l {
+  top: calc(50% - 6px); // border + point_size/2
+}
+
+.brainhub-image-editor__resize-point--tl,
+.brainhub-image-editor__resize-point--t,
+.brainhub-image-editor__resize-point--tr {
+  top: calc(0px - 6px); // border + point_size/2
+}
+.brainhub-image-editor__resize-point--tr,
+.brainhub-image-editor__resize-point--r,
+.brainhub-image-editor__resize-point--br {
+  right: calc(0px - 6px); // border + point_size/2
+}
+.brainhub-image-editor__resize-point--bl,
+.brainhub-image-editor__resize-point--b,
+.brainhub-image-editor__resize-point--br {
+  bottom: calc(0px - 6px); // border + point_size/2
+}
+.brainhub-image-editor__resize-point--tl,
+.brainhub-image-editor__resize-point--l,
+.brainhub-image-editor__resize-point--bl {
+  left: calc(0px - 6px); // border + point_size/2
+}
+
+.brainhub-image-editor__resize-point--t,
+.brainhub-image-editor__resize-point--b {
+  cursor: ns-resize;
+}
+.brainhub-image-editor__resize-point--tr,
+.brainhub-image-editor__resize-point--bl {
+  cursor: nesw-resize;
+}
+.brainhub-image-editor__resize-point--l,
+.brainhub-image-editor__resize-point--r {
+  cursor: ew-resize;
+}
+.brainhub-image-editor__resize-point--tl,
+.brainhub-image-editor__resize-point--br {
+  cursor: nwse-resize;
+}

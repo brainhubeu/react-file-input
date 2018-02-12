@@ -7,6 +7,7 @@ import { selectIsDragging, selectIsDraggingOver } from '../helpers/fileInputSele
 import DropArea from './DropArea';
 import FileInputMetadata from './FileInputMetadata';
 import ImageThumbnail from './ImageThumbnail';
+import ImageEditor from './ImageEditor';
 
 import '../styles/FileInput.scss';
 
@@ -181,10 +182,6 @@ class FileInput extends Component {
           }}
           onChange={this.selectFile}
         />
-        <button onClick={this.openFileDialog}>Select File</button>
-        <div className={!isDragging && 'brainhub-file-input__dropInfo--hidden' || ''}>
-          <p>Drop here to select file</p>
-        </div>
         <div className="brainhub-file-input__fileInfo">
           {this.props.displayImageThumbnail && imageThumbnailComponent}
           {this.props.displayMetadata && metadataComponent}
@@ -196,6 +193,9 @@ class FileInput extends Component {
           onDrop={this.onDrop}
           openFileDialog={this.openFileDialog}
         />
+        {image
+          ? (<ImageEditor image={image}/>)
+          : null}
       </div>
     );
   }
