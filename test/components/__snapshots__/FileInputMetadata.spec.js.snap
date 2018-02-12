@@ -6,19 +6,6 @@ exports[`components FileInputMetadata should match exact snapshot 1`] = `
     className="brainhub-file-input__metadata"
   >
     <div
-      className="brainhub-file-input__metadata__image"
-    >
-      <div
-        style={
-          Object {
-            "backgroundColor": "#5680BB",
-            "height": "20px",
-            "width": "20px",
-          }
-        }
-      />
-    </div>
-    <div
       className="brainhub-file-input__metadata__info"
     >
       <span

@@ -1,20 +1,12 @@
 .brainhub-file-input__metadata {
+  grid-area: metadata;
+  display: flex;
   font-size: 0.8em;
-  display: grid;
-  grid-template-columns: 0.05fr 0.95fr;
-  grid-template-rows: 1fr;
-  grid-template-areas: "image info";
   width: 500px;
   height: 25px;
   margin: 5px;
 
-  .brainhub-file-input__metadata__image {
-      grid-area: image;
-      text-align: center;
-      margin: auto;
-  }
   .brainhub-file-input__metadata__info{
-      grid-area: info;
       text-align: left;
       margin: auto;
       margin-left: 5px;

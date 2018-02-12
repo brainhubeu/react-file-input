@@ -21,10 +21,11 @@ const setup = (props = {}) => {
   };
 };
 
-const CustomComponent = ({ name, size }) => <div>{name}:{size}</div>;
+const CustomComponent = ({ name = 'custom component', size = 1000, image = 'custom_image_source' }) => <div>{name}:{size}:{image}</div>;
 CustomComponent.propTypes = {
   name: PropTypes.string,
   size: PropTypes.number,
+  image: PropTypes.string,
 };
 
 describe('components', () => {
@@ -43,6 +44,7 @@ describe('components', () => {
         enteredInDocument: 0,
         isOver: 0,
         value: null,
+        image: null,
       });
     });
 
@@ -145,6 +147,7 @@ describe('components', () => {
       fileInput.setState({ value: data });
 
       expect(fileInput.find(CustomComponent)).toBeTruthy();
+      expect(fileInput.find('FileInputMetadata')).toHaveLength(0);
     });
 
     it('should not render metadata when user pass false to displayMetadata prop', () => {
@@ -152,6 +155,28 @@ describe('components', () => {
       fileInput.setState({ value: data });
 
       expect(fileInput.find('FileInputMetadata').length).toEqual(0);
+    });
+
+    it('should render image thumbnail from default component', () => {
+      const { fileInput } = setup();
+      fileInput.setState({ image: 'image_source' });
+
+      expect(fileInput.find('ImageThumbnail')).toHaveLength(1);
+    });
+
+    it('should render image thumbnail from custom component', () => {
+      const { fileInput } = setup({ customImageThumbnail: CustomComponent });
+      fileInput.setState({ image: 'image_source' });
+
+      expect(fileInput.find(CustomComponent)).toBeTruthy();
+      expect(fileInput.find('ImageThumbnail')).toHaveLength(0);
+    });
+
+    it('should not render image thumbnail when user pass false to displayImageThumbnail prop', () => {
+      const { fileInput } = setup({ displayImageThumbnail: false });
+      fileInput.setState({ value: data });
+
+      expect(fileInput.find('ImageThumbnail').length).toEqual(0);
     });
 
     it('should match exact snapshot', () => {

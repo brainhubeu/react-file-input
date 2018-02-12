@@ -6,6 +6,7 @@ import { selectIsDragging, selectIsDraggingOver } from '../helpers/fileInputSele
 
 import DropArea from './DropArea';
 import FileInputMetadata from './FileInputMetadata';
+import ImageThumbnail from './ImageThumbnail';
 
 import '../styles/FileInput.scss';
 
@@ -17,9 +18,13 @@ class FileInput extends Component {
       enteredInDocument: 0,
       isOver: 0,
       value: null,
+      image: null,
     };
 
     this.input = null;
+
+    this.handleFile = this.handleFile.bind(this);
+    this.getImageThumbnail = this.getImageThumbnail.bind(this);
 
     this.openFileDialog = this.openFileDialog.bind(this);
     this.selectFile = this.selectFile.bind(this);
@@ -68,24 +73,41 @@ class FileInput extends Component {
       this.input.click();
     }
   }
+
+  getImageThumbnail(file) {
+    const reader = new FileReader();
+
+    reader.readAsDataURL(file);
+    reader.onload = event => this.setState({ image: event.target.result });
+  }
+
+  handleFile(file, callback = null) {
+    const { displayImageThumbnail } = this.props;
+
+    this.setState(state => ({
+      ...state,
+      enteredInDocument: 0,
+      isOver: 0,
+      value: file,
+      image: null,
+    }), () => {
+      if (callback) {
+        callback(this.state);
+      }
+    });
+
+    if (displayImageThumbnail && file && file.mimeType.match('image.*')) {
+      this.getImageThumbnail(file);
+    }
+  }
+
   selectFile(event) {
     const { onChangeCallback } = this.props;
 
     const files = handleChangeEvent(event);
 
-    if (files) {
-      const file = files[0]; // get only one
-
-      this.setState(state => ({
-        ...state,
-        enteredInDocument: 0,
-        isOver: 0,
-        value: file,
-      }), () => {
-        if (onChangeCallback) {
-          onChangeCallback(this.state);
-        }
-      });
+    if (files.length) {
+      this.handleFile(files[0], onChangeCallback);
     }
   }
 
@@ -124,46 +146,23 @@ class FileInput extends Component {
 
     const files = handleDropEvent(event);
 
-    if (files) {
-      const file = files[0]; // get only one
-
-      this.setState(state => ({
-        ...state,
-        enteredInDocument: 0,
-        isOver: 0,
-        value: file,
-      }), () => {
-        if (onDropCallback) {
-          onDropCallback(this.state);
-        }
-      });
+    if (files.length) {
+      this.handleFile(files[0], onDropCallback);
     }
   }
 
   render() {
-    const { label } = this.props;
-    const { value } = this.state;
+    const { value, image } = this.state;
+    const { customMetadata: CustomMetadata, customImageThumbnail: CustomImageThumbnail, label } = this.props;
+
+    const MetadataClass = CustomMetadata || FileInputMetadata;
+    const ImageThumbnailClass = CustomImageThumbnail || ImageThumbnail;
 
     const isDragging = selectIsDragging(this.state);
 
-    let renderMetadata = null;
-
-    if (value) {
-      const customMetadata = this.props.customMetadata({
-        extension: value.extension,
-        name: value.filename,
-        size: value.size,
-        type: value.mimeType,
-      });
-      renderMetadata = customMetadata
-        ? customMetadata
-        : <FileInputMetadata
-          extension={value.extension}
-          name={value.filename}
-          size={value.size}
-          type={value.mimeType}
-        />;
-    }
+    const metadataComponent = value
+      && <MetadataClass name={value.filename} size={value.size} extension={value.extension} type={value.mimeType}/>;
+    const imageThumbnailComponent = image && <ImageThumbnailClass image={image}/>;
 
     return (
       <div className="brainhub-file-input__wrapper">
@@ -176,7 +175,10 @@ class FileInput extends Component {
           }}
           onChange={this.selectFile}
         />
-        {this.props.displayMetadata && renderMetadata}
+        <div className="brainhub-file-input__fileInfo">
+          {this.props.displayImageThumbnail && imageThumbnailComponent}
+          {this.props.displayMetadata && metadataComponent}
+        </div>
         <DropArea
           dragging={isDragging}
           onDragEnter={this.onDragEnter}
@@ -197,7 +199,7 @@ FileInput.defaultProps = {
   onDragLeaveCallback: null,
   onDropCallback: null,
   displayMetadata: true,
-  customMetadata: () => null,
+  displayImageThumbnail: true,
 };
 
 FileInput.propTypes = {
@@ -209,7 +211,9 @@ FileInput.propTypes = {
   onDragLeaveCallback: PropTypes.func,
   onDropCallback: PropTypes.func,
   displayMetadata: PropTypes.bool,
+  displayImageThumbnail: PropTypes.bool,
   customMetadata: PropTypes.func,
+  customImageThumbnail: PropTypes.func,
 };
 
 export default FileInput;
