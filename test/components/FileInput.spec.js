@@ -125,7 +125,7 @@ describe('components', () => {
       const { DropArea, fileInput } = setup({ onDropCallback });
 
       const file = { name: 'MockFile.mkv', size: 5000 };
-      fileInput.setState({ isOver: 2, enteredInDocument: 2, image: '' });
+      fileInput.setState({ isOver: 2, enteredInDocument: 2 });
 
       DropArea.simulate('drop', { dataTransfer: { files: [file] } });
 
