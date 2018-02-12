@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import apsectRatio from 'aspectratio';
 
 import { handleChangeEvent, handleDropEvent, preventDefault } from '../helpers/event';
 import { selectIsDragging, selectIsDraggingOver } from '../helpers/fileInputSelectors';
@@ -78,7 +79,23 @@ class FileInput extends Component {
     const reader = new FileReader();
 
     reader.readAsDataURL(file);
-    reader.onload = event => this.setState({ image: event.target.result });
+    reader.onload = event => {
+      const ratio = this.props.scaleImageOptions
+        && apsectRatio.crop(
+          this.props.scaleImageOptions.width,
+          this.props.scaleImageOptions.height,
+          this.props.scaleImageOptions.ratio);
+
+      const [width, height] = [ratio[2], ratio[3]];
+
+      const image = this.props.scaleImageOptions
+        ? new Image(width, height)
+        : new Image();
+      image.src = event.target.result;
+      image.onload = event => {
+        this.setState({ image: event.path[0] });
+      };
+    };
   }
 
   handleFile(file, callback = null) {
@@ -162,7 +179,7 @@ class FileInput extends Component {
 
     const metadataComponent = value
       && <MetadataClass name={value.filename} size={value.size} extension={value.extension} type={value.mimeType}/>;
-    const imageThumbnailComponent = image && <ImageThumbnailClass image={image}/>;
+    const imageThumbnailComponent = image && <ImageThumbnailClass image={image.src}/>;
 
     return (
       <div className="brainhub-file-input__wrapper">
@@ -200,6 +217,7 @@ FileInput.defaultProps = {
   onDropCallback: null,
   displayMetadata: true,
   displayImageThumbnail: true,
+  scaleImageOptions: null,
 };
 
 FileInput.propTypes = {
@@ -214,6 +232,11 @@ FileInput.propTypes = {
   displayImageThumbnail: PropTypes.bool,
   customMetadata: PropTypes.func,
   customImageThumbnail: PropTypes.func,
+  scaleImageOptions: PropTypes.shape({
+    width: PropTypes.number,
+    height: PropTypes.number,
+    ratio: PropTypes.string,
+  }),
 };
 
 export default FileInput;

@@ -21,7 +21,10 @@ const setup = (props = {}) => {
   };
 };
 
-const CustomComponent = ({ name = 'custom component', size = 1000, image = 'custom_image_source' }) => <div>{name}:{size}:{image}</div>;
+const DefaultImage = <img src="image_source" width={500} height={300} />;
+
+const CustomComponent = ({ name='custom component', size=1000, image='custom_image_source' }) =>
+  <div>{name}:{size}:{image ? image : DefaultImage}</div>;
 CustomComponent.propTypes = {
   name: PropTypes.string,
   size: PropTypes.number,
@@ -177,6 +180,10 @@ describe('components', () => {
       fileInput.setState({ value: data });
 
       expect(fileInput.find('ImageThumbnail').length).toEqual(0);
+    });
+
+    it('should render image in defined ratio when scaleImageOptions prop were pass', () => {
+      // ???
     });
 
     it('should match exact snapshot', () => {
