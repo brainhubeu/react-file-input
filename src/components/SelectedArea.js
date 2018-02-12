@@ -24,56 +24,56 @@ class SelectedArea extends PureComponent {
   resizeTopLeft(event) {
     const { startResize } = this.props;
 
-    startResize(event, false, true, true, );
+    startResize(event, true, true, false);
   }
 
   resizeTop(event) {
     const { startResize } = this.props;
 
     // last, landscape
-    startResize(event, false, false, true, true);
+    startResize(event, false, true, true, true);
   }
 
   resizeTopRight(event) {
     const { startResize } = this.props;
 
     // last, landscape
-    startResize(event, true, false, true);
+    startResize(event, false, true);
   }
 
   resizeRight(event) {
     const { startResize } = this.props;
 
     // last, landscape
-    startResize(event, true, false, false, true);
+    startResize(event, false, false, true);
   }
 
   resizeBottomRight(event) {
     const { startResize } = this.props;
 
     // last, landscape
-    startResize(event, true, false, false);
+    startResize(event, false, false);
   }
 
   resizeBottom(event) {
     const { startResize } = this.props;
 
     // last, landscape
-    startResize(event, false, false, false, true);
+    startResize(event, false, false, true, true);
   }
 
   resizeBottomLeft(event) {
     const { startResize } = this.props;
 
     // last, landscape
-    startResize(event, true, true, false);
+    startResize(event, true, false);
   }
 
   resizeLeft(event) {
     const { startResize } = this.props;
 
     // last, landscape
-    startResize(event, true, true, false, true);
+    startResize(event, true, false, true);
   }
 
   startMove(event) {

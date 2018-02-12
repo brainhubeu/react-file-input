@@ -8,7 +8,8 @@
       "moduleDirectory": ["node_modules", "src"]
     }
   },
-    "rules": {
-      "no-invalid-this": 0
-    }
+  "rules": {
+    "no-invalid-this": 0,
+    "no-mixed-operators": ["error", {"allowSamePrecedence": true}]
+  }
 }

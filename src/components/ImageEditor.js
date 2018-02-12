@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import { getClickPoint, preventDefault } from '../helpers/event';
+import { move, resizeCorner, resizeSide } from '../helpers/imageEdition';
+import { minPositive } from '../helpers/math';
+
 import SelectedArea from './SelectedArea';
 
 import '../styles/ImageEditor.scss';
-
-const between = (value, max, min =0) => Math.max(Math.min(value, max), min);
-
-/**
- * @todo Change selected area for selection
- */
 
 class ImageEditor extends Component {
   constructor(props) {
@@ -17,13 +15,13 @@ class ImageEditor extends Component {
 
     this.state = {
       landscape: true,
+      isMoving: false,
       isResizing: false,
-      resizeLandscape: false,
+      resizeVertical: false,
       x0: 0,
       y0: 0,
       x1: 0,
       y1: 0,
-      isMoving: false,
       xM: 0,
       yM: 0,
     };
@@ -34,15 +32,14 @@ class ImageEditor extends Component {
     this.onImageLoad = this.onImageLoad.bind(this);
     this.getSelectedAreaBoundaries = this.getSelectedAreaBoundaries.bind(this);
 
-    this.onMouseMove = this.onMouseMove.bind(this);
-    this.onMouseUp = this.onMouseUp.bind(this);
-
     this.startResize = this.startResize.bind(this);
-    this.resize = this.resize.bind(this);
-    this.resizeSide = this.resizeSide.bind(this);
+    this.handleResize = this.handleResize.bind(this);
 
     this.startMove = this.startMove.bind(this);
-    this.move = this.move.bind(this);
+    this.handleMove = this.handleMove.bind(this);
+
+    this.onMouseMove = this.onMouseMove.bind(this);
+    this.onMouseUp = this.onMouseUp.bind(this);
   }
 
   componentWillMount() {
@@ -63,10 +60,11 @@ class ImageEditor extends Component {
     const { ratio } = this.props;
     const { clientWidth: width, clientHeight: height } = this.image;
 
-    const landscape = width > height * ratio;
+    const initialRatio = ratio || 1;
+    const landscape = width > height * initialRatio;
 
-    const selectionWidth = landscape ? (height * ratio) : width;
-    const selectionHeight = landscape ? height : (width / ratio);
+    const selectionWidth = landscape ? (height * initialRatio) : width;
+    const selectionHeight = landscape ? height : (width / initialRatio);
 
     const xOffset = landscape ? ((width - selectionWidth) / 2) : 0;
     const yOffset = landscape ? 0 : ((height - selectionHeight) / 2);
@@ -78,53 +76,6 @@ class ImageEditor extends Component {
       y0: yOffset,
       x1: width - xOffset,
       y1: height - yOffset,
-    }));
-  }
-
-  startMove(event) {
-    event.preventDefault();
-    const { pageX: mouseX, pageY: mouseY } = event;
-    const { clientWidth: width, clientHeight: height, offsetLeft: imageLeft, offsetTop: imageTop } = this.image;
-    const { offsetLeft: containerLeft, offsetTop: containerTop } = this.container;
-
-    this.setState({
-      isMoving: true,
-      xM: between(mouseX - imageLeft - containerLeft, width),
-      yM: between(mouseY - imageTop - containerTop, height),
-    });
-  }
-
-  move(event) {
-    event.preventDefault();
-    const { x0, y0, x1, y1, xM, yM } = this.state;
-    const { pageX: mouseX, pageY: mouseY } = event;
-    const { clientWidth: width, clientHeight: height, offsetLeft: imageLeft, offsetTop: imageTop } = this.image;
-    const { offsetLeft: containerLeft, offsetTop: containerTop } = this.container;
-
-    // Calculates the real posible point (i.e point tha falls between image boundaries)
-
-    const clickX = between(mouseX - containerLeft - imageLeft, width);
-    const clickY = between(mouseY - containerTop - imageTop, height);
-
-    const dX = clickX - xM;
-    const dY = clickY - yM;
-
-    // processX
-    const realDX = dX > 0
-      ? Math.min(dX, width - x1)
-      : Math.max(dX, -x0);
-
-    const realDY = dY > 0
-      ? Math.min(dY, height - y1)
-      : Math.max(dY, -y0);
-
-    this.setState(state => ({
-      xM: clickX,
-      yM: clickY,
-      x0: x0 + realDX,
-      y0: y0 + realDY,
-      x1: x1 + realDX,
-      y1: y1 + realDY,
     }));
   }
 
@@ -148,14 +99,39 @@ class ImageEditor extends Component {
     };
   }
 
-  startResize(event, resizeLandscape, invertX = false, invertY = false, isResizingSide = false) {
+  startMove(event) {
+    event.preventDefault();
+    const { clientWidth: width, clientHeight: height } = this.image;
+
+    const { pointX: xM, pointY: yM } = getClickPoint(event, this.container, this.image);
+
+    this.setState({
+      isMoving: true,
+      xM: minPositive(xM, width),
+      yM: minPositive(yM, height),
+    });
+  }
+
+  handleMove(event) {
+    event.preventDefault();
+    const { x0, y0, x1, y1, xM, yM } = this.state;
+    const { clientWidth: width, clientHeight: height } = this.image;
+
+    const clickPoint = getClickPoint(event, this.container, this.image);
+
+    const points = move(clickPoint, { height, width }, { xM, yM }, { x0, y0, x1, y1 });
+
+    this.setState(points);
+  }
+
+  startResize(event, invertX = false, invertY = false, isResizingSide = false, resizeVertical = false) {
     event.preventDefault();
 
     this.setState(state => ({
       ...state,
-      isResizing: !isResizingSide,
+      isResizing: true,
       isResizingSide,
-      resizeLandscape: !resizeLandscape,
+      resizeVertical,
       x0: invertX ? state.x1 : state.x0,
       y0: invertY ? state.y1 : state.y0,
       x1: invertX ? state.x0: state.x1,
@@ -163,99 +139,29 @@ class ImageEditor extends Component {
     }));
   }
 
-  resize(event) {
+  handleResize(event) {
     event.preventDefault();
 
     const { ratio } = this.props;
-    const { x0, y0, x1, y1, resizeLandscape: landscape } = this.state;
-    const { clientWidth: width, clientHeight: height, offsetLeft: imageLeft, offsetTop: imageTop } = this.image;
-    const { offsetLeft: containerLeft, offsetTop: containerTop } = this.container;
+    const { x0, y0, x1, y1, resizeVertical: resizeVertical, isResizingSide, landscape } = this.state; // landscap aka vertical rules
+    const { clientWidth: width, clientHeight: height } = this.image;
 
-    const { pageX: mouseX, pageY: mouseY } = event;
 
-    // Calculate points relative to the image
-    const clickX = mouseX - containerLeft - imageLeft;
-    const clickY = mouseY - containerTop - imageTop;
+    const clickPoint = getClickPoint(event, this.container, this.image);
 
-    // Calculates the real posible point (i.e point tha falls between image boundaries)
-    const x = between(clickX, width);
-    const y = between(clickY, height);
+    const points = isResizingSide
+      ? resizeSide(clickPoint, { height, width }, { x0, y0, x1, y1 }, resizeVertical, ratio)
+      : resizeCorner(clickPoint, { height, width }, { x0, y0, x1, y1 }, !landscape, ratio);
 
-    const resizeFactor = ((x0 > x1 && y0 < y1) || (y0 > y1 && x0 < x1)) ? -1 : 1;
-
-    const point1 = landscape
-      ? [resizeFactor * (y - y0) * ratio + x0, y]
-      : [x, resizeFactor * (x - x0) / ratio + y0];
-
-    if (point1[0] > width || point1[1] > height) {
-      point1[0] = landscape ? width : ( resizeFactor * (height - y0) * ratio + x0);
-      point1[1] = landscape ? (resizeFactor * (width - x0) / ratio + y0) : height;
-    } else if (point1[0] < 0 || point1[1] < 0) {
-      point1[0] = landscape ? 0 : ( - resizeFactor * (y0 * ratio) + x0);
-      point1[1] = landscape ? ( - resizeFactor * (x0 / ratio) + y0) : 0;
-    }
-
-    this.setState({ x1: point1[0], y1: point1[1] });
-  }
-
-  resizeSide(event) {
-    event.preventDefault();
-
-    const { ratio } = this.props;
-    const { x0, y0, x1, y1, resizeLandscape: landscape } = this.state; // landscap aka vertical rules
-    const { clientWidth: width, clientHeight: height, offsetLeft: imageLeft, offsetTop: imageTop } = this.image;
-    const { offsetLeft: containerLeft, offsetTop: containerTop } = this.container;
-
-    const { pageX: mouseX, pageY: mouseY } = event;
-
-    // Calculate points relative to the image
-    const clickX = mouseX - containerLeft - imageLeft;
-    const clickY = mouseY - containerTop - imageTop;
-
-    // Calculates the real posible point (i.e point tha falls between image boundaries)
-    const x = between(clickX, width);
-    const y = between(clickY, height);
-
-    const resizeFactor = ((x0 > x1 && y0 < y1) || (y0 > y1 && x0 < x1)) ? -1 : 1;
-
-    const point1 = landscape
-      ? [[- resizeFactor * (y -y1) * ratio /2 + x0, y0], [resizeFactor * (y - y1) * ratio/2 + x1, y]]
-      : [[x0, - resizeFactor * (x - x1) / 2 / ratio + y0], [x, resizeFactor * (x - x1) / 2 / ratio + y1]];
-
-    if (point1[0][1] > height || point1[1][1] < 0
-      || point1[0][1] < 0 || point1[1][1] > height
-      || point1[0][0] > width || point1[1][0] < 0
-      || point1[0][0] < 0 || point1[1][0] > width) {
-      const adjustFactor = landscape ? Math.sign(x1-x0) : Math.sign(y1 - y0);
-
-      const maxDY = Math.max(Math.min(height - y0, y1, y0, height - y1), 0);
-      const maxDX = Math.max(Math.min(width - x0, x1, x0, width - x1), 0);
-
-      point1[0][0] = landscape
-        ? x0 - adjustFactor * maxDX
-        :point1[0][0];
-      point1[0][1] = landscape
-        ? point1[0][1]
-        :y0 - adjustFactor * maxDY;
-      point1[1][0] = landscape
-        ? x1 + adjustFactor * maxDX
-        :x1 + adjustFactor * resizeFactor * maxDY * 2 * ratio;
-      point1[1][1] = landscape
-        ? y1 + adjustFactor * resizeFactor * maxDX * 2 /ratio
-        : y1 + adjustFactor * maxDY;
-    }
-
-    this.setState(state => ({ ...state, x0: point1[0][0], y0: point1[0][1], x1: point1[1][0], y1: point1[1][1] }));
+    this.setState(points);
   }
 
   onMouseMove(event) {
-    const { isResizing, isResizingSide, isMoving }= this.state;
+    const { isResizing, isMoving }= this.state;
     if (isMoving) {
-      this.move(event);
+      this.handleMove(event);
     } else if (isResizing) {
-      this.resize(event);
-    } else if (isResizingSide) {
-      this.resizeSide(event);
+      this.handleResize(event);
     }
   }
 
@@ -289,10 +195,8 @@ class ImageEditor extends Component {
         ref={ref => {
           this.container = ref;
         }}
+        onDragStart={preventDefault}
         onMouseDown={this.onMouseDown}
-        onDragStart={event => {
-          event.preventDefault();
-        }}
       >
         <img
           ref={ref => {
@@ -306,12 +210,13 @@ class ImageEditor extends Component {
           startResize={this.startResize}
           style={this.getSelectedAreaBoundaries()}
         />
-      </div>);
+      </div>
+    );
   }
 }
 
 ImageEditor.defaultProps = {
-  ratio: 2/3, // w/h
+  ratio: 0, // heigh / width
 };
 
 ImageEditor.propTypes = {
