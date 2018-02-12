@@ -44,6 +44,7 @@ describe('components', () => {
         enteredInDocument: 0,
         isOver: 0,
         value: null,
+        image: null,
       });
     });
 
@@ -124,7 +125,7 @@ describe('components', () => {
       const { DropArea, fileInput } = setup({ onDropCallback });
 
       const file = { name: 'MockFile.mkv', size: 5000 };
-      fileInput.setState({ isOver: 2, enteredInDocument: 2, image: '' });
+      fileInput.setState({ isOver: 2, enteredInDocument: 2 });
 
       DropArea.simulate('drop', { dataTransfer: { files: [file] } });
 
@@ -171,7 +172,7 @@ describe('components', () => {
       expect(fileInput.find('ImageThumbnail')).toHaveLength(0);
     });
 
-    it('should not render mage thumbnail when user pass false to displayImageThumbnail prop', () => {
+    it('should not render image thumbnail when user pass false to displayImageThumbnail prop', () => {
       const { fileInput } = setup({ displayImageThumbnail: false });
       fileInput.setState({ value: data });
 

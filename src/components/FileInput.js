@@ -19,13 +19,16 @@ class FileInput extends Component {
       enteredInDocument: 0,
       isOver: 0,
       value: null,
+      image: null,
     };
 
     this.input = null;
 
+    this.handleFile = this.handleFile.bind(this);
+    this.getImageThumbnail = this.getImageThumbnail.bind(this);
+
     this.openFileDialog = this.openFileDialog.bind(this);
     this.selectFile = this.selectFile.bind(this);
-    this.getImageThumbnail = this.getImageThumbnail.bind(this);
 
     this.onDocumentDragEnter = this.onDocumentDragEnter.bind(this);
     this.onDocumentDragLeave = this.onDocumentDragLeave.bind(this);
@@ -72,16 +75,31 @@ class FileInput extends Component {
     }
   }
 
-  getImageThumbnail(file = { mimeType: '' }) {
+  getImageThumbnail(file) {
     const reader = new FileReader();
-    if (file) {
-      if (file.mimeType.match('image.*')) {
-        reader.readAsDataURL(file);
-      } else {
-        this.setState({ image: '' });
-      }
-    }
+
+    reader.readAsDataURL(file);
     reader.onload = event => this.setState({ image: event.target.result });
+  }
+
+  handleFile(file, callback = null) {
+    const { displayImageThumbnail } = this.props;
+
+    this.setState(state => ({
+      ...state,
+      enteredInDocument: 0,
+      isOver: 0,
+      value: file,
+      image: null,
+    }), () => {
+      if (callback) {
+        callback(this.state);
+      }
+    });
+
+    if (displayImageThumbnail && file && file.mimeType.match('image.*')) {
+      this.getImageThumbnail(file);
+    }
   }
 
   selectFile(event) {
@@ -89,20 +107,8 @@ class FileInput extends Component {
 
     const files = handleChangeEvent(event);
 
-    if (files) {
-      const file = files[0]; // get only one
-
-      this.setState(state => ({
-        ...state,
-        enteredInDocument: 0,
-        isOver: 0,
-        value: file,
-      }), () => {
-        if (onChangeCallback) {
-          onChangeCallback(this.state);
-        }
-        this.getImageThumbnail(file);
-      });
+    if (files.length) {
+      this.handleFile(files[0], onChangeCallback);
     }
   }
 
@@ -141,20 +147,8 @@ class FileInput extends Component {
 
     const files = handleDropEvent(event);
 
-    if (files) {
-      const file = files[0]; // get only one
-
-      this.setState(state => ({
-        ...state,
-        enteredInDocument: 0,
-        isOver: 0,
-        value: file,
-      }), () => {
-        if (onDropCallback) {
-          onDropCallback(this.state);
-        }
-        this.getImageThumbnail(file);
-      });
+    if (files.length) {
+      this.handleFile(files[0], onDropCallback);
     }
   }
 
