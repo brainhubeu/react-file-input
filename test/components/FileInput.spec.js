@@ -171,7 +171,7 @@ describe('components', () => {
       expect(fileInput.find('ImageThumbnail')).toHaveLength(0);
     });
 
-    it('should not render mage thumbnail when user pass false to displayImageThumbnail prop', () => {
+    it('should not render image thumbnail when user pass false to displayImageThumbnail prop', () => {
       const { fileInput } = setup({ displayImageThumbnail: false });
       fileInput.setState({ value: data });
 
