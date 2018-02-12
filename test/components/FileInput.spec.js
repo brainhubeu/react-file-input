@@ -47,6 +47,7 @@ describe('components', () => {
         enteredInDocument: 0,
         isOver: 0,
         value: null,
+        image: null,
       });
     });
 
@@ -127,7 +128,7 @@ describe('components', () => {
       const { DropArea, fileInput } = setup({ onDropCallback });
 
       const file = { name: 'MockFile.mkv', size: 5000 };
-      fileInput.setState({ isOver: 2, enteredInDocument: 2, image: '' });
+      fileInput.setState({ isOver: 2, enteredInDocument: 2 });
 
       DropArea.simulate('drop', { dataTransfer: { files: [file] } });
 
@@ -174,7 +175,7 @@ describe('components', () => {
       expect(fileInput.find('ImageThumbnail')).toHaveLength(0);
     });
 
-    it('should not render mage thumbnail when user pass false to displayImageThumbnail prop', () => {
+    it('should not render image thumbnail when user pass false to displayImageThumbnail prop', () => {
       const { fileInput } = setup({ displayImageThumbnail: false });
       fileInput.setState({ value: data });
 
@@ -182,26 +183,7 @@ describe('components', () => {
     });
 
     it('should render image in defined ratio when scaleImageOptions prop were pass', () => {
-      const scaleImageOptions = { width: 100, height: 100, ratio: '16:9' };
-      const { input, fileInput } = setup({ scaleImageOptions });
-      const data = {
-      //   name: 'Cute puppies',
-      //   filename: 'Cute puppies',
-      //   extension: 'as',
-      //   size: 1000,
-      // };
-      // const image = <img width={500} height={300} />;
-      // fileInput.setState({ image });
-
-      // input.simulate('change', {
-      //   target: {
-      //     files: [
-      //       data,
-      //     ],
-      //   },
-      // });
-      // // expect(fileInput.find('ImageThumbnail'))
-      // console.log(fileInput.state());
+      // ???
     });
 
     it('should match exact snapshot', () => {
