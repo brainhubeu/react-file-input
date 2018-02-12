@@ -44,6 +44,7 @@ describe('components', () => {
         enteredInDocument: 0,
         isOver: 0,
         value: null,
+        image: null,
       });
     });
 

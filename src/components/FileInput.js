@@ -18,6 +18,7 @@ class FileInput extends Component {
       enteredInDocument: 0,
       isOver: 0,
       value: null,
+      image: null,
     };
 
     this.input = null;
@@ -73,13 +74,8 @@ class FileInput extends Component {
 
   getImageThumbnail(file = { mimeType: '' }) {
     const reader = new FileReader();
-    if (file) {
-      if (file.mimeType.match('image.*')) {
-        reader.readAsDataURL(file);
-      } else {
-        this.setState({ image: '' });
-      }
-    }
+
+    reader.readAsDataURL(file);
     reader.onload = event => this.setState({ image: event.target.result });
   }
 
@@ -140,20 +136,24 @@ class FileInput extends Component {
 
     const files = handleDropEvent(event);
 
-    if (files) {
+    if (files.length) {
       const file = files[0]; // get only one
-      this.getImageThumbnail(file);
 
       this.setState(state => ({
         ...state,
         enteredInDocument: 0,
         isOver: 0,
         value: file,
+        image: null,
       }), () => {
         if (onDropCallback) {
           onDropCallback(this.state);
         }
       });
+
+      if (file && file.mimeType.match('image.*')) {
+        this.getImageThumbnail(file);
+      }
     }
   }
 
