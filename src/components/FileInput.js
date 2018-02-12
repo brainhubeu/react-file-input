@@ -142,6 +142,7 @@ class FileInput extends Component {
 
     if (files) {
       const file = files[0]; // get only one
+      this.getImageThumbnail(file);
 
       this.setState(state => ({
         ...state,
@@ -152,7 +153,6 @@ class FileInput extends Component {
         if (onDropCallback) {
           onDropCallback(this.state);
         }
-        this.getImageThumbnail(file);
       });
     }
   }
@@ -181,10 +181,6 @@ class FileInput extends Component {
           }}
           onChange={this.selectFile}
         />
-        <button onClick={this.openFileDialog}>Select File</button>
-        <div className={!isDragging && 'brainhub-file-input__dropInfo--hidden' || ''}>
-          <p>Drop here to select file</p>
-        </div>
         <div className="brainhub-file-input__fileInfo">
           {this.props.displayImageThumbnail && imageThumbnailComponent}
           {this.props.displayMetadata && metadataComponent}
