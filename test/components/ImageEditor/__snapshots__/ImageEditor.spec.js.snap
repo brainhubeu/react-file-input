@@ -56,11 +56,13 @@ exports[`components ImageEditor should match exact snapshot 1`] = `
     />
     <div>
       <button
+        className="brainhub-image-editor__button brainhub-image-editor__button--cancel"
         onClick={[Function]}
       >
         Cancel
       </button>
       <button
+        className="brainhub-image-editor__button brainhub-image-editor__button--save"
         onClick={[Function]}
       >
         Save image

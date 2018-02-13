@@ -229,8 +229,16 @@ class ImageEditor extends Component {
           onCanvasDraw={onEdition}
         />
         <div>
-          <button onClick={onCancelEdition}>Cancel</button>
-          <button onClick={this.saveChanges}>Save image</button>
+          <button
+            className="brainhub-image-editor__button brainhub-image-editor__button--cancel"
+            onClick={onCancelEdition}>
+          Cancel
+          </button>
+          <button
+            className="brainhub-image-editor__button brainhub-image-editor__button--save"
+            onClick={this.saveChanges}>
+          Save image
+          </button>
         </div>
       </div>
     );

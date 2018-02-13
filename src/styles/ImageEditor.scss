@@ -1,6 +1,9 @@
+@import 'global';
+
+$POINT_SIZE: 8px;
+
 .brainhub-image-editor {
   position: relative;
-  //border: 2px solid green;
   cursor: crosshair;
   overflow: hidden;
 }
@@ -20,7 +23,6 @@
   zIndex: 10;
 }
 
-$POINT_SIZE: 8px;
 
 .brainhub-image-editor__resize-point {
   width:8px;
@@ -81,4 +83,22 @@ $POINT_SIZE: 8px;
 
 .brainhub-canvas-editor__canvas_printer {
   display: none;
+}
+
+.brainhub-image-editor__button {
+  border: none;
+  outline: none;
+  font-size: 16px;
+  color: white;
+  border-radius: 5px;
+  padding: 4px 16px;
+  margin: 4px;
+}
+
+.brainhub-image-editor__button--cancel {
+  background-color: $LIGTH_GRAY;
+}
+
+.brainhub-image-editor__button--save {
+  background-color: $LIGHT_GREEN;
 }
