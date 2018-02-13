@@ -14,7 +14,7 @@ const addPropsToFile = file => {
   const { name } = file;
 
   const [filename, extension] = getNameAndExtension(name);
-  const mimeType = file.type || extension && findMimeType(extension) || '';
+  const mimeType = file.type || (extension && findMimeType(extension)) || '';
 
   file.filename = filename;
   file.extension = extension;
@@ -56,4 +56,17 @@ export const handleDropEvent = event => {
 
 export const preventDefault = event => {
   event.preventDefault();
+};
+
+export const getClickPoint = (event, wrapper, element) => {
+  const { offsetLeft: elementLeft, offsetTop: elementTop } = element;
+  const { offsetLeft: wrapperLeft, offsetTop: wrapperTop } = wrapper;
+
+  const { pageX: clickX, pageY: clickY } = event;
+
+  // Calculate points relative to the element
+  const pointX = clickX - wrapperLeft - elementLeft;
+  const pointY = clickY - wrapperTop - elementTop;
+
+  return { pointX, pointY };
 };

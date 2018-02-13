@@ -1,0 +1,73 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components ImageEditor should match exact snapshot 1`] = `
+<div>
+  <div>
+    <div
+      className="brainhub-image-editor"
+      onDragStart={[Function]}
+    >
+      <img
+        className="brainhub-image-editor__image"
+        onLoad={[Function]}
+        src=""
+      />
+      <div
+        className="brainhub-image-editor__selected-area"
+        onMouseDown={[Function]}
+        style={Object {}}
+      >
+        <div
+          className="brainhub-image-editor__resize-point brainhub-image-editor__resize-point--tl"
+          onMouseDown={[Function]}
+        />
+        <div
+          className="brainhub-image-editor__resize-point brainhub-image-editor__resize-point--t"
+          onMouseDown={[Function]}
+        />
+        <div
+          className="brainhub-image-editor__resize-point brainhub-image-editor__resize-point--tr"
+          onMouseDown={[Function]}
+        />
+        <div
+          className="brainhub-image-editor__resize-point brainhub-image-editor__resize-point--r"
+          onMouseDown={[Function]}
+        />
+        <div
+          className="brainhub-image-editor__resize-point brainhub-image-editor__resize-point--br"
+          onMouseDown={[Function]}
+        />
+        <div
+          className="brainhub-image-editor__resize-point brainhub-image-editor__resize-point--b"
+          onMouseDown={[Function]}
+        />
+        <div
+          className="brainhub-image-editor__resize-point brainhub-image-editor__resize-point--bl"
+          onMouseDown={[Function]}
+        />
+        <div
+          className="brainhub-image-editor__resize-point brainhub-image-editor__resize-point--l"
+          onMouseDown={[Function]}
+        />
+      </div>
+    </div>
+    <canvas
+      className="brainhub-canvas-editor__canvas_printer"
+    />
+    <div>
+      <button
+        className="brainhub-image-editor__button brainhub-image-editor__button--cancel"
+        onClick={[Function]}
+      >
+        Cancel
+      </button>
+      <button
+        className="brainhub-image-editor__button brainhub-image-editor__button--save"
+        onClick={[Function]}
+      >
+        Save image
+      </button>
+    </div>
+  </div>
+</div>
+`;

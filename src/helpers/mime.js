@@ -7,7 +7,7 @@ import mimeDb from 'mime-db';
  */
 const findMimeType = extension => {
   const mimeType = Object.entries(mimeDb)
-    .find(([key, value]) => value.extensions && !!value.extensions.find(ext => ext === extension) || false);
+    .find(([key, value]) => (value.extensions && !!value.extensions.find(ext => ext === extension)) || false);
 
   return mimeType
     ? mimeType[0]

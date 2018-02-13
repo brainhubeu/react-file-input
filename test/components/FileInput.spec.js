@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 
 import DropArea from '../../src/components/DropArea';
 import FileInput from '../../src/components/FileInput';
+import ImageEditor from '../../src/components/ImageEditor';
 
 const defaultProps = {
   label: 'Test',
@@ -17,7 +18,8 @@ const setup = (props = {}) => {
     fileInput,
     label: fileInput.find('.brainhub-file-input__label'),
     input: fileInput.find('input[type="file"]'),
-    DropArea: fileInput.find(DropArea),
+    dropArea: fileInput.find(DropArea),
+    imageEditor: fileInput.find(ImageEditor),
   };
 };
 
@@ -45,6 +47,7 @@ describe('components', () => {
         isOver: 0,
         value: null,
         image: null,
+        hasBeenEdited: false,
       });
     });
 
@@ -63,41 +66,41 @@ describe('components', () => {
     });
 
     it('should render a DropArea', () => {
-      const { DropArea } = setup();
+      const { dropArea } = setup();
 
-      expect(DropArea).toHaveLength(1);
+      expect(dropArea).toHaveLength(1);
     });
 
     it('should render a DropArea that can open the file dialog', () => {
-      const { DropArea, input } = setup();
+      const { dropArea, input } = setup();
 
       const inputClickSpy = jest.spyOn(input.instance(), 'click');
 
-      DropArea.prop('openFileDialog')();
+      dropArea.prop('openFileDialog')();
 
       expect(inputClickSpy).toHaveBeenCalled();
     });
 
     it('should call onDragEnter callback when drag enters for first time', () => {
       const onDragEnterCallback = jest.fn();
-      const { DropArea, fileInput } = setup({ onDragEnterCallback });
+      const { dropArea, fileInput } = setup({ onDragEnterCallback });
 
-      DropArea.simulate('dragenter');
+      dropArea.simulate('dragenter');
 
       expect(onDragEnterCallback).toHaveBeenCalledWith(fileInput.state());
 
       onDragEnterCallback.mockClear();
-      DropArea.simulate('dragenter');
+      dropArea.simulate('dragenter');
 
       expect(onDragEnterCallback).not.toHaveBeenCalled();
     });
 
-    it('should decreate `isOver` state when drag leaves', () => {
-      const { DropArea, fileInput } = setup();
+    it('should decrease `isOver` state when drag leaves', () => {
+      const { dropArea, fileInput } = setup();
 
       const state = fileInput.state();
 
-      DropArea.simulate('dragLeave');
+      dropArea.simulate('dragLeave');
 
       expect(fileInput.state()).toEqual({
         ...state,
@@ -107,27 +110,27 @@ describe('components', () => {
 
     it('should call onDragLeaves callback when drag leaves for last time', () => {
       const onDragLeaveCallback = jest.fn();
-      const { DropArea, fileInput } = setup({ onDragLeaveCallback });
+      const { dropArea, fileInput } = setup({ onDragLeaveCallback });
 
       fileInput.setState({ isOver: 1 });
-      DropArea.simulate('dragLeave');
+      dropArea.simulate('dragLeave');
 
       expect(onDragLeaveCallback).toHaveBeenCalledWith(fileInput.state());
 
       onDragLeaveCallback.mockClear();
-      DropArea.simulate('dragLeave');
+      dropArea.simulate('dragLeave');
 
       expect(onDragLeaveCallback).not.toHaveBeenCalled();
     });
 
     it('should store the drop file in the state, and reset the rest, and call the callback', () => {
       const onDropCallback = jest.fn();
-      const { DropArea, fileInput } = setup({ onDropCallback });
+      const { dropArea, fileInput } = setup({ onDropCallback });
 
       const file = { name: 'MockFile.mkv', size: 5000 };
       fileInput.setState({ isOver: 2, enteredInDocument: 2 });
 
-      DropArea.simulate('drop', { dataTransfer: { files: [file] } });
+      dropArea.simulate('drop', { dataTransfer: { files: [file] } });
 
       expect(fileInput.state('enteredInDocument')).toBe(0);
       expect(fileInput.state('isOver')).toBe(0);
@@ -179,6 +182,45 @@ describe('components', () => {
       expect(fileInput.find('ImageThumbnail').length).toEqual(0);
     });
 
+    it('should render an ImageEditor if the file is an image', () => {
+      const { fileInput, imageEditor } = setup();
+
+      expect(imageEditor).toHaveLength(0);
+
+      fileInput.setState({ image: 'image' });
+      expect(fileInput.find(ImageEditor)).toHaveLength(1);
+    });
+
+    it('should updated edited image if updateEditedImage is called', () => {
+      const { fileInput } = setup();
+      const file = new File([new Blob()], 'test.file', { type: 'test' });
+      file.extension = 'file';
+      file.filename = 'test';
+      file.mimeType = 'test';
+
+      fileInput.setState({ value: file });
+      const blob = new Blob();
+      fileInput.instance().updateEditedImage(blob);
+
+      const newFile = new File([blob], 'test.file', { type: 'test' });
+      newFile.extension = 'file';
+      newFile.filename = 'test';
+      newFile.mimeType = 'test';
+
+      expect(fileInput.state('value')).toMatchObject(newFile);
+      expect(fileInput.state('value')).not.toBe(file);
+
+      expect(fileInput.state('hasBeenEdited')).toBeTruthy();
+    });
+
+    it('should set image as edited if cancelEdition is called', () => {
+      const { fileInput } = setup();
+
+      fileInput.setState({ image: 'image' });
+      fileInput.instance().cancelEdition();
+
+      expect(fileInput.state('hasBeenEdited')).toBeTruthy();
+    });
     it('should match exact snapshot', () => {
       const tree = renderer.create(
         <div>
