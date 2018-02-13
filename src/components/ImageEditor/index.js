@@ -127,14 +127,22 @@ class ImageEditor extends Component {
     this.setState(points);
   }
 
-  startResize(event, invertX = false, invertY = false, isResizingSide = false, resizeVertical = false) {
+  startResize(event, options = {}) {
     event.preventDefault();
+
+    const { invertX, invertY, isResizingSide, resizeVertical } = {
+      invertX: false,
+      invertY: false,
+      isResizingSide: false,
+      resizeVertical: false,
+      ...options,
+    };
 
     this.setState(state => ({
       ...state,
       isResizing: true,
-      isResizingSide,
-      resizeVertical,
+      isResizingSide: !!isResizingSide,
+      resizeVertical: !!resizeVertical,
       x0: invertX ? state.x1 : state.x0,
       y0: invertY ? state.y1 : state.y0,
       x1: invertX ? state.x0: state.x1,
@@ -146,7 +154,7 @@ class ImageEditor extends Component {
     event.preventDefault();
 
     const { ratio } = this.props;
-    const { x0, y0, x1, y1, resizeVertical: resizeVertical, isResizingSide, landscape } = this.state; // landscap aka vertical rules
+    const { x0, y0, x1, y1, resizeVertical: resizeVertical, isResizingSide, landscape } = this.state; // landscape aka vertical rules
     const { clientWidth: width, clientHeight: height } = this.image;
 
 
