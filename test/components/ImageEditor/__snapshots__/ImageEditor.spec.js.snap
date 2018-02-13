@@ -51,9 +51,6 @@ exports[`components ImageEditor should match exact snapshot 1`] = `
         />
       </div>
     </div>
-    <canvas
-      className="brainhub-canvas-editor__canvas_printer"
-    />
     <div>
       <button
         className="brainhub-image-editor__button brainhub-image-editor__button--cancel"

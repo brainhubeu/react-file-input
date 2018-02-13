@@ -2,12 +2,15 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { handleChangeEvent, handleDropEvent, preventDefault } from '../helpers/event';
+import { getImageThumbnail } from '../helpers/file';
 import { selectIsDragging, selectIsDraggingOver } from '../helpers/fileInputSelectors';
 
 import DropArea from './DropArea';
 import FileInputMetadata from './FileInputMetadata';
 import ImageThumbnail from './ImageThumbnail';
 import ImageEditor from './ImageEditor';
+
+import CanvasPrinter from './CanvasPrinter';
 
 import '../styles/FileInput.scss';
 
@@ -24,11 +27,12 @@ class FileInput extends Component {
     };
 
     this.input = null;
+    this.canvasPrinter = null;
 
     this.handleFile = this.handleFile.bind(this);
-    this.getImageThumbnail = this.getImageThumbnail.bind(this);
     this.updateEditedImage = this.updateEditedImage.bind(this);
     this.cancelEdition = this.cancelEdition.bind(this);
+    this.saveEdition = this.saveEdition.bind(this);
 
     this.openFileDialog = this.openFileDialog.bind(this);
     this.selectFile = this.selectFile.bind(this);
@@ -78,50 +82,49 @@ class FileInput extends Component {
     }
   }
 
-  getImageThumbnail(file) {
-    const reader = new FileReader();
-
-    reader.readAsDataURL(file);
-    reader.onload = event => {
-      this.setState({ image: event.target.result });
-    };
-  }
-
-  updateEditedImage(blob) {
+  async updateEditedImage(blob) {
     const { value } = this.state;
-    const file = new File([blob], value.name, { type: value.type });
+    const file = new File([blob], value.name, { type: blob.type });
+
+    const image = await getImageThumbnail(file);
 
     file.filename = value.filename;
     file.extension = value.extension;
-    file.mimeType = value.mimeType;
+    file.mimeType = blob.mimeType;
 
-    this.setState(state => ({ ...state, value: file, hasBeenEdited: true }));
-    this.getImageThumbnail(file);
+
+    this.setState(state => ({ ...state, value: file, image, hasBeenEdited: true }));
   }
 
   cancelEdition() {
     this.setState({ hasBeenEdited: true });
   }
 
-  handleFile(file, callback = null) {
+  saveEdition(image, area) {
+    if (this.canvasPrinter) {
+      this.canvasPrinter.drawImage(image, area);
+    }
+  }
+
+  async handleFile(file, callback = null) {
     const { displayImageThumbnail } = this.props;
+
+    const image = displayImageThumbnail && file && file.mimeType.match('image.*')
+      ? await getImageThumbnail(file)
+      : null;
 
     this.setState(state => ({
       ...state,
       enteredInDocument: 0,
       isOver: 0,
       value: file,
-      image: null,
+      image,
       hasBeenEdited: false,
     }), () => {
       if (callback) {
         callback(this.state);
       }
     });
-
-    if (displayImageThumbnail && file && file.mimeType.match('image.*')) {
-      this.getImageThumbnail(file);
-    }
   }
 
   selectFile(event) {
@@ -214,10 +217,18 @@ class FileInput extends Component {
             <ImageEditor
               image={image}
               onCancelEdition={this.cancelEdition}
-              onEdition={this.updateEditedImage}
+              onSaveEdition={this.saveEdition}
             />
           )
           : null}
+        {image && !hasBeenEdited
+          && <CanvasPrinter
+            ref={ref => {
+              this.canvasPrinter = ref;
+            }}
+            onCanvasDraw={this.updateEditedImage}
+          />
+        }
       </div>
     );
   }

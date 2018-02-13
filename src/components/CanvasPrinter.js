@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
-import '../../styles/ImageEditor.scss';
+import '../styles/ImageEditor.scss';
 
 class CanvasPrinter extends PureComponent {
   constructor(props) {
@@ -45,7 +45,7 @@ class CanvasPrinter extends PureComponent {
           imageSourceArea.y1
         );
 
-      this.canvas.toBlob(onCanvasDraw);
+      this.canvas.toBlob(onCanvasDraw, 'image/jpeg');
     }
   }
 

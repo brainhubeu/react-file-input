@@ -6,7 +6,6 @@ import { move, resizeCorner, resizeSide } from '../../helpers/imageEdition';
 import { minPositive } from '../../helpers/math';
 
 import SelectedArea from './SelectedArea';
-import CanvasPrinter from './CanvasPrinter';
 
 import '../../styles/ImageEditor.scss';
 
@@ -42,7 +41,7 @@ class ImageEditor extends Component {
     this.onMouseMove = this.onMouseMove.bind(this);
     this.onMouseUp = this.onMouseUp.bind(this);
 
-    this.saveChanges = this.saveChanges.bind(this);
+    this.saveEdition = this.saveEdition.bind(this);
   }
 
   componentWillMount() {
@@ -197,16 +196,15 @@ class ImageEditor extends Component {
     }
   }
 
-  saveChanges() {
-    if (this.canvasPrinter && this.image) {
-      const { x0, y0, x1, y1 } = this.state;
+  saveEdition() {
+    const { onSaveEdition } = this.props;
+    const { x0, y0, x1, y1 } = this.state;
 
-      this.canvasPrinter.drawImage(this.image, { x0, y0, x1, y1 });
-    }
+    onSaveEdition(this.image, { x0, y0, x1, y1 });
   }
 
   render() {
-    const { image, onCancelEdition, onEdition } = this.props;
+    const { image, onCancelEdition } = this.props;
 
     return (
       <div>
@@ -230,12 +228,6 @@ class ImageEditor extends Component {
             style={this.getSelectedAreaBoundaries()}
           />
         </div>
-        <CanvasPrinter
-          ref={ref => {
-            this.canvasPrinter = ref;
-          }}
-          onCanvasDraw={onEdition}
-        />
         <div>
           <button
             className="brainhub-image-editor__button brainhub-image-editor__button--cancel"
@@ -244,7 +236,7 @@ class ImageEditor extends Component {
           </button>
           <button
             className="brainhub-image-editor__button brainhub-image-editor__button--save"
-            onClick={this.saveChanges}>
+            onClick={this.saveEdition}>
           Save image
           </button>
         </div>
@@ -261,7 +253,7 @@ ImageEditor.propTypes = {
   image: PropTypes.string.isRequired,
   ratio: PropTypes.number,
   onCancelEdition: PropTypes.func.isRequired,
-  onEdition: PropTypes.func.isRequired,
+  onSaveEdition: PropTypes.func.isRequired,
 };
 
 export default ImageEditor;
