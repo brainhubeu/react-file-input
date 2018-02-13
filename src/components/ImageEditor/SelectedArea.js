@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
-import '../styles/ImageEditor.scss';
+import '../../styles/ImageEditor.scss';
 
 class SelectedArea extends PureComponent {
   constructor(props) {
@@ -30,49 +30,42 @@ class SelectedArea extends PureComponent {
   resizeTop(event) {
     const { startResize } = this.props;
 
-    // last, landscape
     startResize(event, false, true, true, true);
   }
 
   resizeTopRight(event) {
     const { startResize } = this.props;
 
-    // last, landscape
     startResize(event, false, true);
   }
 
   resizeRight(event) {
     const { startResize } = this.props;
 
-    // last, landscape
     startResize(event, false, false, true);
   }
 
   resizeBottomRight(event) {
     const { startResize } = this.props;
 
-    // last, landscape
     startResize(event, false, false);
   }
 
   resizeBottom(event) {
     const { startResize } = this.props;
 
-    // last, landscape
     startResize(event, false, false, true, true);
   }
 
   resizeBottomLeft(event) {
     const { startResize } = this.props;
 
-    // last, landscape
     startResize(event, true, false);
   }
 
   resizeLeft(event) {
     const { startResize } = this.props;
 
-    // last, landscape
     startResize(event, true, false, true);
   }
 
@@ -83,7 +76,6 @@ class SelectedArea extends PureComponent {
       startMove(event);
     }
   }
-
 
   render() {
     const { style } = this.props;
@@ -135,19 +127,19 @@ class SelectedArea extends PureComponent {
 
 SelectedArea.defaultProps = {
   style: {
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0,
+    top: '0',
+    right: '0',
+    bottom: '0',
+    left: '0',
   },
 };
 
 SelectedArea.propTypes = {
   style: PropTypes.shape({
-    top: PropTypes.integer,
-    right: PropTypes.integer,
-    bottom: PropTypes.integer,
-    left: PropTypes.integer,
+    top: PropTypes.string,
+    right: PropTypes.string,
+    bottom: PropTypes.string,
+    left: PropTypes.string,
   }),
   startMove: PropTypes.func.isRequired,
   startResize: PropTypes.func.isRequired,

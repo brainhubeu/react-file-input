@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { getClickPoint, preventDefault } from '../helpers/event';
-import { move, resizeCorner, resizeSide } from '../helpers/imageEdition';
-import { minPositive } from '../helpers/math';
+import { getClickPoint, preventDefault } from '../../helpers/event';
+import { move, resizeCorner, resizeSide } from '../../helpers/imageEdition';
+import { minPositive } from '../../helpers/math';
 
 import SelectedArea from './SelectedArea';
+import CanvasPrinter from './CanvasPrinter';
 
-import '../styles/ImageEditor.scss';
+import '../../styles/ImageEditor.scss';
 
 class ImageEditor extends Component {
   constructor(props) {
@@ -40,6 +41,8 @@ class ImageEditor extends Component {
 
     this.onMouseMove = this.onMouseMove.bind(this);
     this.onMouseUp = this.onMouseUp.bind(this);
+
+    this.saveChanges = this.saveChanges.bind(this);
   }
 
   componentWillMount() {
@@ -166,15 +169,15 @@ class ImageEditor extends Component {
   }
 
   onMouseUp(event) {
-    const { isResizing, isResizingSide, isMoving } = this.state;
-
-    if ( isResizing || isResizingSide || isMoving) {
+    const { isResizing, isMoving } = this.state;
+    if ( isResizing || isMoving) {
       event.preventDefault();
 
       this.setState(state => ({
         ...state,
         isResizing: false,
         isResizingSide: false,
+        resizeVertical: false,
         x0: Math.min(state.x0, state.x1),
         y0: Math.min(state.y0, state.y1),
         x1: Math.max(state.x0, state.x1),
@@ -186,30 +189,49 @@ class ImageEditor extends Component {
     }
   }
 
+  saveChanges() {
+    if (this.canvasPrinter && this.image) {
+      const { x0, y0, x1, y1 } = this.state;
+
+      this.canvasPrinter.drawImage(this.image, { x0, y0, x1, y1 });
+    }
+  }
+
   render() {
-    const { image } = this.props;
+    const { image, onCancelEdition, onEdition } = this.props;
 
     return (
-      <div
-        className="brainhub-image-editor"
-        ref={ref => {
-          this.container = ref;
-        }}
-        onDragStart={preventDefault}
-        onMouseDown={this.onMouseDown}
-      >
-        <img
+      <div>
+        <div
+          className="brainhub-image-editor"
           ref={ref => {
-            this.image = ref;
+            this.container = ref;
           }}
-          className="brainhub-image-editor__image"
-          src={image}
-          onLoad={this.onImageLoad}/>
-        <SelectedArea
-          startMove={this.startMove}
-          startResize={this.startResize}
-          style={this.getSelectedAreaBoundaries()}
+          onDragStart={preventDefault}
+        >
+          <img
+            ref={ref => {
+              this.image = ref;
+            }}
+            className="brainhub-image-editor__image"
+            src={image}
+            onLoad={this.onImageLoad}/>
+          <SelectedArea
+            startMove={this.startMove}
+            startResize={this.startResize}
+            style={this.getSelectedAreaBoundaries()}
+          />
+        </div>
+        <CanvasPrinter
+          ref={ref => {
+            this.canvasPrinter = ref;
+          }}
+          onCanvasDraw={onEdition}
         />
+        <div>
+          <button onClick={onCancelEdition}>Cancel</button>
+          <button onClick={this.saveChanges}>Save image</button>
+        </div>
       </div>
     );
   }
@@ -222,6 +244,8 @@ ImageEditor.defaultProps = {
 ImageEditor.propTypes = {
   image: PropTypes.string.isRequired,
   ratio: PropTypes.number,
+  onCancelEdition: PropTypes.func.isRequired,
+  onEdition: PropTypes.func.isRequired,
 };
 
 export default ImageEditor;

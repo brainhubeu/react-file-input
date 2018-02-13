@@ -1,0 +1,51 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components ImageEditor SelectedArea should match exact snapshot 1`] = `
+<div>
+  <div
+    className="brainhub-image-editor__selected-area"
+    onMouseDown={[Function]}
+    style={
+      Object {
+        "bottom": "0",
+        "left": "0",
+        "right": "0",
+        "top": "0",
+      }
+    }
+  >
+    <div
+      className="brainhub-image-editor__resize-point brainhub-image-editor__resize-point--tl"
+      onMouseDown={[Function]}
+    />
+    <div
+      className="brainhub-image-editor__resize-point brainhub-image-editor__resize-point--t"
+      onMouseDown={[Function]}
+    />
+    <div
+      className="brainhub-image-editor__resize-point brainhub-image-editor__resize-point--tr"
+      onMouseDown={[Function]}
+    />
+    <div
+      className="brainhub-image-editor__resize-point brainhub-image-editor__resize-point--r"
+      onMouseDown={[Function]}
+    />
+    <div
+      className="brainhub-image-editor__resize-point brainhub-image-editor__resize-point--br"
+      onMouseDown={[Function]}
+    />
+    <div
+      className="brainhub-image-editor__resize-point brainhub-image-editor__resize-point--b"
+      onMouseDown={[Function]}
+    />
+    <div
+      className="brainhub-image-editor__resize-point brainhub-image-editor__resize-point--bl"
+      onMouseDown={[Function]}
+    />
+    <div
+      className="brainhub-image-editor__resize-point brainhub-image-editor__resize-point--l"
+      onMouseDown={[Function]}
+    />
+  </div>
+</div>
+`;

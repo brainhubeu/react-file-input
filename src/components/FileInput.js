@@ -20,12 +20,15 @@ class FileInput extends Component {
       isOver: 0,
       value: null,
       image: null,
+      hasBeenEdited: false,
     };
 
     this.input = null;
 
     this.handleFile = this.handleFile.bind(this);
     this.getImageThumbnail = this.getImageThumbnail.bind(this);
+    this.updateEditedImage = this.updateEditedImage.bind(this);
+    this.cancelEdition = this.cancelEdition.bind(this);
 
     this.openFileDialog = this.openFileDialog.bind(this);
     this.selectFile = this.selectFile.bind(this);
@@ -79,7 +82,25 @@ class FileInput extends Component {
     const reader = new FileReader();
 
     reader.readAsDataURL(file);
-    reader.onload = event => this.setState({ image: event.target.result });
+    reader.onload = event => {
+      this.setState({ image: event.target.result });
+    };
+  }
+
+  updateEditedImage(blob) {
+    const { value } = this.state;
+    const file = new File([blob], value.name, { type: value.type });
+
+    file.filename = value.filename;
+    file.extension = value.extension;
+    file.mimeType = value.mimeType;
+
+    this.setState(state => ({ ...state, value: file, hasBeenEdited: true }));
+    this.getImageThumbnail(file);
+  }
+
+  cancelEdition() {
+    this.setState({ hasBeenEdited: true });
   }
 
   handleFile(file, callback = null) {
@@ -91,6 +112,7 @@ class FileInput extends Component {
       isOver: 0,
       value: file,
       image: null,
+      hasBeenEdited: false,
     }), () => {
       if (callback) {
         callback(this.state);
@@ -153,7 +175,7 @@ class FileInput extends Component {
   }
 
   render() {
-    const { value, image } = this.state;
+    const { value, image, hasBeenEdited } = this.state;
     const { customMetadata: CustomMetadata, customImageThumbnail: CustomImageThumbnail, label } = this.props;
 
     const MetadataClass = CustomMetadata || FileInputMetadata;
@@ -187,8 +209,14 @@ class FileInput extends Component {
           onDrop={this.onDrop}
           openFileDialog={this.openFileDialog}
         />
-        {image
-          ? (<ImageEditor image={image}/>)
+        {image && !hasBeenEdited
+          ? (
+            <ImageEditor
+              image={image}
+              onCancelEdition={this.cancelEdition}
+              onEdition={this.updateEditedImage}
+            />
+          )
           : null}
       </div>
     );
