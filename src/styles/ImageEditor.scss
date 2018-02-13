@@ -20,7 +20,6 @@ $POINT_SIZE: 8px;
   border: 1px dashed white;
   cursor: move;
   box-shadow: 0 0 0 9999em rgba(0, 0, 0, 0.5);
-  zIndex: 10;
 }
 
 
@@ -30,7 +29,6 @@ $POINT_SIZE: 8px;
   position: absolute;
   background-color: white;
   border: 1px solid;
-  zIndex: 100;
 }
 
 .brainhub-image-editor__resize-point--t,
