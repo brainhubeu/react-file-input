@@ -1,4 +1,4 @@
-import findMimeType from './mime';
+import { findMimeType } from './mime';
 
 const getNameAndExtension = filename => {
   const nameParts = filename.split('.');

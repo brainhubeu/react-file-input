@@ -1,11 +1,16 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import renderer from 'react-test-renderer';
-import PropTypes from 'prop-types';
 
-import DropArea from '../../src/components/DropArea';
 import FileInput from '../../src/components/FileInput';
+
+import CanvasPrinter from '../../src/components/CanvasPrinter';
+import DropArea from '../../src/components/DropArea';
 import ImageEditor from '../../src/components/ImageEditor';
+
+jest.mock('../../src/helpers/file', () => ({
+  getImageThumbnail: file => Promise.resolve(file.name),
+}));
 
 const defaultProps = {
   label: 'Test',
@@ -23,12 +28,7 @@ const setup = (props = {}) => {
   };
 };
 
-const CustomComponent = ({ name = 'custom component', size = 1000, image = 'custom_image_source' }) => <div>{name}:{size}:{image}</div>;
-CustomComponent.propTypes = {
-  name: PropTypes.string,
-  size: PropTypes.number,
-  image: PropTypes.string,
-};
+const CustomComponent = () => (<div/>);
 
 describe('components', () => {
   describe('FileInput', () => {
@@ -63,6 +63,18 @@ describe('components', () => {
 
       expect(label).toHaveLength(1);
       expect(label.text()).toBe(defaultProps.label);
+    });
+
+    it('should render a CanvasPrinter if scaleOptions are set', () => {
+      const { fileInput } = setup({ scaleOptions: { width: 50, height: 50 } });
+
+      expect(fileInput.find(CanvasPrinter)).toHaveLength(1);
+    });
+
+    it('should render a CanvasPrinter if cropTool optionis set', () => {
+      const { fileInput } = setup({ cropTool: true });
+
+      expect(fileInput.find(CanvasPrinter)).toHaveLength(1);
     });
 
     it('should render a DropArea', () => {
@@ -149,7 +161,7 @@ describe('components', () => {
       const { fileInput } = setup({ customMetadata: CustomComponent });
       fileInput.setState({ value: data });
 
-      expect(fileInput.find(CustomComponent)).toBeTruthy();
+      expect(fileInput.find(CustomComponent)).toHaveLength(1);
       expect(fileInput.find('FileInputMetadata')).toHaveLength(0);
     });
 
@@ -171,7 +183,7 @@ describe('components', () => {
       const { fileInput } = setup({ customImageThumbnail: CustomComponent });
       fileInput.setState({ image: 'image_source' });
 
-      expect(fileInput.find(CustomComponent)).toBeTruthy();
+      expect(fileInput.find(CustomComponent)).toHaveLength(1);
       expect(fileInput.find('ImageThumbnail')).toHaveLength(0);
     });
 
@@ -182,35 +194,13 @@ describe('components', () => {
       expect(fileInput.find('ImageThumbnail').length).toEqual(0);
     });
 
-    it('should render an ImageEditor if the file is an image', () => {
-      const { fileInput, imageEditor } = setup();
+    it('should render an ImageEditor if the file is an image and the cropTool options is set', () => {
+      const { fileInput, imageEditor } = setup({ cropTool: true });
 
       expect(imageEditor).toHaveLength(0);
 
       fileInput.setState({ image: 'image' });
       expect(fileInput.find(ImageEditor)).toHaveLength(1);
-    });
-
-    it('should updated edited image if updateEditedImage is called', () => {
-      const { fileInput } = setup();
-      const file = new File([new Blob()], 'test.file', { type: 'test' });
-      file.extension = 'file';
-      file.filename = 'test';
-      file.mimeType = 'test';
-
-      fileInput.setState({ value: file });
-      const blob = new Blob();
-      fileInput.instance().updateEditedImage(blob);
-
-      const newFile = new File([blob], 'test.file', { type: 'test' });
-      newFile.extension = 'file';
-      newFile.filename = 'test';
-      newFile.mimeType = 'test';
-
-      expect(fileInput.state('value')).toMatchObject(newFile);
-      expect(fileInput.state('value')).not.toBe(file);
-
-      expect(fileInput.state('hasBeenEdited')).toBeTruthy();
     });
 
     it('should set image as edited if cancelEdition is called', () => {

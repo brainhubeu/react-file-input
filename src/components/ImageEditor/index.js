@@ -6,7 +6,6 @@ import { move, resizeCorner, resizeSide } from '../../helpers/imageEdition';
 import { minPositive } from '../../helpers/math';
 
 import SelectedArea from './SelectedArea';
-import CanvasPrinter from './CanvasPrinter';
 
 import '../../styles/ImageEditor.scss';
 
@@ -42,7 +41,8 @@ class ImageEditor extends Component {
     this.onMouseMove = this.onMouseMove.bind(this);
     this.onMouseUp = this.onMouseUp.bind(this);
 
-    this.saveChanges = this.saveChanges.bind(this);
+    this.cancelEdition = this.cancelEdition.bind(this);
+    this.saveEdition = this.saveEdition.bind(this);
   }
 
   componentWillMount() {
@@ -62,24 +62,33 @@ class ImageEditor extends Component {
   onImageLoad() {
     const { ratio } = this.props;
     const { clientWidth: width, clientHeight: height } = this.image;
+    if (ratio) {
+      const initialRatio = ratio || 1;
+      const landscape = width > height * initialRatio;
 
-    const initialRatio = ratio || 1;
-    const landscape = width > height * initialRatio;
+      const selectionWidth = landscape ? (height * initialRatio) : width;
+      const selectionHeight = landscape ? height : (width / initialRatio);
 
-    const selectionWidth = landscape ? (height * initialRatio) : width;
-    const selectionHeight = landscape ? height : (width / initialRatio);
+      const xOffset = landscape ? ((width - selectionWidth) / 2) : 0;
+      const yOffset = landscape ? 0 : ((height - selectionHeight) / 2);
 
-    const xOffset = landscape ? ((width - selectionWidth) / 2) : 0;
-    const yOffset = landscape ? 0 : ((height - selectionHeight) / 2);
-
-    this.setState(state => ({
-      ...state,
-      landscape,
-      x0: xOffset,
-      y0: yOffset,
-      x1: width - xOffset,
-      y1: height - yOffset,
-    }));
+      this.setState(state => ({
+        ...state,
+        landscape,
+        x0: xOffset,
+        y0: yOffset,
+        x1: width - xOffset,
+        y1: height - yOffset,
+      }));
+    } else {
+      this.setState(state => ({
+        ...state,
+        x0: 0,
+        y0: 0,
+        x1: width,
+        y1: height,
+      }));
+    }
   }
 
   /**
@@ -197,16 +206,20 @@ class ImageEditor extends Component {
     }
   }
 
-  saveChanges() {
-    if (this.canvasPrinter && this.image) {
-      const { x0, y0, x1, y1 } = this.state;
+  cancelEdition() {
+    const { onCancelEdition } = this.props;
 
-      this.canvasPrinter.drawImage(this.image, { x0, y0, x1, y1 });
-    }
+    onCancelEdition(this.image);
+  }
+  saveEdition() {
+    const { onSaveEdition } = this.props;
+    const { x0, y0, x1, y1 } = this.state;
+
+    onSaveEdition(this.image, { x0, y0, x1, y1 });
   }
 
   render() {
-    const { image, onCancelEdition, onEdition } = this.props;
+    const { image } = this.props;
 
     return (
       <div>
@@ -230,21 +243,15 @@ class ImageEditor extends Component {
             style={this.getSelectedAreaBoundaries()}
           />
         </div>
-        <CanvasPrinter
-          ref={ref => {
-            this.canvasPrinter = ref;
-          }}
-          onCanvasDraw={onEdition}
-        />
         <div>
           <button
             className="brainhub-image-editor__button brainhub-image-editor__button--cancel"
-            onClick={onCancelEdition}>
+            onClick={this.cancelEdition}>
           Cancel
           </button>
           <button
             className="brainhub-image-editor__button brainhub-image-editor__button--save"
-            onClick={this.saveChanges}>
+            onClick={this.saveEdition}>
           Save image
           </button>
         </div>
@@ -261,7 +268,7 @@ ImageEditor.propTypes = {
   image: PropTypes.string.isRequired,
   ratio: PropTypes.number,
   onCancelEdition: PropTypes.func.isRequired,
-  onEdition: PropTypes.func.isRequired,
+  onSaveEdition: PropTypes.func.isRequired,
 };
 
 export default ImageEditor;

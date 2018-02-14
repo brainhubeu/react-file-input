@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CanvasPrinter should match exact snapshot 1`] = `
+<div>
+  <canvas
+    className="brainhub-canvas-printer"
+  />
+</div>
+`;

@@ -4,12 +4,11 @@ import renderer from 'react-test-renderer';
 
 import ImageEditor from '../../../src/components/ImageEditor';
 import SelectedArea from '../../../src/components/ImageEditor/SelectedArea';
-import CanvasPrinter from '../../../src/components/ImageEditor/CanvasPrinter';
 
 const defaultProps = {
   image: '',
   onCancelEdition: () => null,
-  onEdition: () => null,
+  onSaveEdition: () => null,
 };
 
 const setup = (props = {}) => {
@@ -18,7 +17,6 @@ const setup = (props = {}) => {
   return {
     imageEditor,
     selectedArea: imageEditor.find(SelectedArea),
-    canvasPrinter: imageEditor.find(CanvasPrinter),
     button: imageEditor.find('button'),
   };
 };
@@ -47,12 +45,6 @@ describe('components', () => {
       expect(selectedArea).toHaveLength(1);
     });
 
-    it('should render a CanvasPrinter', () => {
-      const { canvasPrinter } = setup();
-
-      expect(canvasPrinter).toHaveLength(1);
-    });
-
     it('should render two buttons', () => {
       const { button } = setup();
 
@@ -70,6 +62,18 @@ describe('components', () => {
       cancelButton.simulate('click');
 
       expect(onCancelEdition).toHaveBeenCalled();
+    });
+
+    it('should save the edition render when Save button is clicked', () => {
+      const onSaveEdition = jest.fn();
+      const { imageEditor, button } = setup({ onSaveEdition });
+
+      const saveButton = button.last();
+
+      saveButton.simulate('click');
+
+      const { x0, y0, x1, y1 } = imageEditor.state();
+      expect(onSaveEdition).toHaveBeenCalledWith(imageEditor.instance().image, { x0, y0, x1, y1 });
     });
 
     it('should start moving when startMove is called', () => {
