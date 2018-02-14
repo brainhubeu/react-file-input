@@ -65,10 +65,14 @@ describe('components', () => {
       expect(label.text()).toBe(defaultProps.label);
     });
 
-    it('should render a CanvasPrinter if image is set', () => {
-      const { fileInput } = setup();
+    it('should render a CanvasPrinter if scaleOptions are set', () => {
+      const { fileInput } = setup({ scaleOptions: { width: 50, height: 50 } });
 
-      fileInput.setState({ image: 'Test' });
+      expect(fileInput.find(CanvasPrinter)).toHaveLength(1);
+    });
+
+    it('should render a CanvasPrinter if cropTool optionis set', () => {
+      const { fileInput } = setup({ cropTool: true });
 
       expect(fileInput.find(CanvasPrinter)).toHaveLength(1);
     });
@@ -190,8 +194,8 @@ describe('components', () => {
       expect(fileInput.find('ImageThumbnail').length).toEqual(0);
     });
 
-    it('should render an ImageEditor if the file is an image', () => {
-      const { fileInput, imageEditor } = setup();
+    it('should render an ImageEditor if the file is an image and the cropTool options is set', () => {
+      const { fileInput, imageEditor } = setup({ cropTool: true });
 
       expect(imageEditor).toHaveLength(0);
 

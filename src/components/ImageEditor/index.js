@@ -61,24 +61,33 @@ class ImageEditor extends Component {
   onImageLoad() {
     const { ratio } = this.props;
     const { clientWidth: width, clientHeight: height } = this.image;
+    if (ratio) {
+      const initialRatio = ratio || 1;
+      const landscape = width > height * initialRatio;
 
-    const initialRatio = ratio || 1;
-    const landscape = width > height * initialRatio;
+      const selectionWidth = landscape ? (height * initialRatio) : width;
+      const selectionHeight = landscape ? height : (width / initialRatio);
 
-    const selectionWidth = landscape ? (height * initialRatio) : width;
-    const selectionHeight = landscape ? height : (width / initialRatio);
+      const xOffset = landscape ? ((width - selectionWidth) / 2) : 0;
+      const yOffset = landscape ? 0 : ((height - selectionHeight) / 2);
 
-    const xOffset = landscape ? ((width - selectionWidth) / 2) : 0;
-    const yOffset = landscape ? 0 : ((height - selectionHeight) / 2);
-
-    this.setState(state => ({
-      ...state,
-      landscape,
-      x0: xOffset,
-      y0: yOffset,
-      x1: width - xOffset,
-      y1: height - yOffset,
-    }));
+      this.setState(state => ({
+        ...state,
+        landscape,
+        x0: xOffset,
+        y0: yOffset,
+        x1: width - xOffset,
+        y1: height - yOffset,
+      }));
+    } else {
+      this.setState(state => ({
+        ...state,
+        x0: 0,
+        y0: 0,
+        x1: width,
+        y1: height,
+      }));
+    }
   }
 
   /**
