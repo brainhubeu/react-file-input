@@ -41,6 +41,7 @@ class ImageEditor extends Component {
     this.onMouseMove = this.onMouseMove.bind(this);
     this.onMouseUp = this.onMouseUp.bind(this);
 
+    this.cancelEdition = this.cancelEdition.bind(this);
     this.saveEdition = this.saveEdition.bind(this);
   }
 
@@ -205,6 +206,11 @@ class ImageEditor extends Component {
     }
   }
 
+  cancelEdition() {
+    const { onCancelEdition } = this.props;
+
+    onCancelEdition(this.image);
+  }
   saveEdition() {
     const { onSaveEdition } = this.props;
     const { x0, y0, x1, y1 } = this.state;
@@ -213,7 +219,7 @@ class ImageEditor extends Component {
   }
 
   render() {
-    const { image, onCancelEdition } = this.props;
+    const { image } = this.props;
 
     return (
       <div>
@@ -240,7 +246,7 @@ class ImageEditor extends Component {
         <div>
           <button
             className="brainhub-image-editor__button brainhub-image-editor__button--cancel"
-            onClick={onCancelEdition}>
+            onClick={this.cancelEdition}>
           Cancel
           </button>
           <button

@@ -32,7 +32,6 @@ class FileInput extends Component {
 
     this.handleFile = this.handleFile.bind(this);
     this.handleImageFile = this.handleImageFile.bind(this);
-    this.updateEditedImage = this.updateEditedImage.bind(this);
     this.cancelEdition = this.cancelEdition.bind(this);
     this.saveEdition = this.saveEdition.bind(this);
 
@@ -84,46 +83,53 @@ class FileInput extends Component {
     }
   }
 
-  async updateEditedImage(blob) {
-    const { value } = this.state;
-    const file = new File([blob], value.name, { type: blob.type });
+  async cancelEdition(image) {
+    const { scaleOptions } = this.props;
+    if (!scaleOptions) {
+      return this.setState({ hasBeenEdited: true });
+    }
 
-    const image = await getImageThumbnail(file);
+    const { displayImageThumbnail } = this.props;
+    const { value: file } = this.state;
 
-    file.filename = value.filename;
-    file.extension = value.extension;
-    file.mimeType = blob.mimeType;
+    const resizedImageBlob = await this.canvasPrinter.resizeImage(image, scaleOptions);
+
+    const resizedFile = updateFileFromBlob(resizedImageBlob, file);
+    const resizedThumbnail = displayImageThumbnail
+      ? await getImageThumbnail(resizedFile)
+      : null;
 
 
-    this.setState(state => ({ ...state, value: file, image, hasBeenEdited: true }));
-  }
-
-  cancelEdition() {
-    this.setState({ hasBeenEdited: true });
+    return this.setState(state => ({
+      ...state,
+      enteredInDocument: 0,
+      isOver: 0,
+      value: resizedFile,
+      image: resizedThumbnail,
+      hasBeenEdited: true,
+    }));
   }
 
   async saveEdition(image, area) {
-    if (this.canvasPrinter) {
-      const { displayImageThumbnail, scaleOptions } = this.props;
-      const { value: file } = this.state;
+    const { displayImageThumbnail, scaleOptions } = this.props;
+    const { value: file } = this.state;
 
-      const croppedImageBlob = await this.canvasPrinter.cropAndResizeImage(image, area, scaleOptions);
+    const croppedImageBlob = await this.canvasPrinter.cropAndResizeImage(image, area, scaleOptions);
 
-      const croppedFile = updateFileFromBlob(croppedImageBlob, file);
-      const croppedThumbnail = displayImageThumbnail
-        ? await getImageThumbnail(croppedFile)
-        : null;
+    const croppedFile = updateFileFromBlob(croppedImageBlob, file);
+    const croppedThumbnail = displayImageThumbnail
+      ? await getImageThumbnail(croppedFile)
+      : null;
 
 
-      return this.setState(state => ({
-        ...state,
-        enteredInDocument: 0,
-        isOver: 0,
-        value: croppedFile,
-        image: croppedThumbnail,
-        hasBeenEdited: true,
-      }));
-    }
+    return this.setState(state => ({
+      ...state,
+      enteredInDocument: 0,
+      isOver: 0,
+      value: croppedFile,
+      image: croppedThumbnail,
+      hasBeenEdited: true,
+    }));
   }
 
   handleFile(file, callback = null) {
@@ -250,7 +256,13 @@ class FileInput extends Component {
 
   render() {
     const { value, image, hasBeenEdited } = this.state;
-    const { customMetadata: CustomMetadata, customImageThumbnail: CustomImageThumbnail, label, cropTool, scaleOptions } = this.props;
+    const {
+      customMetadata: CustomMetadata,
+      customImageThumbnail: CustomImageThumbnail,
+      label,
+      cropTool,
+      scaleOptions,
+    } = this.props;
 
     const MetadataClass = CustomMetadata || FileInputMetadata;
     const ImageThumbnailClass = CustomImageThumbnail || ImageThumbnail;
@@ -293,12 +305,13 @@ class FileInput extends Component {
           )
           : null}
         { (cropTool || scaleOptions)
-          && (<CanvasPrinter
-            ref={ref => {
-              this.canvasPrinter = ref;
-            }}
-            onCanvasDraw={this.updateEditedImage}
-          />)
+          && (
+            <CanvasPrinter
+              ref={ref => {
+                this.canvasPrinter = ref;
+              }}
+            />
+          )
         }
 
       </div>

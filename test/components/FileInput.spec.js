@@ -203,31 +203,6 @@ describe('components', () => {
       expect(fileInput.find(ImageEditor)).toHaveLength(1);
     });
 
-    it('should updated edited image if updateEditedImage is called', async() => {
-      const { fileInput } = setup();
-      const file = new File([new Blob()], 'test.file', { type: 'test' });
-      file.extension = 'file';
-      file.filename = 'test';
-      file.mimeType = 'test';
-
-      fileInput.setState({ value: file });
-
-      const blob = new Blob(['test']);
-
-      await fileInput.instance().updateEditedImage(blob);
-
-      const nextFile = new File([blob], file.name, { type: blob.type });
-      nextFile.extension = file.extension;
-      nextFile.filename = file.filename;
-      nextFile.mimeType = blob.type;
-
-      const nextValue = fileInput.state('value');
-
-      expect(nextValue.size).toBe(nextFile.size);
-      expect(nextValue).not.toBe(file);
-      expect(fileInput.state('hasBeenEdited')).toBeTruthy();
-    });
-
     it('should set image as edited if cancelEdition is called', () => {
       const { fileInput } = setup();
 
