@@ -1,0 +1,70 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components ImageEditor CropTool should match exact snapshot 1`] = `
+<div>
+  <div>
+    <div
+      className="brainhub-crop-tool"
+      onDragStart={[Function]}
+    >
+      <img
+        className="brainhub-crop-tool__image"
+        onLoad={[Function]}
+        src=""
+      />
+      <div
+        className="brainhub-selected-area"
+        onMouseDown={[Function]}
+        style={Object {}}
+      >
+        <div
+          className="brainhub-selected-area__resize-point brainhub-selected-area__resize-point--tl"
+          onMouseDown={[Function]}
+        />
+        <div
+          className="brainhub-selected-area__resize-point brainhub-selected-area__resize-point--t"
+          onMouseDown={[Function]}
+        />
+        <div
+          className="brainhub-selected-area__resize-point brainhub-selected-area__resize-point--tr"
+          onMouseDown={[Function]}
+        />
+        <div
+          className="brainhub-selected-area__resize-point brainhub-selected-area__resize-point--r"
+          onMouseDown={[Function]}
+        />
+        <div
+          className="brainhub-selected-area__resize-point brainhub-selected-area__resize-point--br"
+          onMouseDown={[Function]}
+        />
+        <div
+          className="brainhub-selected-area__resize-point brainhub-selected-area__resize-point--b"
+          onMouseDown={[Function]}
+        />
+        <div
+          className="brainhub-selected-area__resize-point brainhub-selected-area__resize-point--bl"
+          onMouseDown={[Function]}
+        />
+        <div
+          className="brainhub-selected-area__resize-point brainhub-selected-area__resize-point--l"
+          onMouseDown={[Function]}
+        />
+      </div>
+    </div>
+    <div>
+      <button
+        className="brainhub-crop-tool__button brainhub-crop-tool__button--cancel"
+        onClick={[Function]}
+      >
+        Cancel
+      </button>
+      <button
+        className="brainhub-crop-tool__button brainhub-crop-tool__button--save"
+        onClick={[Function]}
+      >
+        Save image
+      </button>
+    </div>
+  </div>
+</div>
+`;

@@ -3,7 +3,7 @@
 exports[`components ImageEditor SelectedArea should match exact snapshot 1`] = `
 <div>
   <div
-    className="brainhub-image-editor__selected-area"
+    className="brainhub-selected-area"
     onMouseDown={[Function]}
     style={
       Object {
@@ -15,35 +15,35 @@ exports[`components ImageEditor SelectedArea should match exact snapshot 1`] = `
     }
   >
     <div
-      className="brainhub-image-editor__resize-point brainhub-image-editor__resize-point--tl"
+      className="brainhub-selected-area__resize-point brainhub-selected-area__resize-point--tl"
       onMouseDown={[Function]}
     />
     <div
-      className="brainhub-image-editor__resize-point brainhub-image-editor__resize-point--t"
+      className="brainhub-selected-area__resize-point brainhub-selected-area__resize-point--t"
       onMouseDown={[Function]}
     />
     <div
-      className="brainhub-image-editor__resize-point brainhub-image-editor__resize-point--tr"
+      className="brainhub-selected-area__resize-point brainhub-selected-area__resize-point--tr"
       onMouseDown={[Function]}
     />
     <div
-      className="brainhub-image-editor__resize-point brainhub-image-editor__resize-point--r"
+      className="brainhub-selected-area__resize-point brainhub-selected-area__resize-point--r"
       onMouseDown={[Function]}
     />
     <div
-      className="brainhub-image-editor__resize-point brainhub-image-editor__resize-point--br"
+      className="brainhub-selected-area__resize-point brainhub-selected-area__resize-point--br"
       onMouseDown={[Function]}
     />
     <div
-      className="brainhub-image-editor__resize-point brainhub-image-editor__resize-point--b"
+      className="brainhub-selected-area__resize-point brainhub-selected-area__resize-point--b"
       onMouseDown={[Function]}
     />
     <div
-      className="brainhub-image-editor__resize-point brainhub-image-editor__resize-point--bl"
+      className="brainhub-selected-area__resize-point brainhub-selected-area__resize-point--bl"
       onMouseDown={[Function]}
     />
     <div
-      className="brainhub-image-editor__resize-point brainhub-image-editor__resize-point--l"
+      className="brainhub-selected-area__resize-point brainhub-selected-area__resize-point--l"
       onMouseDown={[Function]}
     />
   </div>

@@ -9,3 +9,7 @@ configure({ adapter: new Adapter() });
 global.document = document;
 global.window = document.defaultView;
 global.navigator = global.window.navigator;
+global.URL = {
+  createObjectURL: () => 'Img Url Mock',
+  revokeObjectURL: () => null,
+};

@@ -82,42 +82,42 @@ class SelectedArea extends PureComponent {
 
     return (
       <div
-        className="brainhub-image-editor__selected-area"
+        className="brainhub-selected-area"
         ref={ref => {
           this.selectedArea = ref;
         }}
         style={style}
         onMouseDown={this.startMove} >
         <div
-          className="brainhub-image-editor__resize-point brainhub-image-editor__resize-point--tl"
+          className="brainhub-selected-area__resize-point brainhub-selected-area__resize-point--tl"
           onMouseDown={this.resizeTopLeft}
         />
         <div
-          className="brainhub-image-editor__resize-point brainhub-image-editor__resize-point--t"
+          className="brainhub-selected-area__resize-point brainhub-selected-area__resize-point--t"
           onMouseDown={this.resizeTop}
         />
         <div
-          className="brainhub-image-editor__resize-point brainhub-image-editor__resize-point--tr"
+          className="brainhub-selected-area__resize-point brainhub-selected-area__resize-point--tr"
           onMouseDown={this.resizeTopRight}
         />
         <div
-          className="brainhub-image-editor__resize-point brainhub-image-editor__resize-point--r"
+          className="brainhub-selected-area__resize-point brainhub-selected-area__resize-point--r"
           onMouseDown={this.resizeRight}
         />
         <div
-          className="brainhub-image-editor__resize-point brainhub-image-editor__resize-point--br"
+          className="brainhub-selected-area__resize-point brainhub-selected-area__resize-point--br"
           onMouseDown={this.resizeBottomRight}
         />
         <div
-          className="brainhub-image-editor__resize-point brainhub-image-editor__resize-point--b"
+          className="brainhub-selected-area__resize-point brainhub-selected-area__resize-point--b"
           onMouseDown={this.resizeBottom}
         />
         <div
-          className="brainhub-image-editor__resize-point brainhub-image-editor__resize-point--bl"
+          className="brainhub-selected-area__resize-point brainhub-selected-area__resize-point--bl"
           onMouseDown={this.resizeBottomLeft}
         />
         <div
-          className="brainhub-image-editor__resize-point brainhub-image-editor__resize-point--l"
+          className="brainhub-selected-area__resize-point brainhub-selected-area__resize-point--l"
           onMouseDown={this.resizeLeft}
         />
       </div>

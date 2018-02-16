@@ -11,7 +11,6 @@ import FileInputMetadata from './FileInputMetadata';
 import ImageThumbnail from './ImageThumbnail';
 import ImageEditor from './ImageEditor';
 
-import CanvasPrinter from './CanvasPrinter';
 
 import '../styles/FileInput.scss';
 
@@ -24,7 +23,9 @@ class FileInput extends Component {
       isOver: 0,
       value: null,
       image: null,
-      hasBeenEdited: false,
+      rotation: 0,
+      hasBeenRotated: false,
+      hasBeenEdited: !props.cropTool,
     };
 
     this.input = null;
@@ -147,49 +148,19 @@ class FileInput extends Component {
     });
   }
 
-  async handleImageFile(file, callback = null) {
-    const { displayImageThumbnail, scaleOptions, cropTool } = this.props;
+  async handleImageFile(file) {
+    const { cropTool } = this.props;
+    const image = await getImageThumbnail(file);
 
-    const image = cropTool || scaleOptions || displayImageThumbnail
-      ? await getImageThumbnail(file)
-      : null;
-
-    if (cropTool || !scaleOptions) {
-      return this.setState(state => ({
-        ...state,
-        enteredInDocument: 0,
-        isOver: 0,
-        value: file,
-        image,
-        hasBeenEdited: !cropTool,
-      }), () => {
-        if (callback) {
-          callback(this.state);
-        }
-      });
-    }
-
-    const imageObject = await createImageFromSource(image);
-    const resizedImageBlob = await this.canvasPrinter.resizeImage(imageObject, scaleOptions);
-
-    const resizedFile = updateFileFromBlob(resizedImageBlob, file);
-    const resizedThumbnail = displayImageThumbnail
-      ? await getImageThumbnail(resizedFile)
-      : null;
-
-
-    return this.setState(state => ({
+    this.setState(state => ({
       ...state,
       enteredInDocument: 0,
       isOver: 0,
-      value: resizedFile,
-      image: resizedThumbnail,
+      file,
+      image,
+      hasBeenRotated: false,
       hasBeenEdited: !cropTool,
-    }), () => {
-      if (callback) {
-        callback(this.state);
-      }
-    });
+    }));
   }
 
   selectFile(event) {
@@ -201,7 +172,7 @@ class FileInput extends Component {
       const file = files[0];
 
       if (IMAGE_MIME_TYPE.test(file.mimeType)) {
-        this.handleImageFile(file, onChangeCallback);
+        this.handleImageFile(file);
       } else {
         this.handleFile(file, onChangeCallback);
       }
@@ -247,7 +218,7 @@ class FileInput extends Component {
       const file = files[0];
 
       if (IMAGE_MIME_TYPE.test(file.mimeType)) {
-        this.handleImageFile(file, onDropCallback);
+        this.handleImageFile(file);
       } else {
         this.handleFile(file, onDropCallback);
       }
@@ -255,8 +226,9 @@ class FileInput extends Component {
   }
 
   render() {
-    const { value, image, hasBeenEdited } = this.state;
+    const { value, image, hasBeenEdited, hasBeenRotated } = this.state;
     const {
+      cropAspectRatio,
       customMetadata: CustomMetadata,
       customImageThumbnail: CustomImageThumbnail,
       label,
@@ -295,24 +267,19 @@ class FileInput extends Component {
           onDrop={this.onDrop}
           openFileDialog={this.openFileDialog}
         />
-        {image && cropTool && !hasBeenEdited
+        {image
           ? (
             <ImageEditor
+              cropAspectRatio={cropAspectRatio}
+              cropTool={cropTool}
               image={image}
-              onCancelEdition={this.cancelEdition}
-              onSaveEdition={this.saveEdition}
+              scaleOptions={scaleOptions}
+              onEditionFinished={console.log}
+
             />
           )
           : null}
-        { (cropTool || scaleOptions)
-          && (
-            <CanvasPrinter
-              ref={ref => {
-                this.canvasPrinter = ref;
-              }}
-            />
-          )
-        }
+
 
       </div>
     );
@@ -329,6 +296,7 @@ FileInput.defaultProps = {
   displayMetadata: true,
   displayImageThumbnail: true,
   scaleOptions: null,
+  cropAspectRatio: 0,
   cropTool: false,
 };
 
@@ -349,6 +317,7 @@ FileInput.propTypes = {
     height: PropTypes.number,
     keepAspectRatio: PropTypes.boolean,
   }),
+  cropAspectRatio: PropTypes.number,
   cropTool: PropTypes.bool,
 };
 

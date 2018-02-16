@@ -3,21 +3,26 @@ import { mount } from 'enzyme';
 import renderer from 'react-test-renderer';
 
 import ImageEditor from '../../../src/components/ImageEditor';
-import SelectedArea from '../../../src/components/ImageEditor/SelectedArea';
+
+import CanvasPrinter from '../../../src/components/ImageEditor/CanvasPrinter';
+import CropTool from '../../../src/components/ImageEditor/CropTool';
+import ImageRotator from '../../../src/components/ImageEditor/ImageRotator';
 
 const defaultProps = {
-  image: '',
-  onCancelEdition: () => null,
-  onSaveEdition: () => null,
+  image: 'testImage',
+  onEditionFinished: () => null,
 };
+
+const createCanvasPrinterMock = () => ({
+  rotate: () => Promise.resolve(new Blob([])),
+});
 
 const setup = (props = {}) => {
   const imageEditor = mount(<ImageEditor {...defaultProps} {...props} />);
 
   return {
     imageEditor,
-    selectedArea: imageEditor.find(SelectedArea),
-    button: imageEditor.find('button'),
+    canvasPrinter: imageEditor.find(CanvasPrinter),
   };
 };
 
@@ -26,129 +31,152 @@ describe('components', () => {
     it('should render with a default state', () => {
       const { imageEditor } = setup();
       expect(imageEditor.state()).toEqual({
-        landscape: true,
-        isMoving: false,
-        isResizing: false,
-        resizeVertical: false,
-        x0: 0,
-        y0: 0,
-        x1: 0,
-        y1: 0,
-        xM: 0,
-        yM: 0,
+        image: defaultProps.image,
+        imageBlob: null,
+        hasBeenRotated: false,
+        hasBeenCropped: false,
       });
     });
+    it('should render a CanvasPrinter', () => {
+      const { canvasPrinter } = setup();
 
-    it('should render a SelectedArea', () => {
-      const { selectedArea } = setup();
-
-      expect(selectedArea).toHaveLength(1);
+      expect(canvasPrinter).toHaveLength(1);
     });
-
-    it('should render two buttons', () => {
-      const { button } = setup();
-
-      expect(button).toHaveLength(2);
-      expect(button.first().text()).toBe('Cancel');
-      expect(button.last().text()).toBe('Save image');
-    });
-
-    it('should cancel render when Cancel button is clicked', () => {
-      const onCancelEdition = jest.fn();
-      const { button } = setup({ onCancelEdition });
-
-      const cancelButton = button.first();
-
-      cancelButton.simulate('click');
-
-      expect(onCancelEdition).toHaveBeenCalled();
-    });
-
-    it('should save the edition render when Save button is clicked', () => {
-      const onSaveEdition = jest.fn();
-      const { imageEditor, button } = setup({ onSaveEdition });
-
-      const saveButton = button.last();
-
-      saveButton.simulate('click');
-
-      const { x0, y0, x1, y1 } = imageEditor.state();
-      expect(onSaveEdition).toHaveBeenCalledWith(imageEditor.instance().image, { x0, y0, x1, y1 });
-    });
-
-    it('should start moving when startMove is called', () => {
-      const { imageEditor } = setup();
-      const event = {
-        preventDefault: () => null,
-      };
-      imageEditor.instance().startMove(event);
-      expect(imageEditor.state('isMoving')).toBeTruthy();
-    });
-
-    it('should only interact to mouse movement is the state isMoving or isResizing', () => {
-      const { imageEditor } = setup();
-      const event = {
-        preventDefault: () => null,
-      };
-      const imageEditorInstance = imageEditor.instance();
-      const handleMoveSpy = jest.spyOn(imageEditorInstance, 'handleMove');
-      const handleReiszeSpy = jest.spyOn(imageEditorInstance, 'handleResize');
-
-      imageEditorInstance.onMouseMove(event);
-
-      expect(handleMoveSpy).not.toHaveBeenCalled();
-      expect(handleReiszeSpy).not.toHaveBeenCalled();
-
-      imageEditor.setState({ isMoving: true });
-      imageEditorInstance.onMouseMove(event);
-
-      expect(handleMoveSpy).toHaveBeenCalledTimes(1);
-      expect(handleReiszeSpy).not.toHaveBeenCalled();
-
-      imageEditor.setState({ isMoving: false, isResizing: true });
-      imageEditorInstance.onMouseMove(event);
-
-      expect(handleMoveSpy).toHaveBeenCalledTimes(1);
-      expect(handleReiszeSpy).toHaveBeenCalledTimes(1);
-    });
-
-    it('should unset isMoving and isResizing and order the selected area points when mouseup', () => {
+    it('should render an ImageRotator as first step', () => {
       const { imageEditor } = setup();
 
-      const prevState = {
-        landscape: true,
-        isMoving: false,
-        isResizing: true,
-        isResizingSide: true,
-        resizeVertical: true,
-        x0: 50,
-        y0: 50,
-        x1: 10,
-        y1: 10,
-        xM: 10,
-        yM: 10,
+      expect(imageEditor.find(ImageRotator)).toHaveLength(1);
+    });
+
+    it('should render a CropTool if the image has already been rotated', () => {
+      const { imageEditor } = setup({ cropTool: true });
+
+      imageEditor.setState({ hasBeenRotated: true });
+
+      expect(imageEditor.find(ImageRotator)).toHaveLength(0);
+      expect(imageEditor.find(CropTool)).toHaveLength(1);
+    });
+
+    it('should finish edition if the image is rotated if there is no more steps', async() => {
+      const onEditionFinished = jest.fn();
+      const { imageEditor } = setup({ onEditionFinished });
+
+      const image = 'test image';
+      const angle = '1';
+      const imageBlob = new Blob([]);
+      const canvasPrinterMock = {
+        rotate: jest.fn(() => Promise.resolve(imageBlob)),
       };
-      imageEditor.setState(prevState);
 
-      const event = {
-        preventDefault: () => null,
+      imageEditor.instance().canvasPrinter = canvasPrinterMock;
+
+      await imageEditor.find(ImageRotator).prop('onSave')(image, angle);
+
+      expect(canvasPrinterMock.rotate).toHaveBeenCalledWith(image, angle);
+      expect(imageEditor.state('imageBlob')).toBe(imageBlob);
+      expect(imageEditor.state('hasBeenRotated')).toBeTruthy();
+      expect(onEditionFinished).toHaveBeenCalledWith(imageBlob);
+    });
+
+    it('should finish edition if the image is rotated and scaled if there is no more steps', async() => {
+      const onEditionFinished = jest.fn();
+      const scaleOptions = { width: 500, height: 500, keepAspectRatio: 1 };
+      const { imageEditor } = setup({ scaleOptions, onEditionFinished });
+
+      const image = 'test image';
+      const angle = '1';
+      const imageBlob = new Blob([]);
+      const canvasPrinterMock = {
+        rotateAndScale: jest.fn(() => Promise.resolve(imageBlob)),
       };
 
-      imageEditor.instance().onMouseUp(event);
+      imageEditor.instance().canvasPrinter = canvasPrinterMock;
 
-      expect(imageEditor.state()).toEqual({
-        ...prevState,
-        isMoving: false,
-        isResizing: false,
-        isResizingSide: false,
-        resizeVertical: false,
-        x0: 10,
-        y0: 10,
-        x1: 50,
-        y1: 50,
-        xM: 0,
-        yM: 0,
-      });
+      await imageEditor.find(ImageRotator).prop('onSave')(image, angle);
+
+      expect(canvasPrinterMock.rotateAndScale).toHaveBeenCalledWith(image, angle, scaleOptions);
+      expect(imageEditor.state('imageBlob')).toBe(imageBlob);
+      expect(imageEditor.state('hasBeenRotated')).toBeTruthy();
+      expect(onEditionFinished).toHaveBeenCalledWith(imageBlob);
+    });
+
+    it('should not finish edition after rotation step if cropTool option is enabled', async() => {
+      const onEditionFinished = jest.fn();
+      const { imageEditor } = setup({ cropTool: true, onEditionFinished });
+
+      const image = 'test image';
+      const angle = '1';
+      const imageBlob = new Blob([]);
+      const canvasPrinterMock = {
+        rotate: jest.fn(() => Promise.resolve(imageBlob)),
+      };
+
+      imageEditor.instance().canvasPrinter = canvasPrinterMock;
+
+      await imageEditor.find(ImageRotator).prop('onSave')(image, angle);
+
+      expect(canvasPrinterMock.rotate).toHaveBeenCalledWith(image, angle);
+      expect(imageEditor.state('imageBlob')).toBe(imageBlob);
+      expect(imageEditor.state('hasBeenRotated')).toBeTruthy();
+      expect(onEditionFinished).not.toHaveBeenCalled();
+    });
+
+    it('should finish edition if the image crop is canceled', async() => {
+      const onEditionFinished = jest.fn();
+      const { imageEditor } = setup({ cropTool: true, onEditionFinished });
+
+      const imageBlob = new Blob([]);
+
+      imageEditor.setState({ imageBlob, hasBeenRotated: true });
+
+      await imageEditor.find(CropTool).prop('onCancelEdition')();
+
+      expect(imageEditor.state('hasBeenCropped')).toBeTruthy();
+      expect(onEditionFinished).toHaveBeenCalledWith(imageBlob);
+    });
+
+    it('should scale and finish edition if the image crop is canceled and there is scale options', async() => {
+      const onEditionFinished = jest.fn();
+      const scaleOptions = { width: 500, height: 500, keepAspectRatio: 1 };
+      const { imageEditor } = setup({ cropTool: true, scaleOptions, onEditionFinished });
+
+      const imageBlob = new Blob([]);
+
+      const image = 'test image';
+
+      const canvasPrinterMock = {
+        resizeImage: jest.fn(() => Promise.resolve(imageBlob)),
+      };
+
+      imageEditor.setState({ hasBeenRotated: true });
+      imageEditor.instance().canvasPrinter = canvasPrinterMock;
+
+      await imageEditor.find(CropTool).prop('onCancelEdition')(image);
+
+      expect(imageEditor.state('hasBeenCropped')).toBeTruthy();
+      expect(onEditionFinished).toHaveBeenCalledWith(imageBlob);
+    });
+
+    it('should scale and finish edition if the image crop is canceled and there is scale options', async() => {
+      const onEditionFinished = jest.fn();
+      const scaleOptions = { width: 500, height: 500, keepAspectRatio: 1 };
+      const { imageEditor } = setup({ cropTool: true, scaleOptions, onEditionFinished });
+
+      const imageBlob = new Blob([]);
+
+      const image = 'test image';
+      const area = { x0: 0, x1: 0, y0: 0, y1: 0 };
+      const canvasPrinterMock = {
+        cropAndResize: jest.fn(() => Promise.resolve(imageBlob)),
+      };
+
+      imageEditor.setState({ hasBeenRotated: true });
+      imageEditor.instance().canvasPrinter = canvasPrinterMock;
+
+      await imageEditor.find(CropTool).prop('onSaveEdition')(image, area);
+
+      expect(imageEditor.state('hasBeenCropped')).toBeTruthy();
+      expect(onEditionFinished).toHaveBeenCalledWith(imageBlob);
     });
 
     it('should match exact snapshot', () => {
