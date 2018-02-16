@@ -1,6 +1,19 @@
 import React, { PureComponent } from 'react';
 
-import '../styles/CanvasPrinter.scss';
+import '../../styles/ImageEditor.scss';
+
+const calculateOffset = (width, height, scaleOptions, inverted = false) => {
+  const aspectRatio = inverted
+    ? scaleOptions.height / scaleOptions.width
+    : scaleOptions.width / scaleOptions.height;
+
+  const horizontal = width < height * aspectRatio;
+
+  return !horizontal
+    ? { x: (width - (height * aspectRatio)) / 2, y: 0 }
+    : { x: 0, y: (height - (width / aspectRatio)) / 2 };
+};
+
 
 class CanvasPrinter extends PureComponent {
   constructor(props) {
@@ -84,9 +97,74 @@ class CanvasPrinter extends PureComponent {
       ? { x: (naturalWidth - (naturalHeight * aspectRatio)) / 2, y: 0 }
       : { x: 0, y: (naturalHeight - (naturalWidth / aspectRatio)) / 2 };
 
-    const sourceSize = { width: naturalWidth - (2 * offset.x), height: naturalHeight - (2 * offset.y) };
+    const sourceSize = { width: naturalWidth - (2 * offset.x), height: naturalWidth - (2 * offset.x) };
 
     return this.printImage(image, offset, sourceSize, scaleOptions);
+  }
+
+
+  rotateAndScaleImage(image, angle, scaleOptions = null) {
+    const { naturalWidth, naturalHeight } = image;
+    const baseWidth = (scaleOptions && scaleOptions.width) || naturalWidth;
+    const baseHeight = (scaleOptions && scaleOptions.height) || naturalHeight;
+
+    const inverted = !(angle %2 === 0);
+
+    const width = (inverted && baseHeight) || baseWidth;
+    const height = (inverted && baseWidth) || baseHeight;
+
+    this.canvas.width = baseWidth;
+    this.canvas.height = baseHeight;
+
+    const offset = scaleOptions && scaleOptions.keepAspectRatio
+      ? calculateOffset(naturalWidth, naturalHeight, scaleOptions, inverted)
+      : { x: 0, y: 0 };
+
+    const context = this.canvas.getContext('2d');
+
+    context.translate(baseWidth / 2, baseHeight / 2);
+    context.rotate((angle * Math.PI) /2);
+    context.drawImage(
+      image,
+      offset.x,
+      offset.y,
+      naturalWidth - (2 * offset.x),
+      naturalHeight - (2 * offset.y),
+      - width / 2,
+      - height / 2,
+      width,
+      height,
+    );
+
+    return new Promise(resolve => {
+      this.canvas.toBlob(resolve);
+    });
+  }
+
+  rotateImage(image, angle, scaleOptions = null) {
+    const { naturalWidth, naturalHeight } = image;
+
+    const inverted = !(angle %2 === 0);
+
+    const width = (inverted && naturalHeight) || naturalWidth;
+    const height = (inverted && naturalWidth) || naturalHeight;
+
+    this.canvas.width = width;
+    this.canvas.height = height;
+
+    const context = this.canvas.getContext('2d');
+
+    context.translate(width / 2, height / 2);
+    context.rotate((angle * Math.PI) /2);
+    context.drawImage(
+      image,
+      - naturalWidth / 2,
+      - naturalHeight / 2,
+    );
+
+    return new Promise(resolve => {
+      this.canvas.toBlob(resolve);
+    });
   }
 
   render() {

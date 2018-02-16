@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components ImageEditor ImageRotator should match exact snapshot 1`] = `
+<div>
+  <div>
+    <div
+      className="brainhub-image-rotator"
+    >
+      <img
+        className="brainhub-image-rotator__image"
+        src="testImage"
+        style={
+          Object {
+            "transform": "rotate(0deg)",
+          }
+        }
+      />
+    </div>
+    <div>
+      <button
+        className="brainhub-image-rotator__button brainhub-image-rotator__button--arrow"
+        onClick={[Function]}
+      >
+        &lt;-
+      </button>
+      <button
+        className="brainhub-image-rotator__button brainhub-image-rotator__button--save"
+        onClick={[Function]}
+      >
+        Save image
+      </button>
+      <button
+        className="brainhub-image-rotator__button brainhub-image-rotator__button--arrow"
+        onClick={[Function]}
+      >
+        -&gt;
+      </button>
+    </div>
+  </div>
+</div>
+`;

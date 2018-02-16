@@ -14,7 +14,7 @@ const setup = (props = {}) => {
 
   return {
     selectedArea,
-    points: selectedArea.find('div.brainhub-image-editor__resize-point'),
+    points: selectedArea.find('div.brainhub-selected-area__resize-point'),
   };
 };
 

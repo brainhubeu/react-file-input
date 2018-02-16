@@ -14,20 +14,6 @@ export const getImageThumbnail = file => new Promise((resolve, reject) => {
   };
 });
 
-export const createImageFromSource = source => new Promise((resolve, reject) => {
-  const image = new Image();
-
-  image.src = source;
-
-  image.onload = res => {
-    resolve(res.target);
-  };
-
-  image.onerror = event => {
-    reject(event);
-  };
-});
-
 export const updateFileFromBlob = (blob, file) => {
   const { filename } = file;
 

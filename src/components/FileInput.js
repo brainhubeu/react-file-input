@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { handleChangeEvent, handleDropEvent, preventDefault } from '../helpers/event';
-import { getImageThumbnail, createImageFromSource, updateFileFromBlob } from '../helpers/file';
+import { getImageThumbnail, updateFileFromBlob } from '../helpers/file';
 import { selectIsDragging, selectIsDraggingOver } from '../helpers/fileInputSelectors';
 import { IMAGE_MIME_TYPE } from '../helpers/mime';
 
@@ -11,7 +11,6 @@ import FileInputMetadata from './FileInputMetadata';
 import ImageThumbnail from './ImageThumbnail';
 import ImageEditor from './ImageEditor';
 
-import CanvasPrinter from './CanvasPrinter';
 
 import '../styles/FileInput.scss';
 
@@ -23,17 +22,16 @@ class FileInput extends Component {
       enteredInDocument: 0,
       isOver: 0,
       value: null,
+      tempValue: null,
       image: null,
       hasBeenEdited: false,
     };
 
     this.input = null;
-    this.canvasPrinter = null;
 
     this.handleFile = this.handleFile.bind(this);
     this.handleImageFile = this.handleImageFile.bind(this);
-    this.cancelEdition = this.cancelEdition.bind(this);
-    this.saveEdition = this.saveEdition.bind(this);
+    this.handleEditedFile = this.handleEditedFile.bind(this);
 
     this.openFileDialog = this.openFileDialog.bind(this);
     this.selectFile = this.selectFile.bind(this);
@@ -83,20 +81,13 @@ class FileInput extends Component {
     }
   }
 
-  async cancelEdition(image) {
-    const { scaleOptions } = this.props;
-    if (!scaleOptions) {
-      return this.setState({ hasBeenEdited: true });
-    }
+  async handleEditedFile(blob) {
+    const { displayImageThumbnail, onChangeCallback } = this.props;
+    const { tempValue: file } = this.state;
 
-    const { displayImageThumbnail } = this.props;
-    const { value: file } = this.state;
-
-    const resizedImageBlob = await this.canvasPrinter.resizeImage(image, scaleOptions);
-
-    const resizedFile = updateFileFromBlob(resizedImageBlob, file);
-    const resizedThumbnail = displayImageThumbnail
-      ? await getImageThumbnail(resizedFile)
+    const editedFile = updateFileFromBlob(blob, file);
+    const editedThumbnail = displayImageThumbnail
+      ? await getImageThumbnail(editedFile)
       : null;
 
 
@@ -104,35 +95,20 @@ class FileInput extends Component {
       ...state,
       enteredInDocument: 0,
       isOver: 0,
-      value: resizedFile,
-      image: resizedThumbnail,
+      value: editedFile,
+      tempValue: null,
+      image: editedThumbnail,
       hasBeenEdited: true,
-    }));
+    }), () => {
+      if (onChangeCallback) {
+        onChangeCallback(this.state);
+      }
+    });
   }
 
-  async saveEdition(image, area) {
-    const { displayImageThumbnail, scaleOptions } = this.props;
-    const { value: file } = this.state;
+  handleFile(file) {
+    const { onChangeCallback } = this.props;
 
-    const croppedImageBlob = await this.canvasPrinter.cropAndResizeImage(image, area, scaleOptions);
-
-    const croppedFile = updateFileFromBlob(croppedImageBlob, file);
-    const croppedThumbnail = displayImageThumbnail
-      ? await getImageThumbnail(croppedFile)
-      : null;
-
-
-    return this.setState(state => ({
-      ...state,
-      enteredInDocument: 0,
-      isOver: 0,
-      value: croppedFile,
-      image: croppedThumbnail,
-      hasBeenEdited: true,
-    }));
-  }
-
-  handleFile(file, callback = null) {
     this.setState(state => ({
       ...state,
       enteredInDocument: 0,
@@ -141,69 +117,36 @@ class FileInput extends Component {
       image: null,
       hasBeenEdited: true,
     }), () => {
-      if (callback) {
-        callback(this.state);
+      if (onChangeCallback) {
+        onChangeCallback(this.state);
       }
     });
   }
 
-  async handleImageFile(file, callback = null) {
-    const { displayImageThumbnail, scaleOptions, cropTool } = this.props;
-
-    const image = cropTool || scaleOptions || displayImageThumbnail
-      ? await getImageThumbnail(file)
-      : null;
-
-    if (cropTool || !scaleOptions) {
-      return this.setState(state => ({
-        ...state,
-        enteredInDocument: 0,
-        isOver: 0,
-        value: file,
-        image,
-        hasBeenEdited: !cropTool,
-      }), () => {
-        if (callback) {
-          callback(this.state);
-        }
-      });
-    }
-
-    const imageObject = await createImageFromSource(image);
-    const resizedImageBlob = await this.canvasPrinter.resizeImage(imageObject, scaleOptions);
-
-    const resizedFile = updateFileFromBlob(resizedImageBlob, file);
-    const resizedThumbnail = displayImageThumbnail
-      ? await getImageThumbnail(resizedFile)
-      : null;
-
+  async handleImageFile(file) {
+    const image = await getImageThumbnail(file);
 
     return this.setState(state => ({
       ...state,
       enteredInDocument: 0,
       isOver: 0,
-      value: resizedFile,
-      image: resizedThumbnail,
-      hasBeenEdited: !cropTool,
-    }), () => {
-      if (callback) {
-        callback(this.state);
-      }
-    });
+      vale: null,
+      tempValue: file,
+      image,
+      hasBeenEdited: false,
+    }));
   }
 
   selectFile(event) {
-    const { onChangeCallback } = this.props;
-
     const files = handleChangeEvent(event);
 
     if (files.length) {
       const file = files[0];
 
       if (IMAGE_MIME_TYPE.test(file.mimeType)) {
-        this.handleImageFile(file, onChangeCallback);
+        return this.handleImageFile(file);
       } else {
-        this.handleFile(file, onChangeCallback);
+        return this.handleFile(file);
       }
     }
   }
@@ -239,17 +182,15 @@ class FileInput extends Component {
     });
   }
   onDrop(event) {
-    const { onDropCallback } = this.props;
-
     const files = handleDropEvent(event);
 
     if (files.length) {
       const file = files[0];
 
       if (IMAGE_MIME_TYPE.test(file.mimeType)) {
-        this.handleImageFile(file, onDropCallback);
+        this.handleImageFile(file);
       } else {
-        this.handleFile(file, onDropCallback);
+        this.handleFile(file);
       }
     }
   }
@@ -257,6 +198,7 @@ class FileInput extends Component {
   render() {
     const { value, image, hasBeenEdited } = this.state;
     const {
+      cropAspectRatio,
       customMetadata: CustomMetadata,
       customImageThumbnail: CustomImageThumbnail,
       label,
@@ -295,24 +237,19 @@ class FileInput extends Component {
           onDrop={this.onDrop}
           openFileDialog={this.openFileDialog}
         />
-        {image && cropTool && !hasBeenEdited
+        {image && !hasBeenEdited
           ? (
             <ImageEditor
+              cropAspectRatio={cropAspectRatio}
+              cropTool={cropTool}
               image={image}
-              onCancelEdition={this.cancelEdition}
-              onSaveEdition={this.saveEdition}
+              scaleOptions={scaleOptions}
+              onEditionFinished={this.handleEditedFile}
+
             />
           )
           : null}
-        { (cropTool || scaleOptions)
-          && (
-            <CanvasPrinter
-              ref={ref => {
-                this.canvasPrinter = ref;
-              }}
-            />
-          )
-        }
+
 
       </div>
     );
@@ -329,6 +266,7 @@ FileInput.defaultProps = {
   displayMetadata: true,
   displayImageThumbnail: true,
   scaleOptions: null,
+  cropAspectRatio: 0,
   cropTool: false,
 };
 
@@ -339,7 +277,6 @@ FileInput.propTypes = {
   onChangeCallback: PropTypes.func,
   onDragEnterCallback: PropTypes.func,
   onDragLeaveCallback: PropTypes.func,
-  onDropCallback: PropTypes.func,
   displayMetadata: PropTypes.bool,
   displayImageThumbnail: PropTypes.bool,
   customMetadata: PropTypes.func,
@@ -349,6 +286,7 @@ FileInput.propTypes = {
     height: PropTypes.number,
     keepAspectRatio: PropTypes.boolean,
   }),
+  cropAspectRatio: PropTypes.number,
   cropTool: PropTypes.bool,
 };
 
