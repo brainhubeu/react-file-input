@@ -13,10 +13,6 @@ const defaultProps = {
   onEditionFinished: () => null,
 };
 
-const createCanvasPrinterMock = () => ({
-  rotate: () => Promise.resolve(new Blob([])),
-});
-
 const setup = (props = {}) => {
   const imageEditor = mount(<ImageEditor {...defaultProps} {...props} />);
 

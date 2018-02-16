@@ -4,12 +4,12 @@ import renderer from 'react-test-renderer';
 
 import FileInput from '../../src/components/FileInput';
 
-import CanvasPrinter from '../../src/components/CanvasPrinter';
 import DropArea from '../../src/components/DropArea';
 import ImageEditor from '../../src/components/ImageEditor';
+import { getImageThumbnail } from '../../src/helpers/file';
 
 jest.mock('../../src/helpers/file', () => ({
-  getImageThumbnail: file => Promise.resolve(file.name),
+  getImageThumbnail: file => file.name,
 }));
 
 const defaultProps = {
@@ -24,7 +24,6 @@ const setup = (props = {}) => {
     label: fileInput.find('.brainhub-file-input__label'),
     input: fileInput.find('input[type="file"]'),
     dropArea: fileInput.find(DropArea),
-    imageEditor: fileInput.find(ImageEditor),
   };
 };
 
@@ -46,6 +45,7 @@ describe('components', () => {
         enteredInDocument: 0,
         isOver: 0,
         value: null,
+        tempValue: null,
         image: null,
         hasBeenEdited: false,
       });
@@ -63,18 +63,6 @@ describe('components', () => {
 
       expect(label).toHaveLength(1);
       expect(label.text()).toBe(defaultProps.label);
-    });
-
-    it('should render a CanvasPrinter if scaleOptions are set', () => {
-      const { fileInput } = setup({ scaleOptions: { width: 50, height: 50 } });
-
-      expect(fileInput.find(CanvasPrinter)).toHaveLength(1);
-    });
-
-    it('should render a CanvasPrinter if cropTool optionis set', () => {
-      const { fileInput } = setup({ cropTool: true });
-
-      expect(fileInput.find(CanvasPrinter)).toHaveLength(1);
     });
 
     it('should render a DropArea', () => {
@@ -147,7 +135,6 @@ describe('components', () => {
       expect(fileInput.state('enteredInDocument')).toBe(0);
       expect(fileInput.state('isOver')).toBe(0);
       expect(fileInput.state('value')).toBe(file);
-      expect(onDropCallback).toHaveBeenCalledWith(fileInput.state());
     });
 
     it('should render metadata from default component', () => {
@@ -187,30 +174,37 @@ describe('components', () => {
       expect(fileInput.find('ImageThumbnail')).toHaveLength(0);
     });
 
-    it('should not render image thumbnail when user pass false to displayImageThumbnail prop', () => {
+    it('should handle file images with an image editor', () => {
       const { fileInput } = setup({ displayImageThumbnail: false });
-      fileInput.setState({ value: data });
+      fileInput.setState({ value: data, image: 'test' });
 
       expect(fileInput.find('ImageThumbnail').length).toEqual(0);
     });
 
-    it('should render an ImageEditor if the file is an image and the cropTool options is set', () => {
-      const { fileInput, imageEditor } = setup({ cropTool: true });
+    it('should handle image files with the file editor', async() => {
+      const { dropArea, fileInput } = setup();
 
-      expect(imageEditor).toHaveLength(0);
+      const file = { name: 'MockFile.jpeg', size: 5000 };
+      fileInput.setState({ isOver: 2, enteredInDocument: 2 });
 
-      fileInput.setState({ image: 'image' });
+      await dropArea.simulate('drop', { dataTransfer: { files: [file] } });
+
+      expect(fileInput.state('enteredInDocument')).toBe(0);
+      expect(fileInput.state('isOver')).toBe(0);
+      expect(fileInput.state('value')).toBe(null);
+      expect(fileInput.state('tempValue')).toBe(file);
+      expect(fileInput.state('image')).toBe(getImageThumbnail(file));
+    });
+
+    it('should render an ImageEditor if it is handling an image file', () => {
+      const { fileInput } = setup( );
+
+      fileInput.setState({ image: 'testImage' });
+
       expect(fileInput.find(ImageEditor)).toHaveLength(1);
     });
 
-    it('should set image as edited if cancelEdition is called', () => {
-      const { fileInput } = setup();
 
-      fileInput.setState({ image: 'image' });
-      fileInput.instance().cancelEdition();
-
-      expect(fileInput.state('hasBeenEdited')).toBeTruthy();
-    });
     it('should match exact snapshot', () => {
       const tree = renderer.create(
         <div>
