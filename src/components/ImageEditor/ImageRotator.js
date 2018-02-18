@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-
+import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import faRedo from '@fortawesome/fontawesome-free-solid/faRedo';
+import faUndo from '@fortawesome/fontawesome-free-solid/faUndo';
 import '../../styles/ImageEditor.scss';
 
 class ImageRotator extends PureComponent {
@@ -13,8 +15,8 @@ class ImageRotator extends PureComponent {
 
     this.image = null;
 
-    this.rotateOutwards = this.rotateOutwards.bind(this);
-    this.rotateInwards = this.rotateInwards.bind(this);
+    this.rotateCounterClockwise = this.rotateCounterClockwise.bind(this);
+    this.rotateClockwise = this.rotateClockwise.bind(this);
 
     this.save = this.save.bind(this);
   }
@@ -27,14 +29,14 @@ class ImageRotator extends PureComponent {
     }
   }
 
-  rotateOutwards() {
+  rotateCounterClockwise() {
     this.setState(state => ({
       ...state,
       angle: (state.angle + 4 - 1) % 4,
     }));
   }
 
-  rotateInwards() {
+  rotateClockwise() {
     this.setState(state => ({
       ...state,
       angle: (state.angle + 1) % 4,
@@ -66,11 +68,11 @@ class ImageRotator extends PureComponent {
             }}
           />
         </div>
-        <div>
+        <div className="brainhub-image-rotator__controls">
           <button
             className="brainhub-image-rotator__button brainhub-image-rotator__button--arrow"
-            onClick={this.rotateOutwards}>
-            {`<-`}
+            onClick={this.rotateCounterClockwise}>
+            <FontAwesomeIcon icon={faUndo} />
           </button>
           <button
             className="brainhub-image-rotator__button brainhub-image-rotator__button--save"
@@ -79,8 +81,8 @@ class ImageRotator extends PureComponent {
           </button>
           <button
             className="brainhub-image-rotator__button brainhub-image-rotator__button--arrow"
-            onClick={this.rotateInwards}>
-            {`->`}
+            onClick={this.rotateClockwise}>
+            <FontAwesomeIcon icon={faRedo} />
           </button>
         </div>
       </div>

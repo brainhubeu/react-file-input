@@ -42,6 +42,10 @@ $POINT_SIZE: 8px;
   background-color: $LIGHT_GREEN;
 }
 
+.brainhub-image-rotator__controls {
+  text-align: center;
+}
+
 .brainhub-selected-area {
   position: absolute;
   border: 1px dashed white;
