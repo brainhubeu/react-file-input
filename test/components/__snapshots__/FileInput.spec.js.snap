@@ -24,13 +24,15 @@ exports[`components FileInput should match exact snapshot 1`] = `
       onDragLeave={[Function]}
       onDrop={[Function]}
     >
-      <div
-        className="brainhub-drop-area__button"
-        onClick={[Function]}
-        role="button"
-        tabIndex={-1}
-      >
-        + Add File
+      <div>
+        <div
+          className="brainhub-drop-area__button"
+          onClick={[Function]}
+          role="button"
+          tabIndex={-1}
+        >
+          + Add File
+        </div>
       </div>
     </div>
   </div>

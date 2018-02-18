@@ -26,4 +26,9 @@
   line-height: 18px;
   color: $LIGHT_GREEN;
   cursor: pointer;
+  user-select: none;
+}
+
+.brainhub-drop-area__button:focus {
+  outline: none;
 }
