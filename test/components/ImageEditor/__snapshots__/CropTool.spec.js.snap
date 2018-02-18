@@ -51,7 +51,9 @@ exports[`components ImageEditor CropTool should match exact snapshot 1`] = `
         />
       </div>
     </div>
-    <div>
+    <div
+      className="brainhub-crop-tool__controls"
+    >
       <button
         className="brainhub-crop-tool__button brainhub-crop-tool__button--cancel"
         onClick={[Function]}
