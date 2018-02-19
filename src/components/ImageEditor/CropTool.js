@@ -236,7 +236,8 @@ class CropTool extends Component {
             }}
             className="brainhub-crop-tool__image"
             src={image}
-            onLoad={this.onImageLoad}/>
+            onLoad={this.onImageLoad}
+          />
           <SelectedArea
             startMove={this.startMove}
             startResize={this.startResize}
@@ -246,12 +247,14 @@ class CropTool extends Component {
         <div className="brainhub-crop-tool__controls">
           <button
             className="brainhub-crop-tool__button brainhub-crop-tool__button--cancel"
-            onClick={this.cancelEdition}>
+            onClick={this.cancelEdition}
+          >
           Cancel
           </button>
           <button
             className="brainhub-crop-tool__button brainhub-crop-tool__button--save"
-            onClick={this.saveEdition}>
+            onClick={this.saveEdition}
+          >
           Save image
           </button>
         </div>

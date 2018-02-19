@@ -24,7 +24,7 @@ export const findExtension = mimeType => {
  */
 export const findMimeType = extension => {
   const mimeType = Object.entries(mimeDb)
-    .find(([key, value]) => (value.extensions && !!value.extensions.find(ext => ext === extension)) || false);
+    .find(([, value]) => (value.extensions && !!value.extensions.find(ext => ext === extension)) || false);
 
   return mimeType
     ? mimeType[0]

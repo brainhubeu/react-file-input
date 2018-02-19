@@ -65,7 +65,7 @@ class ImageRotator extends PureComponent {
             style={{
               transform: `rotate(${angle * 90}deg)`,
             }}
-            ref={ ref => {
+            ref={ref => {
               this.image = ref;
             }}
           />
@@ -73,17 +73,20 @@ class ImageRotator extends PureComponent {
         <div className="brainhub-image-rotator__controls">
           <button
             className="brainhub-image-rotator__button brainhub-image-rotator__button--arrow"
-            onClick={this.rotateCounterClockwise}>
+            onClick={this.rotateCounterClockwise}
+          >
             <Icon icon={faUndo.icon}/>
           </button>
           <button
             className="brainhub-image-rotator__button brainhub-image-rotator__button--save"
-            onClick={this.save}>
+            onClick={this.save}
+          >
           Save image
           </button>
           <button
             className="brainhub-image-rotator__button brainhub-image-rotator__button--arrow"
-            onClick={this.rotateClockwise}>
+            onClick={this.rotateClockwise}
+          >
             <Icon icon={faRedo.icon}/>
 
           </button>
