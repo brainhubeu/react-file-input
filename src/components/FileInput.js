@@ -11,7 +11,6 @@ import FileInputMetadata from './FileInputMetadata';
 import ImageThumbnail from './ImageThumbnail';
 import ImageEditor from './ImageEditor';
 
-
 import '../styles/FileInput.scss';
 
 class FileInput extends Component {

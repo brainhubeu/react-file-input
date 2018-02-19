@@ -1,8 +1,10 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import faRedo from '@fortawesome/fontawesome-free-solid/faRedo';
 import faUndo from '@fortawesome/fontawesome-free-solid/faUndo';
+
+import Icon from '../Icon';
+
 import '../../styles/ImageEditor.scss';
 
 class ImageRotator extends PureComponent {
@@ -72,7 +74,7 @@ class ImageRotator extends PureComponent {
           <button
             className="brainhub-image-rotator__button brainhub-image-rotator__button--arrow"
             onClick={this.rotateCounterClockwise}>
-            <FontAwesomeIcon icon={faUndo} />
+            <Icon icon={faUndo.icon}/>
           </button>
           <button
             className="brainhub-image-rotator__button brainhub-image-rotator__button--save"
@@ -82,7 +84,8 @@ class ImageRotator extends PureComponent {
           <button
             className="brainhub-image-rotator__button brainhub-image-rotator__button--arrow"
             onClick={this.rotateClockwise}>
-            <FontAwesomeIcon icon={faRedo} />
+            <Icon icon={faRedo.icon}/>
+
           </button>
         </div>
       </div>

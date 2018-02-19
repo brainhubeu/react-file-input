@@ -2,11 +2,11 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import renderer from 'react-test-renderer';
 
-import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import faRedo from '@fortawesome/fontawesome-free-solid/faRedo';
 import faUndo from '@fortawesome/fontawesome-free-solid/faUndo';
 
 import ImageRotator from '../../../src/components/ImageEditor/ImageRotator';
+import Icon from '../../../src/components/Icon';
 
 const defaultProps = {
   image: 'testImage',
@@ -56,10 +56,10 @@ describe('components', () => {
 
         const first = buttons.first();
 
-        const firstIcon = first.find(FontAwesomeIcon);
+        const firstIcon = first.find(Icon);
 
         expect(firstIcon).toHaveLength(1);
-        expect(firstIcon.prop('icon')).toBe(faUndo);
+        expect(firstIcon.prop('icon')).toBe(faUndo.icon);
         expect(first.hasClass('brainhub-image-rotator__button--arrow')).toBeTruthy();
 
         const middle = buttons.at(1);
@@ -69,10 +69,10 @@ describe('components', () => {
 
         const last = buttons.last();
 
-        const lastIcon = last.find(FontAwesomeIcon);
+        const lastIcon = last.find(Icon);
 
         expect(lastIcon).toHaveLength(1);
-        expect(lastIcon.prop('icon')).toBe(faRedo);
+        expect(lastIcon.prop('icon')).toBe(faRedo.icon);
         expect(first.hasClass('brainhub-image-rotator__button--arrow')).toBeTruthy();
       });
 
