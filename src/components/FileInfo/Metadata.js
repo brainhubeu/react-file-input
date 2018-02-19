@@ -1,33 +1,32 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import filesize from 'filesize';
-import { string, number } from 'prop-types';
 
-import '../styles/FileInputMetadata.scss';
+import '../../styles/FileInfo.scss';
 
-const FileInputMetadata = props => {
-  const { extension, name, type, size } = props;
+const Metadata = ({ extension, name, size, type }) => {
   const formattedSize = filesize(size, { separator: ',' });
 
   return (
-    <div className="brainhub-file-input__metadata">
-      <div className="brainhub-file-input__metadata__info">
-        <span className="brainhub-file-input__metadata__info_name">{name}</span>{extension ? `.${extension}`: ''} ({formattedSize}) {type}
+    <div className="brainhub-file-info__metadata">
+      <div className="brainhub-file-info__metadata__info">
+        <span className="brainhub-file-info__metadata__info_name">{name}</span>{extension ? `.${extension}`: ''} ({formattedSize}) {type}
       </div>
     </div>
   );
 };
 
-FileInputMetadata.defaultProps = {
+Metadata.defaultProps = {
   extension: '',
   type: '',
 };
 
-FileInputMetadata.propTypes = {
-  extension: string,
-  name: string.isRequired,
-  type: string,
-  size: number.isRequired,
+Metadata.propTypes = {
+  extension: PropTypes.string,
+  name: PropTypes.string.isRequired,
+  type: PropTypes.string,
+  size: PropTypes.number.isRequired,
 };
 
-export default FileInputMetadata;
+export default Metadata;
 

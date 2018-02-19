@@ -1,11 +1,16 @@
 import React from 'react';
-import { string } from 'prop-types';
-import '../styles/ImageThumbnail.scss';
+import Proptypes from 'prop-types';
 
-const ImageThumbnail = props => <img src={props.image} className="brainhub-file-input__thumbnail" />;
+import '../../styles/FileInfo.scss';
 
-ImageThumbnail.propTypes = {
-  image: string.isRequired,
+const Thumbnail = ({ children }) => (
+  <div className="brainhub-file-info__thumbnail">
+    {children}
+  </div>
+);
+
+Thumbnail.propTypes = {
+  children: Proptypes.node.isRequired,
 };
 
-export default ImageThumbnail;
+export default Thumbnail;

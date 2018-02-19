@@ -22,7 +22,7 @@
     "test": "BABEL_DISABLE_CACHE=1 jest",
     "test:cucumber": "rm -rf ./screenshots && NODE_PATH=src wdio wdio.conf.js",
     "test:coverage": "yarn jest --coverage",
-    "test:watch": "npm run test -- --watch",
+    "test:watch": "yarn test --watch",
     "selenium:install": "selenium-standalone install",
     "selenium": "selenium-standalone start"
   },
