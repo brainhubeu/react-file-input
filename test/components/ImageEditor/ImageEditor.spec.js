@@ -76,7 +76,7 @@ describe('components', () => {
 
     it('should finish edition if the image is rotated and scaled if there is no more steps', async() => {
       const onEditionFinished = jest.fn();
-      const scaleOptions = { width: 500, height: 500, keepAspectRatio: 1 };
+      const scaleOptions = { width: 500, height: 500, keepAspectRatio: true };
       const { imageEditor } = setup({ scaleOptions, onEditionFinished });
 
       const image = 'test image';
@@ -133,7 +133,7 @@ describe('components', () => {
 
     it('should scale and finish edition if the image crop is canceled and there is scale options', async() => {
       const onEditionFinished = jest.fn();
-      const scaleOptions = { width: 500, height: 500, keepAspectRatio: 1 };
+      const scaleOptions = { width: 500, height: 500, keepAspectRatio: true };
       const { imageEditor } = setup({ cropTool: true, scaleOptions, onEditionFinished });
 
       const imageBlob = new Blob([]);
@@ -155,7 +155,7 @@ describe('components', () => {
 
     it('should scale and finish edition if the image crop is canceled and there is scale options', async() => {
       const onEditionFinished = jest.fn();
-      const scaleOptions = { width: 500, height: 500, keepAspectRatio: 1 };
+      const scaleOptions = { width: 500, height: 500, keepAspectRatio: true };
       const { imageEditor } = setup({ cropTool: true, scaleOptions, onEditionFinished });
 
       const imageBlob = new Blob([]);

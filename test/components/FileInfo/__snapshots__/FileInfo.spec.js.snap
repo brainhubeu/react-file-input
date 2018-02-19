@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components FileInfo should match exact snapshot 1`] = `
+<div>
+  <div
+    className="brainhub-file-info"
+  >
+    <div
+      className="brainhub-file-info__metadata"
+    >
+      <div
+        className="brainhub-file-info__metadata__info"
+      >
+        <span
+          className="brainhub-file-info__metadata__info_name"
+        >
+          Test
+        </span>
+        .spec.js
+         (
+        12 B
+        ) 
+        test/mock
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`components FileInfo should match exact snapshot with custom components 1`] = `
+<div>
+  <div
+    className="brainhub-file-info"
+  >
+    <div
+      className="customMetadata"
+    />
+    <div
+      className="customThumbnail"
+    >
+      <img
+        className="brainhub-file-info__image"
+        src="testImage"
+      />
+    </div>
+  </div>
+</div>
+`;

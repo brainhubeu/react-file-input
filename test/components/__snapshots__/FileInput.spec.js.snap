@@ -16,9 +16,6 @@ exports[`components FileInput should match exact snapshot 1`] = `
       type="file"
     />
     <div
-      className="brainhub-file-input__fileInfo"
-    />
-    <div
       className="brainhub-drop-area"
       onDragEnter={[Function]}
       onDragLeave={[Function]}

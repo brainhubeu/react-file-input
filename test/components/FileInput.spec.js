@@ -5,12 +5,18 @@ import renderer from 'react-test-renderer';
 import FileInput from '../../src/components/FileInput';
 
 import DropArea from '../../src/components/DropArea';
+import FileInfo from '../../src/components/FileInfo';
 import ImageEditor from '../../src/components/ImageEditor';
 import { getImageThumbnail } from '../../src/helpers/file';
 
 jest.mock('../../src/helpers/file', () => ({
   getImageThumbnail: file => file.name,
 }));
+
+const file = new File(['test.spec.js'], 'Test.spec.js', { type: 'test/mock' });
+file.filename = 'Test';
+file.extension = 'spec.js';
+file.mimeType = file.type;
 
 const defaultProps = {
   label: 'Test',
@@ -31,13 +37,6 @@ const CustomComponent = () => (<div/>);
 
 describe('components', () => {
   describe('FileInput', () => {
-    const data = {
-      name: 'Cute puppies',
-      filename: 'Cute puppies',
-      extension: 'as',
-      size: 1000,
-    };
-
     it('should render with a default state', () => {
       const { fileInput } = setup();
 
@@ -47,7 +46,6 @@ describe('components', () => {
         value: null,
         tempValue: null,
         image: null,
-        hasBeenEdited: false,
       });
     });
 
@@ -69,6 +67,14 @@ describe('components', () => {
       const { dropArea } = setup();
 
       expect(dropArea).toHaveLength(1);
+    });
+
+    it('should not render a DropArea an image is in edition', () => {
+      const { fileInput } = setup();
+
+      fileInput.setState({ value: null, image: 'imageSource' });
+
+      expect(fileInput.find(DropArea)).toHaveLength(0);
     });
 
     it('should render a DropArea that can open the file dialog', () => {
@@ -127,7 +133,6 @@ describe('components', () => {
       const onDropCallback = jest.fn();
       const { dropArea, fileInput } = setup({ onDropCallback });
 
-      const file = { name: 'MockFile.mkv', size: 5000 };
       fileInput.setState({ isOver: 2, enteredInDocument: 2 });
 
       dropArea.simulate('drop', { dataTransfer: { files: [file] } });
@@ -137,46 +142,16 @@ describe('components', () => {
       expect(fileInput.state('value')).toBe(file);
     });
 
-    it('should render metadata from default component', () => {
+    it('should render metadata if the file is set', () => {
       const { fileInput } = setup();
-      fileInput.setState({ value: data });
+      fileInput.setState({ value: file });
 
-      expect(fileInput.find('FileInputMetadata')).toHaveLength(1);
-    });
-
-    it('should render metadata from custom component', () => {
-      const { fileInput } = setup({ customMetadata: CustomComponent });
-      fileInput.setState({ value: data });
-
-      expect(fileInput.find(CustomComponent)).toHaveLength(1);
-      expect(fileInput.find('FileInputMetadata')).toHaveLength(0);
-    });
-
-    it('should not render metadata when user pass false to displayMetadata prop', () => {
-      const { fileInput } = setup({ displayMetadata: false });
-      fileInput.setState({ value: data });
-
-      expect(fileInput.find('FileInputMetadata').length).toEqual(0);
-    });
-
-    it('should render image thumbnail from default component', () => {
-      const { fileInput } = setup();
-      fileInput.setState({ image: 'image_source' });
-
-      expect(fileInput.find('ImageThumbnail')).toHaveLength(1);
-    });
-
-    it('should render image thumbnail from custom component', () => {
-      const { fileInput } = setup({ customImageThumbnail: CustomComponent });
-      fileInput.setState({ image: 'image_source' });
-
-      expect(fileInput.find(CustomComponent)).toHaveLength(1);
-      expect(fileInput.find('ImageThumbnail')).toHaveLength(0);
+      expect(fileInput.find(FileInfo)).toHaveLength(1);
     });
 
     it('should handle file images with an image editor', () => {
       const { fileInput } = setup({ displayImageThumbnail: false });
-      fileInput.setState({ value: data, image: 'test' });
+      fileInput.setState({ value: file, image: 'test' });
 
       expect(fileInput.find('ImageThumbnail').length).toEqual(0);
     });
@@ -184,16 +159,16 @@ describe('components', () => {
     it('should handle image files with the file editor', async() => {
       const { dropArea, fileInput } = setup();
 
-      const file = { name: 'MockFile.jpeg', size: 5000 };
+      const imageFile = new File(['imageFile'], 'MockFile.jpeg', { type: 'image/jpg' });
       fileInput.setState({ isOver: 2, enteredInDocument: 2 });
 
-      await dropArea.simulate('drop', { dataTransfer: { files: [file] } });
+      await dropArea.simulate('drop', { dataTransfer: { files: [imageFile] } });
 
       expect(fileInput.state('enteredInDocument')).toBe(0);
       expect(fileInput.state('isOver')).toBe(0);
       expect(fileInput.state('value')).toBe(null);
-      expect(fileInput.state('tempValue')).toBe(file);
-      expect(fileInput.state('image')).toBe(getImageThumbnail(file));
+      expect(fileInput.state('tempValue')).toBe(imageFile);
+      expect(fileInput.state('image')).toBe(getImageThumbnail(imageFile));
     });
 
     it('should render an ImageEditor if it is handling an image file', () => {
