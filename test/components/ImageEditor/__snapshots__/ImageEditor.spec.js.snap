@@ -2,7 +2,9 @@
 
 exports[`components ImageEditor should match exact snapshot 1`] = `
 <div>
-  <div>
+  <div
+    className=""
+  >
     <div>
       <div
         className="brainhub-image-rotator"

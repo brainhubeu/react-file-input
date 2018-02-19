@@ -33,8 +33,6 @@ const setup = (props = {}) => {
   };
 };
 
-const CustomComponent = () => (<div/>);
-
 describe('components', () => {
   describe('FileInput', () => {
     it('should render with a default state', () => {
@@ -47,6 +45,13 @@ describe('components', () => {
         tempValue: null,
         image: null,
       });
+    });
+
+    it('should render with custom class if defined', () => {
+      const className = 'custom_class';
+      const { fileInput } = setup({ className });
+
+      expect(fileInput.find('div').first().hasClass(className)).toBeTruthy();
     });
 
     it('should render a hidden file input', () => {

@@ -175,6 +175,13 @@ describe('components', () => {
       expect(onEditionFinished).toHaveBeenCalledWith(imageBlob);
     });
 
+    it('should render with custom class if defined', () => {
+      const className = 'custom_class';
+      const { imageEditor } = setup({ className });
+
+      expect(imageEditor.hasClass(className)).toBeTruthy();
+    });
+
     it('should match exact snapshot', () => {
       const tree = renderer.create(
         <div>

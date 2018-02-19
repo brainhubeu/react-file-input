@@ -12,20 +12,20 @@ const defaultProps = {
 };
 
 const setup = (props = {}) => {
-  const droparea = shallow(<DropArea {...defaultProps} {...props} />);
+  const dropArea = shallow(<DropArea {...defaultProps} {...props} />);
 
   return {
-    droparea,
+    dropArea,
   };
 };
 
 describe('components', () => {
   describe('DropArea', () => {
     it('should render an add button by default', () => {
-      const { droparea } = setup();
+      const { dropArea } = setup();
 
-      const button = droparea.find('.brainhub-drop-area__button');
-      const info = droparea.find('.brainhub-drop-area__info');
+      const button = dropArea.find('.brainhub-drop-area__button');
+      const info = dropArea.find('.brainhub-drop-area__info');
 
       expect(button).toHaveLength(1);
       expect(info).toHaveLength(0);
@@ -36,15 +36,29 @@ describe('components', () => {
     });
 
     it('should render an info message if it is dragging', () => {
-      const { droparea } = setup({ dragging: true });
+      const { dropArea } = setup({ dragging: true });
 
-      const button = droparea.find('.brainhub-drop-area__button');
-      const info = droparea.find('.brainhub-drop-area__info');
+      const button = dropArea.find('.brainhub-drop-area__button');
+      const info = dropArea.find('.brainhub-drop-area__info');
 
       expect(button).toHaveLength(0);
       expect(info).toHaveLength(1);
 
       expect(info.text()).toBe('Drop here to select file.');
+    });
+
+    it('should render with custom class if defined', () => {
+      const className = 'custom_class';
+      const { dropArea } = setup({ className });
+
+      expect(dropArea.find('div').first().hasClass(className)).toBeTruthy();
+      expect(dropArea.find('div').first().hasClass('brainhub-drop-area')).toBeTruthy();
+
+      dropArea.setProps({ dragging: true });
+
+      expect(dropArea.find('div').first().hasClass(className)).toBeTruthy();
+      expect(dropArea.find('div').first().hasClass('brainhub-drop-area')).toBeTruthy();
+      expect(dropArea.find('div').first().hasClass('brainhub-drop-area--dragging')).toBeTruthy();
     });
 
     it('should match exact snapshot', () => {

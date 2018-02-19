@@ -6,12 +6,14 @@ import Thumbnail from './Thumbnail';
 
 import '../../styles/FileInfo.scss';
 
-const FileInfo = ({ file, image, metadataComponent, thumbnailComponent }) => {
+const FileInfo = ({ className, file, image, metadataComponent, thumbnailComponent }) => {
+  const baseClassName = (className && `brainhub-file-info ${className}`) || 'brainhub-file-info';
+
   const MetadataClass = metadataComponent || Metadata;
   const ThumbnailClass = thumbnailComponent || Thumbnail;
 
   return (
-    <div className="brainhub-file-info">
+    <div className={baseClassName}>
       <MetadataClass name={file.filename} size={file.size} extension={file.extension} type={file.mimeType}/>
       { (image && (
         <ThumbnailClass>
@@ -24,12 +26,14 @@ const FileInfo = ({ file, image, metadataComponent, thumbnailComponent }) => {
 };
 
 FileInfo.default = {
+  className: '',
   image: '',
   metadataComponent: null,
   thumbnailComponent: null,
 };
 
 FileInfo.propTypes = {
+  className: PropTypes.string,
   file: PropTypes.instanceOf(File).isRequired,
   image: PropTypes.string,
   metadataComponent: PropTypes.func,

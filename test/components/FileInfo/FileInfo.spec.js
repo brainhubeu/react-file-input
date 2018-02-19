@@ -58,6 +58,15 @@ describe('components', () => {
 
       expect(tree).toMatchSnapshot();
     });
+
+    it('should render with custom class if defined', () => {
+      const className = 'custom_class';
+      const { fileInfo } = setup({ className });
+
+      expect(fileInfo.hasClass(className)).toBeTruthy();
+      expect(fileInfo.hasClass('brainhub-file-info')).toBeTruthy();
+    });
+
     it('should match exact snapshot with custom components', () => {
       const tree = renderer.create(
         <div>

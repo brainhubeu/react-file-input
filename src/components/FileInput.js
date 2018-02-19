@@ -192,6 +192,10 @@ class FileInput extends Component {
   render() {
     const { value, image } = this.state;
     const {
+      className,
+      dropAreaClassName,
+      fileInfoClassName,
+      imageEditorClassName,
       cropAspectRatio,
       metadataComponent,
       thumbnailComponent,
@@ -201,8 +205,10 @@ class FileInput extends Component {
     } = this.props;
     const isDragging = selectIsDragging(this.state);
 
+    const baseClassName = (className && `brainhub-file-input__wrapper ${className}`) || 'brainhub-file-input__wrapper';
+
     return (
-      <div className="brainhub-file-input__wrapper">
+      <div className={baseClassName}>
         <div className="brainhub-file-input__label">{label}</div>
         <input
           className="brainhub-file-input__input--hidden"
@@ -215,6 +221,7 @@ class FileInput extends Component {
         { (value
           && (
             <FileInfo
+              className={fileInfoClassName}
               file={value}
               image={image}
               metadataComponent={metadataComponent}
@@ -226,6 +233,7 @@ class FileInput extends Component {
         { ((!image || value) // it means image not being edited
           && (
             <DropArea
+              className={dropAreaClassName}
               dragging={isDragging}
               onDragEnter={this.onDragEnter}
               onDragLeave={this.onDragLeave}
@@ -238,6 +246,7 @@ class FileInput extends Component {
         { ((image && !value) // it means image being edited
           && (
             <ImageEditor
+              className={imageEditorClassName}
               cropAspectRatio={cropAspectRatio}
               cropTool={cropTool}
               image={image}
@@ -254,6 +263,10 @@ class FileInput extends Component {
 }
 
 FileInput.defaultProps = {
+  className: '',
+  dropAreaClassName: '',
+  fileInfoClassName: '',
+  imageEditorClassName: '',
   dragOnDocument: true,
   dropOnDocument: false,
   metadataComponent: null,
@@ -268,6 +281,10 @@ FileInput.defaultProps = {
 };
 
 FileInput.propTypes = {
+  className: PropTypes.string,
+  dropAreaClassName: PropTypes.string,
+  fileInfoClassName: PropTypes.string,
+  imageEditorClassName: PropTypes.string,
   dragOnDocument: PropTypes.bool,
   dropOnDocument: PropTypes.bool,
   label: PropTypes.string.isRequired,

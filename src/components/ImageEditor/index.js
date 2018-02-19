@@ -136,11 +136,11 @@ class ImageEditor extends PureComponent {
   }
 
   render() {
-    const { cropAspectRatio, cropTool } = this.props;
+    const { className, cropAspectRatio, cropTool } = this.props;
     const { hasBeenRotated, hasBeenCropped, image } = this.state;
 
     return (
-      <div>
+      <div className={className || ''}>
         { !hasBeenRotated
           ? (<ImageRotator image={image} onSave={this.onRotate}/>)
           : null
@@ -167,12 +167,14 @@ class ImageEditor extends PureComponent {
 }
 
 ImageEditor.defaultProps = {
-  cropAspectRatio: 0, // heigh / width
+  className: '',
+  cropAspectRatio: 0, // height / width
   cropTool: false,
   scaleOptions: null,
 };
 
 ImageEditor.propTypes = {
+  className: PropTypes.string,
   cropAspectRatio: PropTypes.number,
   cropTool: PropTypes.bool,
   image: PropTypes.string.isRequired,
