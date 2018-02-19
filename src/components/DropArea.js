@@ -19,7 +19,9 @@ const Droparea = ({ dragging, onDragEnter, onDragLeave, onDrop, openFileDialog }
         ? (<div className="brainhub-drop-area__info">Drop here to select file.</div>)
         : (
           <div>
-            <div className="brainhub-drop-area__button" role="button" tabIndex={-1} onClick={openFileDialog}>+ Add File</div>
+            <div className="brainhub-drop-area__button" role="button" tabIndex={-1} onClick={openFileDialog}>
+              + Add File
+            </div>
           </div>
         )
       }
