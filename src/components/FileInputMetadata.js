@@ -8,11 +8,13 @@ const FileInputMetadata = props => {
   const { extension, name, type, size } = props;
   const formattedSize = filesize(size, { separator: ',' });
 
-  return (<div className="brainhub-file-input__metadata">
-    <div className="brainhub-file-input__metadata__info">
-      <span className="brainhub-file-input__metadata__info_name">{name}</span>{extension ? `.${extension}`: ''} ({formattedSize}) {type}
+  return (
+    <div className="brainhub-file-input__metadata">
+      <div className="brainhub-file-input__metadata__info">
+        <span className="brainhub-file-input__metadata__info_name">{name}</span>{extension ? `.${extension}`: ''} ({formattedSize}) {type}
+      </div>
     </div>
-  </div>);
+  );
 };
 
 FileInputMetadata.defaultProps = {

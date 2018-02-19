@@ -71,9 +71,6 @@
   "application/font-woff": [
     "woff"
   ],
-  "application/font-woff2": [
-    "woff2"
-  ],
   "application/geo+json": [
     "geojson"
   ],
@@ -2367,9 +2364,27 @@
   "image/x-xwindowdump": [
     "xwd"
   ],
+  "message/disposition-notification": [
+    "disposition-notification"
+  ],
+  "message/global": [
+    "u8msg"
+  ],
+  "message/global-delivery-status": [
+    "u8dsn"
+  ],
+  "message/global-disposition-notification": [
+    "u8mdn"
+  ],
+  "message/global-headers": [
+    "u8hdr"
+  ],
   "message/rfc822": [
     "eml",
     "mime"
+  ],
+  "message/vnd.wfa.wsc": [
+    "wsc"
   ],
   "model/gltf+json": [
     "gltf"

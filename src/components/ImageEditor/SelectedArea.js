@@ -87,7 +87,8 @@ class SelectedArea extends PureComponent {
           this.selectedArea = ref;
         }}
         style={style}
-        onMouseDown={this.startMove} >
+        onMouseDown={this.startMove}
+      >
         <div
           className="brainhub-selected-area__resize-point brainhub-selected-area__resize-point--tl"
           onMouseDown={this.resizeTopLeft}

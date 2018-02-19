@@ -179,7 +179,7 @@ ImageEditor.propTypes = {
   scaleOptions: PropTypes.shape({
     width: PropTypes.number,
     height: PropTypes.number,
-    keepAspectRatio: PropTypes.boolean,
+    keepAspectRatio: PropTypes.bool,
   }),
   onEditionFinished: PropTypes.func.isRequired,
 };

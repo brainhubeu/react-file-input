@@ -151,17 +151,17 @@ class FileInput extends Component {
     }
   }
 
-  onDocumentDragEnter(event) {
+  onDocumentDragEnter() {
     this.setState(state => ({ ...state, enteredInDocument: state.enteredInDocument + 1 }));
   }
-  onDocumentDragLeave(event) {
+  onDocumentDragLeave() {
     this.setState(state => ({ ...state, enteredInDocument: state.enteredInDocument - 1 }));
   }
-  onDocumentDrop(event) {
+  onDocumentDrop() {
     this.setState(state => ({ ...state, enteredInDocument: 0 }));
   }
 
-  onDragEnter(event) {
+  onDragEnter() {
     const { onDragEnterCallback } = this.props;
     const wasDraggingOver = selectIsDraggingOver(this.state);
 
@@ -171,7 +171,7 @@ class FileInput extends Component {
       }
     });
   }
-  onDragLeave(event) {
+  onDragLeave() {
     const { onDragLeaveCallback } = this.props;
     const wasDraggingOver = selectIsDraggingOver(this.state);
 
@@ -284,7 +284,7 @@ FileInput.propTypes = {
   scaleOptions: PropTypes.shape({
     width: PropTypes.number,
     height: PropTypes.number,
-    keepAspectRatio: PropTypes.boolean,
+    keepAspectRatio: PropTypes.bool,
   }),
   cropAspectRatio: PropTypes.number,
   cropTool: PropTypes.bool,
