@@ -41,11 +41,11 @@ See the reference below for more advanced usages.
 ### Usage with Redux Form
 Probably you are not crazy enough to handle your forms like in 1999. Chances are that you are using `redux-form`. If so, it's your lucky day, because you can use our `FileInput` with `redux-forms`. Here's a basic example:
 ```javascript
-// MyFileUploader.js
+// MyFileInput.js
 import React from 'react';
 import FileInput from '@brainhubeu/react-file-input';
 
-const MyFileUploader = ({ input, label }) => (
+const MyFileInput = ({ input, label }) => (
   <FileInput
     label='Awesome Uploader'
     onChangeCallback={input.onChange}
@@ -56,11 +56,11 @@ const MyFileUploader = ({ input, label }) => (
 ```
 ```javascript
 // MyGreatForm.js
-import MyFileUploader from './MyFileUploader'
+import MyFileInput from './MyFileInput'
 
 ...
 
-<Field name="myField" component={MyFieldUploader}/>
+<Field name="myField" component={MyFileInput}/>
 ```
 And that's it. Prepare some coffee and enjoy.
 ### Styles
@@ -106,7 +106,7 @@ Those classnames are for the top main components. But if you want to override ch
   }
 }
 ```
-Take a look on the styles and selector here: https://github.com/brainhubeu/react-file-input/tree/master/src/styles
+Take a look on the styles and selectors here: https://github.com/brainhubeu/react-file-input/tree/master/src/styles
 
 ## Reference
 ### FileInput
