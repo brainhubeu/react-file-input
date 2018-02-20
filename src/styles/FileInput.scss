@@ -14,12 +14,3 @@
   color: $BROWN_GRAY;
   margin-bottom: 4px;
 }
-
-.brainhub-file-input__fileInfo {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-columns: 0.1fr 0.9fr;
-  grid-template-areas: "image metadata";
-  width: 300px;
-  margin: 2px;
-}

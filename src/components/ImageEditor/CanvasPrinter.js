@@ -141,7 +141,7 @@ class CanvasPrinter extends PureComponent {
     });
   }
 
-  rotateImage(image, angle, scaleOptions = null) {
+  rotateImage(image, angle) {
     const { naturalWidth, naturalHeight } = image;
 
     const inverted = !(angle %2 === 0);
@@ -170,7 +170,9 @@ class CanvasPrinter extends PureComponent {
   render() {
     return (
       <canvas
-        className="brainhub-canvas-printer"
+        style={{
+          display: 'none',
+        }}
         ref={ref => {
           this.canvas = ref;
         }}

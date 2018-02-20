@@ -1,5 +1,9 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import faRedo from '@fortawesome/fontawesome-free-solid/faRedo';
+import faUndo from '@fortawesome/fontawesome-free-solid/faUndo';
+
+import Icon from '../Icon';
 
 import '../../styles/ImageEditor.scss';
 
@@ -13,8 +17,8 @@ class ImageRotator extends PureComponent {
 
     this.image = null;
 
-    this.rotateOutwards = this.rotateOutwards.bind(this);
-    this.rotateInwards = this.rotateInwards.bind(this);
+    this.rotateCounterClockwise = this.rotateCounterClockwise.bind(this);
+    this.rotateClockwise = this.rotateClockwise.bind(this);
 
     this.save = this.save.bind(this);
   }
@@ -27,14 +31,14 @@ class ImageRotator extends PureComponent {
     }
   }
 
-  rotateOutwards() {
+  rotateCounterClockwise() {
     this.setState(state => ({
       ...state,
       angle: (state.angle + 4 - 1) % 4,
     }));
   }
 
-  rotateInwards() {
+  rotateClockwise() {
     this.setState(state => ({
       ...state,
       angle: (state.angle + 1) % 4,
@@ -61,26 +65,30 @@ class ImageRotator extends PureComponent {
             style={{
               transform: `rotate(${angle * 90}deg)`,
             }}
-            ref={ ref => {
+            ref={ref => {
               this.image = ref;
             }}
           />
         </div>
-        <div>
+        <div className="brainhub-image-rotator__controls">
           <button
             className="brainhub-image-rotator__button brainhub-image-rotator__button--arrow"
-            onClick={this.rotateOutwards}>
-            {`<-`}
+            onClick={this.rotateCounterClockwise}
+          >
+            <Icon icon={faUndo.icon}/>
           </button>
           <button
             className="brainhub-image-rotator__button brainhub-image-rotator__button--save"
-            onClick={this.save}>
+            onClick={this.save}
+          >
           Save image
           </button>
           <button
             className="brainhub-image-rotator__button brainhub-image-rotator__button--arrow"
-            onClick={this.rotateInwards}>
-            {`->`}
+            onClick={this.rotateClockwise}
+          >
+            <Icon icon={faRedo.icon}/>
+
           </button>
         </div>
       </div>

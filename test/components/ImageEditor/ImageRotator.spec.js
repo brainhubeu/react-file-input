@@ -2,7 +2,11 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import renderer from 'react-test-renderer';
 
+import faRedo from '@fortawesome/fontawesome-free-solid/faRedo';
+import faUndo from '@fortawesome/fontawesome-free-solid/faUndo';
+
 import ImageRotator from '../../../src/components/ImageEditor/ImageRotator';
+import Icon from '../../../src/components/Icon';
 
 const defaultProps = {
   image: 'testImage',
@@ -52,7 +56,10 @@ describe('components', () => {
 
         const first = buttons.first();
 
-        expect(first.text()).toBe('<-');
+        const firstIcon = first.find(Icon);
+
+        expect(firstIcon).toHaveLength(1);
+        expect(firstIcon.prop('icon')).toBe(faUndo.icon);
         expect(first.hasClass('brainhub-image-rotator__button--arrow')).toBeTruthy();
 
         const middle = buttons.at(1);
@@ -62,8 +69,11 @@ describe('components', () => {
 
         const last = buttons.last();
 
-        expect(last.text()).toBe('->');
-        expect(last.hasClass('brainhub-image-rotator__button--arrow')).toBeTruthy();
+        const lastIcon = last.find(Icon);
+
+        expect(lastIcon).toHaveLength(1);
+        expect(lastIcon.prop('icon')).toBe(faRedo.icon);
+        expect(first.hasClass('brainhub-image-rotator__button--arrow')).toBeTruthy();
       });
 
       it('should rotate counter clock-wise when user clicks on left arrow', () => {

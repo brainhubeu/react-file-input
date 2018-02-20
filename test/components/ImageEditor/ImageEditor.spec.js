@@ -61,14 +61,14 @@ describe('components', () => {
       const angle = '1';
       const imageBlob = new Blob([]);
       const canvasPrinterMock = {
-        rotate: jest.fn(() => Promise.resolve(imageBlob)),
+        rotateImage: jest.fn(() => Promise.resolve(imageBlob)),
       };
 
       imageEditor.instance().canvasPrinter = canvasPrinterMock;
 
       await imageEditor.find(ImageRotator).prop('onSave')(image, angle);
 
-      expect(canvasPrinterMock.rotate).toHaveBeenCalledWith(image, angle);
+      expect(canvasPrinterMock.rotateImage).toHaveBeenCalledWith(image, angle);
       expect(imageEditor.state('imageBlob')).toBe(imageBlob);
       expect(imageEditor.state('hasBeenRotated')).toBeTruthy();
       expect(onEditionFinished).toHaveBeenCalledWith(imageBlob);
@@ -76,21 +76,21 @@ describe('components', () => {
 
     it('should finish edition if the image is rotated and scaled if there is no more steps', async() => {
       const onEditionFinished = jest.fn();
-      const scaleOptions = { width: 500, height: 500, keepAspectRatio: 1 };
+      const scaleOptions = { width: 500, height: 500, keepAspectRatio: true };
       const { imageEditor } = setup({ scaleOptions, onEditionFinished });
 
       const image = 'test image';
       const angle = '1';
       const imageBlob = new Blob([]);
       const canvasPrinterMock = {
-        rotateAndScale: jest.fn(() => Promise.resolve(imageBlob)),
+        rotateAndScaleImage: jest.fn(() => Promise.resolve(imageBlob)),
       };
 
       imageEditor.instance().canvasPrinter = canvasPrinterMock;
 
       await imageEditor.find(ImageRotator).prop('onSave')(image, angle);
 
-      expect(canvasPrinterMock.rotateAndScale).toHaveBeenCalledWith(image, angle, scaleOptions);
+      expect(canvasPrinterMock.rotateAndScaleImage).toHaveBeenCalledWith(image, angle, scaleOptions);
       expect(imageEditor.state('imageBlob')).toBe(imageBlob);
       expect(imageEditor.state('hasBeenRotated')).toBeTruthy();
       expect(onEditionFinished).toHaveBeenCalledWith(imageBlob);
@@ -104,14 +104,14 @@ describe('components', () => {
       const angle = '1';
       const imageBlob = new Blob([]);
       const canvasPrinterMock = {
-        rotate: jest.fn(() => Promise.resolve(imageBlob)),
+        rotateImage: jest.fn(() => Promise.resolve(imageBlob)),
       };
 
       imageEditor.instance().canvasPrinter = canvasPrinterMock;
 
       await imageEditor.find(ImageRotator).prop('onSave')(image, angle);
 
-      expect(canvasPrinterMock.rotate).toHaveBeenCalledWith(image, angle);
+      expect(canvasPrinterMock.rotateImage).toHaveBeenCalledWith(image, angle);
       expect(imageEditor.state('imageBlob')).toBe(imageBlob);
       expect(imageEditor.state('hasBeenRotated')).toBeTruthy();
       expect(onEditionFinished).not.toHaveBeenCalled();
@@ -133,7 +133,7 @@ describe('components', () => {
 
     it('should scale and finish edition if the image crop is canceled and there is scale options', async() => {
       const onEditionFinished = jest.fn();
-      const scaleOptions = { width: 500, height: 500, keepAspectRatio: 1 };
+      const scaleOptions = { width: 500, height: 500, keepAspectRatio: true };
       const { imageEditor } = setup({ cropTool: true, scaleOptions, onEditionFinished });
 
       const imageBlob = new Blob([]);
@@ -155,7 +155,7 @@ describe('components', () => {
 
     it('should scale and finish edition if the image crop is canceled and there is scale options', async() => {
       const onEditionFinished = jest.fn();
-      const scaleOptions = { width: 500, height: 500, keepAspectRatio: 1 };
+      const scaleOptions = { width: 500, height: 500, keepAspectRatio: true };
       const { imageEditor } = setup({ cropTool: true, scaleOptions, onEditionFinished });
 
       const imageBlob = new Blob([]);
@@ -163,7 +163,7 @@ describe('components', () => {
       const image = 'test image';
       const area = { x0: 0, x1: 0, y0: 0, y1: 0 };
       const canvasPrinterMock = {
-        cropAndResize: jest.fn(() => Promise.resolve(imageBlob)),
+        cropAndResizeImage: jest.fn(() => Promise.resolve(imageBlob)),
       };
 
       imageEditor.setState({ hasBeenRotated: true });
@@ -173,6 +173,13 @@ describe('components', () => {
 
       expect(imageEditor.state('hasBeenCropped')).toBeTruthy();
       expect(onEditionFinished).toHaveBeenCalledWith(imageBlob);
+    });
+
+    it('should render with custom class if defined', () => {
+      const className = 'custom_class';
+      const { imageEditor } = setup({ className });
+
+      expect(imageEditor.hasClass(className)).toBeTruthy();
     });
 
     it('should match exact snapshot', () => {

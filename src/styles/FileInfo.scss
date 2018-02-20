@@ -1,0 +1,38 @@
+.brainhub-file-info {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-columns: 0.1fr 0.9fr;
+  grid-template-areas: "image metadata";
+  width: 100%;
+  margin: 2px;
+}
+.brainhub-file-info__metadata {
+  grid-area: metadata;
+  display: flex;
+  font-size: 0.8em;
+  width: 100%;
+  margin: 5px;
+}
+
+.brainhub-file-info__metadata__info{
+  text-align: left;
+  margin: auto;
+  margin-left: 5px;
+  margin-right: 0px;
+}
+
+.brainhub-file-info__metadata__info_name {
+  font-weight: bold;
+}
+
+.brainhub-file-info__thumbnail {
+  grid-area: image;
+  width: 100%;
+}
+
+.brainhub-file-info__image {
+  max-width: 100%;
+  max-height: 100%;
+  display: block;
+  margin: auto;
+}

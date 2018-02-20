@@ -19,16 +19,17 @@
     "remove-dist": "rm -rf ./dist",
     "prebuild": "npm run clean-dist",
     "build": "node tools/build.js",
-    "test": "BABEL_DISABLE_CACHE=1 node --trace-warnings ./tools/runTests.js",
+    "test": "BABEL_DISABLE_CACHE=1 jest",
     "test:cucumber": "rm -rf ./screenshots && NODE_PATH=src wdio wdio.conf.js",
     "test:coverage": "yarn jest --coverage",
-    "test:watch": "npm run test -- --watch",
+    "test:watch": "yarn test --watch",
     "selenium:install": "selenium-standalone install",
     "selenium": "selenium-standalone start"
   },
   "author": "Brainhub",
   "license": "MIT",
   "dependencies": {
+    "@fortawesome/fontawesome-free-solid": "^5.0.6",
     "express": "^4.15.2",
     "mime-db": "^1.32.0"
   },
@@ -64,14 +65,14 @@
     "html-webpack-plugin": "^2.29.0",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^22.1.4",
+    "jsdom": "^11.6.2",
     "json-loader": "^0.5.4",
     "lodash": "^4.17.4",
     "node-sass": "^4.6.1",
     "postcss-loader": "^2.0.8",
-    "prop-types": "^15.5.10",
+    "prop-types": "^15.6.0",
     "react": "^16.1.1",
     "react-dom": "^16.1.1",
-    "react-fa": "^5.0.0",
     "react-redux": "^5.0.5",
     "react-router": "^4.1.1",
     "react-router-dom": "^4.2.2",
@@ -98,6 +99,7 @@
     "url": ""
   },
   "jest": {
+    "testRegex": "test\\/[^\\/]+.+\\.spec\\.js$",
     "moduleNameMapper": {
       "\\.(css|less|sass|scss)$": "identity-obj-proxy"
     },

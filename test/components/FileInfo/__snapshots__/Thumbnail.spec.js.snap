@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components FileInfo Thumbnail should match exact snapshot 1`] = `
+<div>
+  <div
+    className="brainhub-file-info__thumbnail"
+  >
+    <img
+      src="imageSource"
+    />
+  </div>
+</div>
+`;

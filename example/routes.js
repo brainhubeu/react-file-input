@@ -6,7 +6,7 @@ import { ConnectedRouter } from 'react-router-redux';
 
 import App from './containers/App';
 import HomePage from './pages/HomePage';
-import NotFoundPage from './pages/NotFoundPage.js';
+import NotFoundPage from './pages/NotFoundPage';
 
 export default (
   <ConnectedRouter history={createHistory()}>

@@ -5,12 +5,16 @@ $POINT_SIZE: 8px;
 .brainhub-crop-tool,
 .brainhub-image-rotator {
   position: relative;
-  cursor: crosshair;
   overflow: hidden;
 }
 
 .brainhub-crop-tool {
   cursor: crosshair;
+}
+
+.brainhub-crop-tool__controls,
+.brainhub-image-rotator__controls {
+  text-align: center;
 }
 
 .brainhub-crop-tool__image,
@@ -21,23 +25,23 @@ $POINT_SIZE: 8px;
   margin: 0 auto;
 }
 
-.brainhub-crop_tool__button,
+.brainhub-crop-tool__button,
 .brainhub-image-rotator__button {
   border: none;
   outline: none;
-  font-size: 16px;
+  font-size: 14px;
   color: white;
   border-radius: 5px;
   padding: 4px 16px;
   margin: 4px;
 }
 
-.brainhub-crop_tool__button--cancel,
+.brainhub-crop-tool__button--cancel,
 .brainhub-image-rotator__button--arrow {
   background-color: $LIGTH_GRAY;
 }
 
-.brainhub-crop_tool__button--save,
+.brainhub-crop-tool__button--save,
 .brainhub-image-rotator__button--save {
   background-color: $LIGHT_GREEN;
 }
