@@ -1,5 +1,6 @@
 # react-file-input
-[![CircleCI](https://circleci.com/gh/brainhubeu/react-file-input.svg?style=svg)](https://circleci.com/gh/brainhubeu/react-file-input)
+[![CircleCI](https://img.shields.io/circleci/project/github/brainhubeu/react-file-input.svg)](https://circleci.com/gh/brainhubeu/react-file-input)[![npm](https://img.shields.io/npm/v/@brainhubeu/react-file-input.svg)](https://www.npmjs.com/package/@brainhubeu/react-file-input)[![npm](https://img.shields.io/npm/l/@brainhubeu/react-file-input.svg)](https://www.npmjs.com/package/@brainhubeu/react-file-input)
+
 A File Input, width drag'n'drop and image editor.
 
 ## Why?
