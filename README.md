@@ -43,17 +43,33 @@ See the reference below for more advanced usages.
 Probably you are not crazy enough to handle your forms like in 1999. Chances are that you are using `redux-form`. If so, it's your lucky day, because you can use our `FileInput` with `redux-forms`. Here's a basic example:
 ```javascript
 // MyFileInput.js
-import React from 'react';
+import React, { PureComponent } from 'react';
 import FileInput from '@brainhubeu/react-file-input';
 
-const MyFileInput = ({ input, label }) => (
-  <FileInput
-    label='Awesome Uploader'
-    onChangeCallback={input.onChange}
-    onDragEnterCallback={input.onFocus}
-    onDragLeaveCallback={input.onBlur}
-  />
-);
+export default class MyFileInput extends PureComponent {
+  constructor(props) {
+    super(props);
+
+    this.onChange = this.onChange.bind(this)
+  }
+  onChange({ value }) {
+    const { input } = this.props;
+
+    input.onChange(value);
+  }
+  render() {
+    const { input, label } = this.props;
+
+    return (
+      <FileInput
+        label='Awesome Uploader'
+        onChangeCallback={this.onChange}
+        onDragEnterCallback={input.onFocus}
+        onDragLeaveCallback={input.onBlur}
+      />
+    );
+  }
+}
 ```
 ```javascript
 // MyGreatForm.js
