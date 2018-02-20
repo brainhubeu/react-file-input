@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components Icon should match exact snapshot 1`] = `
+<div>
+  <svg
+    style={
+      Object {
+        "display": "inline-block",
+        "fontSize": "inherit",
+        "height": "1em",
+        "overflow": "visible",
+        "verticalAlign": "-.125em",
+        "width": "1em",
+      }
+    }
+    viewBox="0 0 128 256"
+  >
+    <path
+      d="path"
+      fill="currentColor"
+    />
+  </svg>
+</div>
+`;

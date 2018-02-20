@@ -23,13 +23,14 @@
     "test": "BABEL_DISABLE_CACHE=1 jest",
     "test:cucumber": "rm -rf ./screenshots && NODE_PATH=src wdio wdio.conf.js",
     "test:coverage": "yarn jest --coverage",
-    "test:watch": "npm run test -- --watch",
+    "test:watch": "yarn test --watch",
     "selenium:install": "selenium-standalone install",
     "selenium": "selenium-standalone start"
   },
   "author": "Brainhub",
   "license": "MIT",
   "dependencies": {
+    "@fortawesome/fontawesome-free-solid": "^5.0.6",
     "express": "^4.15.2",
     "mime-db": "^1.32.0"
   },
@@ -70,10 +71,9 @@
     "lodash": "^4.17.4",
     "node-sass": "^4.6.1",
     "postcss-loader": "^2.0.8",
-    "prop-types": "^15.5.10",
+    "prop-types": "^15.6.0",
     "react": "^16.1.1",
     "react-dom": "^16.1.1",
-    "react-fa": "^5.0.0",
     "react-redux": "^5.0.5",
     "react-router": "^4.1.1",
     "react-router-dom": "^4.2.2",

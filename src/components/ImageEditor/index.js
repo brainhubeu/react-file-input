@@ -56,7 +56,7 @@ class ImageEditor extends PureComponent {
   }
 
   async rotate(image, angle) {
-    const blob = await this.canvasPrinter.rotate(image, angle);
+    const blob = await this.canvasPrinter.rotateImage(image, angle);
 
     const newImage = window.URL.createObjectURL(blob);
 
@@ -72,8 +72,8 @@ class ImageEditor extends PureComponent {
     const { scaleOptions, onEditionFinished } = this.props;
 
     const blob = scaleOptions
-      ? await this.canvasPrinter.rotateAndScale(image, angle, scaleOptions)
-      : await this.canvasPrinter.rotate(image, angle);
+      ? await this.canvasPrinter.rotateAndScaleImage(image, angle, scaleOptions)
+      : await this.canvasPrinter.rotateImage(image, angle);
 
     const newImage = window.URL.createObjectURL(blob);
 
@@ -101,7 +101,7 @@ class ImageEditor extends PureComponent {
     const { scaleOptions, onEditionFinished } = this.props;
 
     const blob = area
-      ? await this.canvasPrinter.cropAndResize(image, area, scaleOptions)
+      ? await this.canvasPrinter.cropAndResizeImage(image, area, scaleOptions)
       : await this.canvasPrinter.resizeImage(image, scaleOptions);
 
     const newImage = URL.createObjectURL(blob);
@@ -136,11 +136,11 @@ class ImageEditor extends PureComponent {
   }
 
   render() {
-    const { cropAspectRatio, cropTool } = this.props;
+    const { className, cropAspectRatio, cropTool } = this.props;
     const { hasBeenRotated, hasBeenCropped, image } = this.state;
 
     return (
-      <div>
+      <div className={className || ''}>
         { !hasBeenRotated
           ? (<ImageRotator image={image} onSave={this.onRotate}/>)
           : null
@@ -167,12 +167,14 @@ class ImageEditor extends PureComponent {
 }
 
 ImageEditor.defaultProps = {
-  cropAspectRatio: 0, // heigh / width
+  className: '',
+  cropAspectRatio: 0, // height / width
   cropTool: false,
   scaleOptions: null,
 };
 
 ImageEditor.propTypes = {
+  className: PropTypes.string,
   cropAspectRatio: PropTypes.number,
   cropTool: PropTypes.bool,
   image: PropTypes.string.isRequired,

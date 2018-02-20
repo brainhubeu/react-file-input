@@ -3,7 +3,11 @@
 exports[`components ImageEditor CanvasPrinter should match exact snapshot 1`] = `
 <div>
   <canvas
-    className="brainhub-canvas-printer"
+    style={
+      Object {
+        "display": "none",
+      }
+    }
   />
 </div>
 `;

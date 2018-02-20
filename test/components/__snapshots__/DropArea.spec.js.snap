@@ -8,13 +8,15 @@ exports[`components DropArea should match exact snapshot 1`] = `
     onDragLeave={[Function]}
     onDrop={[Function]}
   >
-    <div
-      className="brainhub-drop-area__button"
-      onClick={[Function]}
-      role="button"
-      tabIndex={-1}
-    >
-      + Add File
+    <div>
+      <div
+        className="brainhub-drop-area__button"
+        onClick={[Function]}
+        role="button"
+        tabIndex={-1}
+      >
+        + Add File
+      </div>
     </div>
   </div>
 </div>
@@ -23,7 +25,7 @@ exports[`components DropArea should match exact snapshot 1`] = `
 exports[`components DropArea should match exact snapshot when dragging 1`] = `
 <div>
   <div
-    className="brainhub-drop-area  brainhub-drop-area--dragging"
+    className="brainhub-drop-area brainhub-drop-area--dragging"
     onDragEnter={[Function]}
     onDragLeave={[Function]}
     onDrop={[Function]}

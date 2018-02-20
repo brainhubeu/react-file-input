@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import FileInput from '../../src';
+import FileInput from '../../src/components/FileInput';
 
 export default class HomePage extends Component {
   render() {

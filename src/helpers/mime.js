@@ -9,7 +9,7 @@ export const IMAGE_MIME_TYPE = new RegExp('^image/.*');
  * @return {string}          Extension or empty string
  */
 export const findExtension = mimeType => {
-  const extensions = mimeType[mimeType];
+  const extensions = mimeDb[mimeType];
 
   if (!extensions) {
     return '';

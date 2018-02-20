@@ -244,7 +244,7 @@ class CropTool extends Component {
             style={this.getSelectedAreaBoundaries()}
           />
         </div>
-        <div>
+        <div className="brainhub-crop-tool__controls">
           <button
             className="brainhub-crop-tool__button brainhub-crop-tool__button--cancel"
             onClick={this.cancelEdition}

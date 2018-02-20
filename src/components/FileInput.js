@@ -7,10 +7,8 @@ import { selectIsDragging, selectIsDraggingOver } from '../helpers/fileInputSele
 import { IMAGE_MIME_TYPE } from '../helpers/mime';
 
 import DropArea from './DropArea';
-import FileInputMetadata from './FileInputMetadata';
-import ImageThumbnail from './ImageThumbnail';
 import ImageEditor from './ImageEditor';
-
+import FileInfo from './FileInfo';
 
 import '../styles/FileInput.scss';
 
@@ -24,7 +22,6 @@ class FileInput extends Component {
       value: null,
       tempValue: null,
       image: null,
-      hasBeenEdited: false,
     };
 
     this.input = null;
@@ -98,7 +95,6 @@ class FileInput extends Component {
       value: editedFile,
       tempValue: null,
       image: editedThumbnail,
-      hasBeenEdited: true,
     }), () => {
       if (onChangeCallback) {
         onChangeCallback(this.state);
@@ -115,7 +111,6 @@ class FileInput extends Component {
       isOver: 0,
       value: file,
       image: null,
-      hasBeenEdited: true,
     }), () => {
       if (onChangeCallback) {
         onChangeCallback(this.state);
@@ -130,10 +125,9 @@ class FileInput extends Component {
       ...state,
       enteredInDocument: 0,
       isOver: 0,
-      vale: null,
+      value: null,
       tempValue: file,
       image,
-      hasBeenEdited: false,
     }));
   }
 
@@ -196,27 +190,25 @@ class FileInput extends Component {
   }
 
   render() {
-    const { value, image, hasBeenEdited } = this.state;
+    const { value, image } = this.state;
     const {
+      className,
+      dropAreaClassName,
+      fileInfoClassName,
+      imageEditorClassName,
       cropAspectRatio,
-      customMetadata: CustomMetadata,
-      customImageThumbnail: CustomImageThumbnail,
+      metadataComponent,
+      thumbnailComponent,
       label,
       cropTool,
       scaleOptions,
     } = this.props;
-
-    const MetadataClass = CustomMetadata || FileInputMetadata;
-    const ImageThumbnailClass = CustomImageThumbnail || ImageThumbnail;
-
     const isDragging = selectIsDragging(this.state);
 
-    const metadataComponent = value
-      && <MetadataClass name={value.filename} size={value.size} extension={value.extension} type={value.mimeType}/>;
-    const imageThumbnailComponent = image && <ImageThumbnailClass image={image}/>;
+    const baseClassName = (className && `brainhub-file-input__wrapper ${className}`) || 'brainhub-file-input__wrapper';
 
     return (
-      <div className="brainhub-file-input__wrapper">
+      <div className={baseClassName}>
         <div className="brainhub-file-input__label">{label}</div>
         <input
           className="brainhub-file-input__input--hidden"
@@ -226,20 +218,35 @@ class FileInput extends Component {
           }}
           onChange={this.selectFile}
         />
-        <div className="brainhub-file-input__fileInfo">
-          {this.props.displayImageThumbnail && imageThumbnailComponent}
-          {this.props.displayMetadata && metadataComponent}
-        </div>
-        <DropArea
-          dragging={isDragging}
-          onDragEnter={this.onDragEnter}
-          onDragLeave={this.onDragLeave}
-          onDrop={this.onDrop}
-          openFileDialog={this.openFileDialog}
-        />
-        {image && !hasBeenEdited
-          ? (
+        { (value
+          && (
+            <FileInfo
+              className={fileInfoClassName}
+              file={value}
+              image={image}
+              metadataComponent={metadataComponent}
+              thumbnailComponent={thumbnailComponent}
+            />
+          ))
+          || null
+        }
+        { ((!image || value) // it means image not being edited
+          && (
+            <DropArea
+              className={dropAreaClassName}
+              dragging={isDragging}
+              onDragEnter={this.onDragEnter}
+              onDragLeave={this.onDragLeave}
+              onDrop={this.onDrop}
+              openFileDialog={this.openFileDialog}
+            />
+          ))
+          || null
+        }
+        { ((image && !value) // it means image being edited
+          && (
             <ImageEditor
+              className={imageEditorClassName}
               cropAspectRatio={cropAspectRatio}
               cropTool={cropTool}
               image={image}
@@ -247,47 +254,53 @@ class FileInput extends Component {
               onEditionFinished={this.handleEditedFile}
 
             />
-          )
-          : null}
-
-
+          ))
+          || null
+        }
       </div>
     );
   }
 }
 
 FileInput.defaultProps = {
+  className: '',
+  dropAreaClassName: '',
+  fileInfoClassName: '',
+  imageEditorClassName: '',
   dragOnDocument: true,
   dropOnDocument: false,
+  metadataComponent: null,
+  thumbnailComponent: null,
+  displayImageThumbnail: true,
+  cropAspectRatio: 0,
+  cropTool: false,
+  scaleOptions: null,
   onChangeCallback: null,
   onDragEnterCallback: null,
   onDragLeaveCallback: null,
-  onDropCallback: null,
-  displayMetadata: true,
-  displayImageThumbnail: true,
-  scaleOptions: null,
-  cropAspectRatio: 0,
-  cropTool: false,
 };
 
 FileInput.propTypes = {
+  className: PropTypes.string,
+  dropAreaClassName: PropTypes.string,
+  fileInfoClassName: PropTypes.string,
+  imageEditorClassName: PropTypes.string,
   dragOnDocument: PropTypes.bool,
   dropOnDocument: PropTypes.bool,
   label: PropTypes.string.isRequired,
-  onChangeCallback: PropTypes.func,
-  onDragEnterCallback: PropTypes.func,
-  onDragLeaveCallback: PropTypes.func,
-  displayMetadata: PropTypes.bool,
+  metadataComponent: PropTypes.func,
+  thumbnailComponent: PropTypes.func,
   displayImageThumbnail: PropTypes.bool,
-  customMetadata: PropTypes.func,
-  customImageThumbnail: PropTypes.func,
+  cropAspectRatio: PropTypes.number,
+  cropTool: PropTypes.bool,
   scaleOptions: PropTypes.shape({
     width: PropTypes.number,
     height: PropTypes.number,
     keepAspectRatio: PropTypes.bool,
   }),
-  cropAspectRatio: PropTypes.number,
-  cropTool: PropTypes.bool,
+  onChangeCallback: PropTypes.func,
+  onDragEnterCallback: PropTypes.func,
+  onDragLeaveCallback: PropTypes.func,
 };
 
 export default FileInput;
