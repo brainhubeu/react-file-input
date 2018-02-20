@@ -89,10 +89,13 @@ Or if you prefer from your stylesheet directly:
 ```
 ### Customize styles
 You can customize the styles of the different components passing classnames as a prop:
-className|`string`|no|''|Custom className
-dropAreaClassName|`string`|no|''|Custom className for the DropArea
-fileInfoClassName|`string`|no|''|Custom className for the FileInfo
-imageEditorClassName|`string`|no|''|Custom className for the ImageEditor
+
+propName|description
+-|-
+className|Custom className
+dropAreaClassName|Custom className for the `DropArea`
+fileInfoClassName|Custom className for the `FileInfo`
+imageEditorClassName|Custom className for the `ImageEditor`
 
 Those classnames are for the top main components. But if you want to override child styles you can writing some `css`. Here's how you can do so:
 ```css
@@ -109,10 +112,12 @@ Take a look on the styles and selector here: https://github.com/brainhubeu/react
 ### FileInput
 #### State
 The internal state of the `FileInput` is important to you, because the callbacks will be call with it as argument.
+
 name | type | description
 -----|------|------------
 value|`File` or `null`|Selected file
 image|`string` or `null`|If file is an image, the image in `base64`
+
 #### Props
 propName | type | required | default | description
 ---------|------|----------|---------|------------
