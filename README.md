@@ -4,7 +4,7 @@
 A File Input, width drag'n'drop and image editor.
 
 ## Why?
-> And image is worth thousand words
+> An image is worth thousand words
 
 ![Screenshot](./screenshot.gif)
 

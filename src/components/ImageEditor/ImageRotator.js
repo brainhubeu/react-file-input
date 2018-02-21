@@ -88,7 +88,6 @@ class ImageRotator extends PureComponent {
             onClick={this.rotateClockwise}
           >
             <Icon icon={faRedo.icon}/>
-
           </button>
         </div>
       </div>

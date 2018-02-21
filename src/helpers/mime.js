@@ -1,4 +1,5 @@
-import mimeDb from 'mime-db';
+/* eslint-disable-next-line import/extensions */
+import mimeDb from '../assets/mimeDb.json';
 
 export const IMAGE_MIME_TYPE = new RegExp('^image/.*');
 
@@ -8,13 +9,13 @@ export const IMAGE_MIME_TYPE = new RegExp('^image/.*');
  * @return {string}          Extension or empty string
  */
 export const findExtension = mimeType => {
-  const mimeTypeEntry = mimeDb[mimeType];
+  const extensions = mimeDb[mimeType];
 
-  if (!mimeTypeEntry || !mimeTypeEntry.extensions) {
+  if (!extensions) {
     return '';
   }
 
-  return mimeTypeEntry.extensions[0];
+  return extensions[0];
 };
 
 /**
@@ -24,7 +25,7 @@ export const findExtension = mimeType => {
  */
 export const findMimeType = extension => {
   const mimeType = Object.entries(mimeDb)
-    .find(([, value]) => (value.extensions && !!value.extensions.find(ext => ext === extension)) || false);
+    .find(([, extensions]) => extensions.find(ext => ext === extension) || false);
 
   return mimeType
     ? mimeType[0]
