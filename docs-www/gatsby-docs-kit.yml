@@ -1,0 +1,8 @@
+- title: Home
+  dir: ./src
+  url: /
+  file: pages/landing.js
+- title: Home
+  dir: ../docs
+  url: docs
+  file: example.md
