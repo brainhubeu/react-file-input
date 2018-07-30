@@ -62,7 +62,6 @@
     "jest": "^22.1.4",
     "jsdom": "^11.6.2",
     "json-loader": "^0.5.4",
-    "lodash": "^4.17.4",
     "node-sass": "^4.6.1",
     "postcss-loader": "^2.0.8",
     "prop-types": "^15.6.0",
