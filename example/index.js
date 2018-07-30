@@ -3,7 +3,6 @@ import { render } from 'react-dom';
 import { Router, Route, Switch } from 'react-router-dom';
 
 import createHistory from 'history/createBrowserHistory';
-import { ConnectedRouter } from 'react-router-redux';
 
 import App from './components/App';
 import HomePage from './pages/HomePage';
