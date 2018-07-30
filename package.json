@@ -21,11 +21,8 @@
     "prebuild": "npm run clean-dist && npm run gen-mime-types",
     "build": "node tools/build.js",
     "test": "BABEL_DISABLE_CACHE=1 jest",
-    "test:cucumber": "rm -rf ./screenshots && NODE_PATH=src wdio wdio.conf.js",
     "test:coverage": "yarn jest --coverage",
-    "test:watch": "yarn test --watch",
-    "selenium:install": "selenium-standalone install",
-    "selenium": "selenium-standalone start"
+    "test:watch": "yarn test --watch"
   },
   "author": "Brainhub",
   "license": "MIT",
@@ -86,9 +83,6 @@
     "style-loader": "^0.19.0",
     "superagent": "^3.8.1",
     "url-loader": "^0.6.2",
-    "wdio-cucumber-framework": "^0.3.1",
-    "wdio-spec-reporter": "^0.1.0",
-    "webdriverio": "^4.9.8",
     "webpack": "^3.8.1",
     "webpack-dev-middleware": "^1.11.0",
     "webpack-hot-middleware": "^2.20.0"
