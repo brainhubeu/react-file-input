@@ -7,9 +7,8 @@
   },
   "scripts": {
     "start-message": "node tools/startMessage.js",
-    "prestart": "npm run start-message",
-    "start": "node tools/distServer.js",
     "gen-mime-types": "node tools/generateMimeTypes",
+    "predev": "npm run start-message",
     "dev": "node tools/srcServer.js",
     "lint": "esw --cache webpack.config.* src example tools test --color",
     "lint:fix": "npm run lint -- --fix",
@@ -81,7 +80,7 @@
   "keywords": [],
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/brainhubeu/react-file-input.git"
   },
   "jest": {
     "testRegex": "test\\/[^\\/]+.+\\.spec\\.js$",
