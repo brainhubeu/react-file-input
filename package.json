@@ -5,6 +5,9 @@
   "engines": {
     "npm": ">=8.9"
   },
+  "files": [
+    "dist/*"
+  ],
   "scripts": {
     "preinstall": "node tools/nodeVersionCheck.js",
     "start-message": "node tools/startMessage.js",
@@ -99,6 +102,7 @@
     "type": "git",
     "url": ""
   },
+  "main": "./lib/react-file-input.js",
   "jest": {
     "testRegex": "test\\/[^\\/]+.+\\.spec\\.js$",
     "moduleNameMapper": {
