@@ -158,9 +158,9 @@ onDragLeaveCallback|`function`|no|null|Callback invoked when drag leaves. It is 
 ## Example
 To run the example just:
 ```sh
-npm run dev:example
+npm run dev
 // or
-yarn dev:example
+yarn dev
 ```
 
 And go to `http://localhost:3000`
