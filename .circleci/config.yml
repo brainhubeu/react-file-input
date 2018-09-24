@@ -1,4 +1,3 @@
-
 defaults: &defaults
   working_directory: ~/react-file-input
   docker:
@@ -17,7 +16,7 @@ whitelist: &whitelist
     - yarn.lock
     - webpack.config.dev.js
     - webpack.config.prod.js
-    
+
 
 version: 2
 jobs:
@@ -55,10 +54,20 @@ jobs:
       - run:
           name: Test
           command: yarn test
+  publish_package:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: npm publish
+          command: |
+            echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
+            npm publish
 
 workflows:
   version: 2
-  lint_and_test:
+  lint_and_test_and_publish:
     jobs:
       - checkout
       - lint:
@@ -67,4 +76,11 @@ workflows:
       - test:
           requires:
             - checkout
-
+      - publish_package:
+          requires:
+            - lint
+            - test
+          filters:
+            branches:
+              only:
+                - master
