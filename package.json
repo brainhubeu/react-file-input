@@ -81,7 +81,7 @@
     "webpack-hot-middleware": "^2.20.0"
   },
   "keywords": [
-    "react"
+    "react",
     "file",
     "file-reader",
     "file-input",
