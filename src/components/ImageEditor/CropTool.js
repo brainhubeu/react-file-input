@@ -45,7 +45,8 @@ class CropTool extends Component {
     this.saveEdition = this.saveEdition.bind(this);
   }
 
-  componentWillMount() {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillMount() {
     document.addEventListener('mousemove', this.onMouseMove, false);
     document.addEventListener('onmousemove', this.onMouseMove, false);
     document.addEventListener('mouseup', this.onMouseUp, false);

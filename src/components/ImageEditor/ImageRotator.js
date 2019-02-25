@@ -23,7 +23,8 @@ class ImageRotator extends PureComponent {
     this.save = this.save.bind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const { image } = this.props;
 
     if (nextProps.image !== image) {
