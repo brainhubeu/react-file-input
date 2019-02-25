@@ -161,7 +161,7 @@ describe('components', () => {
       expect(fileInput.find('ImageThumbnail').length).toEqual(0);
     });
 
-    it('should handle image files with the file editor', async() => {
+    it('should handle image files with the file editor', async () => {
       const { dropArea, fileInput } = setup();
 
       const imageFile = new File(['imageFile'], 'MockFile.jpeg', { type: 'image/jpg' });
