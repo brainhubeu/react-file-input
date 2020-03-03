@@ -167,7 +167,7 @@ And go to `http://localhost:3000`
 
 ## License
 
-react-file-input is copyright © 2014-2018 [Brainhub](https://brainhub.eu/) It is free software, and may be redistributed under the terms specified in the [license](LICENSE.md).
+react-file-input is copyright © 2018-2020 [Brainhub](https://brainhub.eu/?utm_source=github) It is free software, and may be redistributed under the terms specified in the [license](LICENSE.md).
 
 ## About
 
