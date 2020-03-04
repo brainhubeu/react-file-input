@@ -3,5 +3,10 @@
   "commitMessage": "[renovate] update all dependencies",
   "groupName": "All",
   "labels": ["renovate"],
-  "rangeStrategy": "bump"
+  "rangeStrategy": "bump",
+  "docker": {
+    "major": {
+      "enabled": true
+    }
+  }
 }
