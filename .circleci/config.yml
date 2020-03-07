@@ -1,7 +1,7 @@
 defaults: &defaults
   working_directory: ~/react-file-input
   docker:
-    - image: circleci/node:13.8-stretch
+    - image: circleci/node:13.10-stretch
 
 whitelist: &whitelist
   paths:
