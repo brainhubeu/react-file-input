@@ -92,6 +92,8 @@ jobs:
             git remote remove origin
             git remote add origin https://$GIT_TOKEN@github.com/brainhubeu/react-file-input
             git remote -v
+            git add .
+            git stash
       - run:
           name: bump NPM version
           command: |
