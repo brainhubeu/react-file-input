@@ -46,7 +46,7 @@
     "jsdom": "^11.6.2",
     "json-loader": "^0.5.4",
     "mime-db": "^1.32.0",
-    "node-sass": "^4.6.1",
+    "node-sass": "^4.13.1",
     "postcss-loader": "^2.0.8",
     "prop-types": "^15.6.0",
     "react": "^16.1.1",
