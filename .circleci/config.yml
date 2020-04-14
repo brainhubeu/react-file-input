@@ -54,7 +54,13 @@ jobs:
           at: ~/react-file-input
       - run:
           name: Test
-          command: yarn test
+          command: yarn test:coverage
+      - run:
+          name: Generate coveralls config
+          command: "echo repo_token: $COVERALLS_REPO_TOKEN > ./.coveralls.yml"
+      - run:
+          name: Upload coverage to coveralls
+          command: cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
   publish_package:
     <<: *defaults
     steps:
