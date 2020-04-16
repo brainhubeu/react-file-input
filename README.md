@@ -1,14 +1,15 @@
 # react-file-input
 [![CircleCI](https://circleci.com/gh/brainhubeu/react-file-input.svg?style=svg)](https://circleci.com/gh/brainhubeu/react-file-input)
-[![Last commit](https://img.shields.io/github/last-commit/brainhubeu/react-file-input.svg)](https://img.shields.io/github/last-commit/brainhubeu/react-file-input.svg)
-[![license](https://img.shields.io/npm/l/@brainhubeu/react-file-input.svg)](https://www.npmjs.com/package/@brainhubeu/react-file-input)
+[![Last commit](https://img.shields.io/github/last-commit/brainhubeu/react-file-input.svg)](https://github.com/brainhubeu/react-file-input/commits/master)
+[![license](https://img.shields.io/npm/l/@brainhubeu/react-file-input.svg)](https://github.com/brainhubeu/react-file-input/blob/master/LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
 [![Renovate enabled](https://img.shields.io/badge/renovate-enabled-brightgreen.svg)](https://renovatebot.com/)
 
 [![Coveralls github](https://img.shields.io/coveralls/github/brainhubeu/react-file-input.svg)](https://coveralls.io/github/brainhubeu/react-file-input?branch=master)
-[![Downloads](https://img.shields.io/npm/dm/@brainhubeu/react-file-input?color=blue)](https://img.shields.io/npm/dm/@brainhubeu/react-file-input?color=blue)
+[![Downloads](https://img.shields.io/npm/dm/@brainhubeu/react-file-input?color=blue)](https://www.npmjs.com/package/@brainhubeu/react-file-input)
+[![Activity](https://img.shields.io/github/commit-activity/m/brainhubeu/react-file-input.svg)](https://github.com/brainhubeu/react-file-input/commits/master)
 [![npm](https://img.shields.io/npm/v/@brainhubeu/react-file-input.svg)](https://www.npmjs.com/package/@brainhubeu/react-file-input)
-[![Contributors](https://img.shields.io/github/contributors/brainhubeu/react-file-input?color=blue)](https://img.shields.io/github/contributors/brainhubeu/react-file-input?color=blue)
+[![Contributors](https://img.shields.io/github/contributors/brainhubeu/react-file-input?color=blue)](https://github.com/brainhubeu/react-file-input/graphs/contributors)
 
 A File Input, width drag'n'drop and image editor.
 
