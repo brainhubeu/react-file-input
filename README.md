@@ -7,7 +7,7 @@
 
 [![Coveralls github](https://img.shields.io/coveralls/github/brainhubeu/react-file-input.svg)](https://coveralls.io/github/brainhubeu/react-file-input?branch=master)
 [![Downloads](https://img.shields.io/npm/dm/@brainhubeu/react-file-input?color=blue)](https://www.npmjs.com/package/@brainhubeu/react-file-input)
-[![Activity](https://img.shields.io/github/commit-activity/m/brainhubeu/react-file-input.svg)](https://img.shields.io/bundlephobia/min/@brainhubeu/react-file-input?label=minified)
+[![Activity](https://img.shields.io/github/commit-activity/m/brainhubeu/react-file-input.svg)](https://github.com/brainhubeu/react-file-input/commits/master)
 [![npm](https://img.shields.io/npm/v/@brainhubeu/react-file-input.svg)](https://www.npmjs.com/package/@brainhubeu/react-file-input)
 [![Contributors](https://img.shields.io/github/contributors/brainhubeu/react-file-input?color=blue)](https://github.com/brainhubeu/react-file-input/graphs/contributors)
 
