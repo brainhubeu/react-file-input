@@ -1,7 +1,7 @@
 defaults: &defaults
   working_directory: ~/react-file-input
   docker:
-    - image: circleci/node:12.16.1-stretch
+    - image: circleci/node:12.16.2-stretch
 
 whitelist: &whitelist
   paths:
@@ -24,7 +24,7 @@ version: 2
 jobs:
   check_branch_name:
     docker:
-      - image: circleci/node:12.16.1
+      - image: circleci/node:12.16.2
     working_directory: ~/app
     steps:
       - run:
