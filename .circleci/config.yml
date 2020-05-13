@@ -113,6 +113,7 @@ jobs:
       - run:
           name: npm publish
           command: |
+            yarn build
             echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
             npm publish
 
