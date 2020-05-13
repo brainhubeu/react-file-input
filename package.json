@@ -119,7 +119,8 @@
       "<rootDir>/test/setup.js"
     ],
     "coverageReporters": [
-      "text"
+      "text",
+      "lcov"
     ]
   }
 }
