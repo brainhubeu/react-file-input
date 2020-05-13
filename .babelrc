@@ -1,18 +1,13 @@
 {
   "presets": [
-    "env",
-    "react",
-    "stage-1"
+    "@babel/preset-env",
+    "@babel/preset-react"
   ],
   "plugins": [
-    "transform-decorators-legacy"
+    "@babel/plugin-transform-runtime",
+    "@babel/plugin-proposal-class-properties"
   ],
   "env": {
-    "development": {
-      "presets": [
-        "react-hmre"
-      ]
-    },
     "production": {
       "plugins": [
         "transform-react-constant-elements",
