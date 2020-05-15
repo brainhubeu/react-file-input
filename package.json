@@ -12,10 +12,7 @@
     "README.md"
   ],
   "scripts": {
-    "start-message": "node tools/startMessage.js",
     "gen-mime-types": "node tools/generateMimeTypes",
-    "predev": "npm run start-message",
-    "dev": "node tools/srcServer.js",
     "lint": "esw --cache webpack.config.* src example tools test --color",
     "lint:fix": "npm run lint -- --fix",
     "lint:watch": "npm run lint -- --watch",
