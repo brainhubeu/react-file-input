@@ -1,6 +1,6 @@
 {
   "name": "@brainhubeu/react-file-input",
-  "version": "0.7.22",
+  "version": "0.8.0",
   "description": "⚛️  A file Input, width drag'n'drop and image editor for React",
   "engines": {
     "node": ">=8.9"
