@@ -59,14 +59,13 @@ export const preventDefault = event => {
 };
 
 export const getClickPoint = (event, wrapper, element) => {
-  const { offsetLeft: elementLeft, offsetTop: elementTop } = element;
-  const { offsetLeft: wrapperLeft, offsetTop: wrapperTop } = wrapper;
+  const { left, top } = element.getBoundingClientRect();
 
   const { pageX: clickX, pageY: clickY } = event;
 
   // Calculate points relative to the element
-  const pointX = clickX - wrapperLeft - elementLeft;
-  const pointY = clickY - wrapperTop - elementTop;
+  const pointX = clickX - left;
+  const pointY = clickY - top;
 
   return { pointX, pointY };
 };
