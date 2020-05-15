@@ -1,0 +1,42 @@
+{
+  "name": "@brainhubeu/gatsby-docs-kit-start",
+  "description": "Gatsby-Docs-Kit starter repository",
+  "version": "0.0.49",
+  "author": "Brainhub",
+  "license": "MIT",
+  "scripts": {
+    "build": "rm -rf .cache && rm -rf public && gatsby build --prefix-paths",
+    "develop": "rm -rf .cache && NODE_ENV=development gatsby develop",
+    "seed": "bash tools/seed.sh",
+    "serve": "export RC_ENV=__RC_ENV__; if [[ \"$RC_ENV\" == 'development' ]]; then yarn develop; else gatsby serve; fi",
+    "lint": "eslint --ext .jsx,.js .",
+    "lint:autofix": "eslint --ext .jsx,.js . --fix"
+  },
+  "dependencies": {
+    "@brainhubeu/gatsby-docs-kit": "3.0.8",
+    "@brainhubeu/react-file-input": "^0.7.21",
+    "gatsby": "2.20.10",
+    "gatsby-link": "2.3.1",
+    "lodash": "^4.17.15",
+    "react-fa": "^5.0.0"
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/plugin-transform-react-constant-elements": "^7.9.0",
+    "@babel/polyfill": "^7.8.7",
+    "@babel/preset-env": "^7.9.5",
+    "@babel/preset-react": "^7.9.4",
+    "@babel/preset-stage-1": "^7.8.3",
+    "@babel/register": "^7.9.0",
+    "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
+    "eslint": "^6.8.0",
+    "eslint-config-brainhub": "^1.12.0",
+    "gatsby-plugin-google-analytics": "2.2.2",
+    "gh-pages": "^2.2.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  },
+  "peerDependencies": {
+    "@babel/core": "^7.9.0"
+  }
+}
