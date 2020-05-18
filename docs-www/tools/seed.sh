@@ -5,13 +5,13 @@ DIR_NAME="docs"
 
 # Create docs directory
 if [ -d "../${DIR_NAME}" ]; then
-  echo '"docs" directory already exists. Can not seed it. Remove it and try again.'
+  echo '"docs" directory already exists. Cannot seed it. Remove it and try again.'
   exit 1;
 fi
 
 mkdir -p "../${DIR_NAME}"
 
-# Create gastsby docs kit config file if do not exists
+# Create gastsby docs kit config file if does not exist
 if [ ! -f "./${CONFIG_FILE}" ]; then
   echo "" > $CONFIG_FILE;
 fi

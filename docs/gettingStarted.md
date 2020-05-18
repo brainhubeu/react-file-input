@@ -5,7 +5,7 @@ $ npm i @brainhubeu/react-file-input
 ```
 or
 ```
-$ yarn @brainhubeu/react-file-input
+$ yarn add @brainhubeu/react-file-input
 ```
 
 And then you can import FileInput component:

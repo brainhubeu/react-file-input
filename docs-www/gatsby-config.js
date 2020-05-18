@@ -6,7 +6,7 @@ const _ = require('lodash');
 
 const url = process.env.CIRCLE_PULL_REQUEST;
 const branch = process.env.CIRCLE_BRANCH;
-const githubUrl = 'https://github.com/brainhubeu/react-carousel';
+const githubUrl = 'https://github.com/brainhubeu/react-file-input';
 const postfix = branch === 'master' ? 'master' : (url ? `★☂☀${_.last(url.split('/'))}♞♜♖` : 'local');
 
 module.exports = {
