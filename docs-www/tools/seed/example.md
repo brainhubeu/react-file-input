@@ -6,7 +6,7 @@
     npm run develop # or yarn develop
     ```
 
-    Gatsby will start a hot-reloading development environment accessible at [http://localhost:8000](http://localhost:8000)
+    Gatsby will start a hot-reloading development environment accessible at http://localhost:8000
 
 2. preparing optimized production build
     ```bash
