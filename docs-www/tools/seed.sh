@@ -16,7 +16,7 @@ if [ ! -f "./${CONFIG_FILE}" ]; then
   echo "" > $CONFIG_FILE;
 fi
 
-# Create example Mk
+# Create example.md
 cp ./tools/seed/example.md ../${DIR_NAME}/example.md
 
 # Seeding gastsby docs kit config file
