@@ -1,5 +1,5 @@
 ## Aspect radio
-When you use crop tool you can adjust aspect ratio for the selection
+When you use the crop tool, you can adjust the aspect ratio for the selection.
 ```jsx render
   <div>
     <FileInput
