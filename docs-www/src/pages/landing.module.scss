@@ -23,7 +23,7 @@
 
 .landing__btn {
   display: inline-block;
-  background-color: $colorBHBg;
+  background-color: $colorBhBg;
   text-decoration: none;
   color: $white;
   padding: 1rem 2rem;
@@ -43,7 +43,7 @@
     top: 0;
     bottom: 0;
     width: 50%;
-    background-color: $colorBHMain;
+    background-color: $colorBhMain;
     transition: width .3s ease-out;
   }
 
@@ -68,14 +68,14 @@
 .landing__btn--alt {
   composes: landing__btn;
   background-color: transparent;
-  color: rgba($colorBHBg, .7);
+  color: rgba($colorBhBg, .7);
   transition: color .3s;
 
   &:after,
   &:before {
     background-color: transparent;
     border-style: solid;
-    border-color: $colorBHMain;
+    border-color: $colorBhMain;
   }
 
   &:after {
@@ -87,6 +87,6 @@
   }
 
   &:hover {
-    color: $colorBHMain;
+    color: $colorBhMain;
   }
 }
