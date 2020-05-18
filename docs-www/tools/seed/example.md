@@ -18,7 +18,7 @@
     npm run serve
     ```
 
-    > Note that your site by default will be available on [http://localhost:9000](http://localhost:9000)
+    > Note that your site by default will be available on http://localhost:9000
 
 4. deploying to github pages
     ```bash

@@ -176,7 +176,7 @@ npm run develop
 // or
 yarn develop
 ```
-if you want to run a local version of react-file-input please use:
+if you want to run a local version of react-file-input, please use:
 ```sh
 npm run develop:local
 // or
