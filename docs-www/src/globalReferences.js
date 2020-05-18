@@ -5,7 +5,7 @@ const { default: FileInput } = (() => {
   if (!global.window) {
     global.window = {};
   }
-  if ('__RC_ENV__' === 'development') {
+  if (process.env.GATSBY_DEVELOPMENT_MODE === 'local') {
     console.log('connecting with local react-file-input source code');
     return require('../../src');
   } else {
