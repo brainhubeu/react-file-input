@@ -1,7 +1,7 @@
 # CLI Commands
 
 ### Running an app
-1. running an application on locally
+1. running an application locally
     ```bash
     npm run develop # or yarn develop
     ```
@@ -26,4 +26,3 @@
     ```
 
     > See more [HERE](../getting-started/publishing.md)
-
