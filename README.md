@@ -166,7 +166,7 @@ onDragEnterCallback|`function`|no|null|Callback invoked when drag enters. It is 
 onDragLeaveCallback|`function`|no|null|Callback invoked when drag leaves. It is called with the current state of the component
 
 ## Example
-To run the example type:
+To run the example, type:
 ```sh
 cd docs-www
 ```
