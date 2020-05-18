@@ -5,7 +5,7 @@ DIR_NAME="docs"
 
 # Create docs directory
 if [ -d "../${DIR_NAME}" ]; then
-  echo '"docs" directory already exists. Can not seed it. Remove it and try again.'
+  echo '"docs" directory already exists. Cannot seed it. Remove it and try again.'
   exit 1;
 fi
 
