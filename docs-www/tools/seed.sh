@@ -11,7 +11,7 @@ fi
 
 mkdir -p "../${DIR_NAME}"
 
-# Create gastsby docs kit config file if do not exists
+# Create gastsby docs kit config file if does not exist
 if [ ! -f "./${CONFIG_FILE}" ]; then
   echo "" > $CONFIG_FILE;
 fi
