@@ -13,7 +13,7 @@ metadataComponent|`React Component`|no|null|Custom component for the metadata. P
 thumbnailComponent|`React Component`|no|null|Custom component for the image thumbnail. Props: `children` (`<img>` node with the thumbnail)
 displayImageThumbnail|`boolean`|no|true|Whether to generate a thumbnail for image files
 cropAspectRatio|`number`|no|0|If cropTool is enabled, the aspect ratio for the selection. 0 means the selection is free
-cropTool|boolean|no|false|Whether to render a crop tool for image files
+cropTool|`boolean`|no|false|Whether to render a crop tool for image files
 scaleOptions| ``` {width: number, height: number: keepAspectRatio: boolean}```| no|null|Scale option for file images. `keepAspectRatio` refers to if the original aspect ratio should be kept when applying scaling
 onChangeCallback|`function`|no|null|Callback invoked when a file is selected. It is called with the current state of the component
 onDragEnterCallback|`function`|no|null|Callback invoked when drag enters. It is called with the current state of the component
