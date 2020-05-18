@@ -16,4 +16,3 @@ const { default: FileInput } = (() => {
 
 
 export { FileInput };
-
