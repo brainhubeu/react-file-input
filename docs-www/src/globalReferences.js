@@ -1,4 +1,5 @@
 import '@brainhubeu/react-file-input/dist/react-file-input.css';
+import './styles/file-input.scss';
 
 const { default: FileInput } = (() => {
   if (!global.window) {
