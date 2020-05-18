@@ -166,14 +166,24 @@ onDragEnterCallback|`function`|no|null|Callback invoked when drag enters. It is 
 onDragLeaveCallback|`function`|no|null|Callback invoked when drag leaves. It is called with the current state of the component
 
 ## Example
-To run the example just:
+To run the example, type:
 ```sh
-npm run dev
+cd docs-www
+```
+and
+```sh
+npm run develop
 // or
-yarn dev
+yarn develop
+```
+if you want to run a local version of react-file-input, please use:
+```sh
+npm run develop:local
+// or
+yarn develop:local
 ```
 
-And go to `http://localhost:3000`
+And go to `http://localhost:8000`
 
 ## License
 
