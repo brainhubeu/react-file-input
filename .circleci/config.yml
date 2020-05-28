@@ -145,10 +145,14 @@ workflows:
       - test:
           requires:
             - checkout
+      - build:
+          requires:
+            - checkout
       - publish_package:
           requires:
             - lint
             - test
+            - build
           filters:
             branches:
               only:
