@@ -1,7 +1,18 @@
 {
   "presets": [
-    "@babel/preset-env",
-    "@babel/preset-react"
+    [
+      "@babel/preset-env",
+      {
+        "loose": true,
+        "modules": false,
+        "shippedProposals": true,
+        "useBuiltIns": "usage",
+        "targets": {
+          "esmodules": true
+        }
+      }
+    ],
+    "@babel/react"
   ],
   "plugins": [
     "@babel/plugin-transform-runtime",
