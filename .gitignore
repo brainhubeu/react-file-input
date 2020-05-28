@@ -45,3 +45,6 @@ selenium-debug.log
 .eslintcache
 
 .editorconfig
+
+docs-www/.cache/
+docs-www/public/
