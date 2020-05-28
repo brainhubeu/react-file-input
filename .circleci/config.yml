@@ -117,6 +117,9 @@ jobs:
             yarn build
             echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
             npm publish
+      - run:
+          name: publish gh pages
+          command: ./tools/deploy-gh-pages.sh
 
 workflows:
   version: 2
