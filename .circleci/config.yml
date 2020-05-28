@@ -48,7 +48,7 @@ jobs:
           - dependency-cache--
       - run:
           name: Install Dependencies
-          command: yarn install
+          command: yarn install --non-interactive
       - save_cache:
           paths:
             - node_modules
@@ -78,6 +78,16 @@ jobs:
       - run:
           name: Upload coverage to coveralls
           command: cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
+  build:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/react-file-input
+      - run: yarn build
+      - run: cd docs-www
+      - run: yarn install --non-interactive
+      - run: yarn build
+      - run: cd ..
   publish_package:
     <<: *defaults
     steps:
