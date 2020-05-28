@@ -10,6 +10,7 @@ whitelist: &whitelist
     - src/
     - test/
     - tools/
+    - docs-www
     - .babelrc
     - .eslintrc.json
     - .gitignore
