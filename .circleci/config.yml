@@ -10,6 +10,7 @@ whitelist: &whitelist
     - src/
     - test/
     - tools/
+    - docs
     - docs-www
     - .babelrc
     - .eslintrc.json
@@ -85,9 +86,7 @@ jobs:
       - attach_workspace:
           at: ~/react-file-input
       - run: yarn build
-      - run: cd docs-www
-      - run: yarn install --non-interactive
-      - run: yarn build
+      - run: cd docs-www && yarn install --non-interactive && yarn build
       - run: cd ..
   publish_package:
     <<: *defaults
