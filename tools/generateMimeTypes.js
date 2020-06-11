@@ -1,7 +1,9 @@
 /* eslint-disable no-console */
 const fs = require('fs');
 const path = require('path');
+
 const mimeDb = require('mime-db');
+
 const { chalkError, chalkSuccess } = require('./chalkConfig');
 
 const DEST_FOLDER = path.resolve('./', 'src', 'assets');

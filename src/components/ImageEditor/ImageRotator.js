@@ -23,7 +23,8 @@ class ImageRotator extends PureComponent {
     this.save = this.save.bind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const { image } = this.props;
 
     if (nextProps.image !== image) {
@@ -81,7 +82,7 @@ class ImageRotator extends PureComponent {
             className="brainhub-image-rotator__button brainhub-image-rotator__button--save"
             onClick={this.save}
           >
-          Save image
+            Save image
           </button>
           <button
             className="brainhub-image-rotator__button brainhub-image-rotator__button--arrow"

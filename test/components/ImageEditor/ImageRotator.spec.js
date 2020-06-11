@@ -1,7 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import renderer from 'react-test-renderer';
-
 import faRedo from '@fortawesome/fontawesome-free-solid/faRedo';
 import faUndo from '@fortawesome/fontawesome-free-solid/faUndo';
 
