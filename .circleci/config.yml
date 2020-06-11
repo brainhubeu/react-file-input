@@ -1,32 +1,15 @@
-defaults: &defaults
-  working_directory: ~/react-file-input
-  docker:
-    - image: circleci/node:12.16.2-stretch
+version: 2.1
 
-whitelist: &whitelist
-  paths:
-    - .git/
-    - node_modules/
-    - src/
-    - test/
-    - tools/
-    - docs
-    - docs-www
-    - .babelrc
-    - .eslintrc.json
-    - .gitignore
-    - package.json
-    - README.md
-    - yarn.lock
-    - webpack.config.dev.js
-    - webpack.config.prod.js
+executors:
+  node-executor:
+    docker:
+      - image: circleci/node:12.17.0
+    working_directory: ~/app
 
-
-version: 2
 jobs:
   check_branch_name:
     docker:
-      - image: circleci/node:12.16.2
+      - image: circleci/node:12.17.0
     working_directory: ~/app
     steps:
       - run:
@@ -40,59 +23,32 @@ jobs:
               echo $branch is not valid because the branch name must match '^(dependabot|fix|feature|breaking)/' or be master
               exit 1
             fi
-  checkout:
-    <<: *defaults
+  test:
+    executor: node-executor
     steps:
       - checkout
-      - restore_cache:
-          keys:
-          - dependency-cache--{{ checksum "package.json" }}
-          - dependency-cache--
-      - run:
-          name: Install Dependencies
-          command: yarn install --non-interactive
-      - save_cache:
-          paths:
-            - node_modules
-          key: dependency-cache--{{ checksum "package.json" }}
+      - run: yarn install --non-interactive
+      - run: yarn lint
+      - run: yarn test:coverage
+      - run: yarn build
+      - run: cd docs-www && yarn install --non-interactive && yarn build && cd ..
       - persist_to_workspace:
-          root: ~/react-file-input
-          <<: *whitelist
-  lint:
-    <<: *defaults
+          root: ~/app
+          paths:
+            - .git
+            - node_modules
+            - coverage
+  publish_package:
+    executor: node-executor
     steps:
       - attach_workspace:
-          at: ~/react-file-input
-      - run:
-          name: Lint
-          command: yarn lint -- --no-cache
-  test:
-    <<: *defaults
-    steps:
-      - attach_workspace:
-          at: ~/react-file-input
-      - run:
-          name: Test
-          command: yarn test:coverage
+          at: ~/app
       - run:
           name: Generate coveralls config
           command: "echo repo_token: $COVERALLS_REPO_TOKEN > ./.coveralls.yml"
       - run:
           name: Upload coverage to coveralls
           command: cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
-  build:
-    <<: *defaults
-    steps:
-      - attach_workspace:
-          at: ~/react-file-input
-      - run: yarn build
-      - run: cd docs-www && yarn install --non-interactive && yarn build
-      - run: cd ..
-  publish_package:
-    <<: *defaults
-    steps:
-      - attach_workspace:
-          at: .
       - run:
           name: configure GitHub user
           command: |
@@ -138,23 +94,12 @@ workflows:
   lint_and_test_and_publish:
     jobs:
       - check_branch_name
-      - checkout:
-          requires:
-            - check_branch_name
-      - lint:
-          requires:
-            - checkout
       - test:
           requires:
-            - checkout
-      - build:
-          requires:
-            - checkout
+            - check_branch_name
       - publish_package:
           requires:
-            - lint
             - test
-            - build
           filters:
             branches:
               only:
