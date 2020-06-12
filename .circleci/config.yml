@@ -32,6 +32,9 @@ jobs:
       - run: yarn test:coverage
       - run: yarn build
       - run: cd docs-www && yarn install --non-interactive && yarn build && cd ..
+      - run: ls -la
+      - run: ls -la node_modules/
+      - run: ls -la node_modules/ | grep mime
       - persist_to_workspace:
           root: ~/app
           paths:
@@ -43,51 +46,10 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/app
-      - run:
-          name: Generate coveralls config
-          command: "echo repo_token: $COVERALLS_REPO_TOKEN > ./.coveralls.yml"
-      - run:
-          name: Upload coverage to coveralls
-          command: cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
-      - run:
-          name: configure GitHub user
-          command: |
-            git config --global user.email "devops@brainhub.pl"
-            git config --global user.name "DevOps Brainhub"
-            git remote -v
-            git remote remove origin
-            git remote add origin https://$GIT_TOKEN@github.com/brainhubeu/react-file-input
-            git remote -v
-            git add .
-            git stash
-      - run:
-          name: bump NPM version
-          command: |
-            branch=`git log --oneline | grep '[0-9a-f]\{6,40\} Merge pull request #[0-9]\+ from brainhubeu/' | head -1 | sed 's@.* from brainhubeu/@@g' || true`
-            echo branch=$branch
-            if [[ "$branch" =~ ^(dependabot)/ ]]; then
-              npm version patch -m "%s [ci skip]"
-            elif [[ "$branch" =~ ^(fix)/ ]]; then
-              npm version patch -m "%s [ci skip]"
-            elif [[ "$branch" =~ ^(feature)/ ]]; then
-              npm version minor -m "%s [ci skip]"
-            elif [[ "$branch" =~ ^(breaking)/ ]]; then
-              npm version major -m "%s [ci skip]"
-            else
-              echo $branch is not valid because the branch name must match '^(dependabot|fix|feature|breaking)/'
-              exit 1
-            fi
-      - run: git pull --no-edit origin $CIRCLE_BRANCH
-      - run: git push origin $CIRCLE_BRANCH
-      - run:
-          name: npm publish
-          command: |
-            yarn build
-            echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
-            npm publish
-      - run:
-          name: publish gh pages
-          command: ./tools/deploy-gh-pages.sh
+      - run: ls -la
+      - run: ls -la node_modules/
+      - run: ls -la node_modules/ | grep mime
+      - run: npm run clean-dist && npm run gen-mime-types
 
 workflows:
   version: 2
@@ -104,3 +66,4 @@ workflows:
             branches:
               only:
                 - master
+                - fix/inspect-ci
