@@ -45,7 +45,8 @@ class CropTool extends Component {
     this.saveEdition = this.saveEdition.bind(this);
   }
 
-  componentWillMount() {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillMount() {
     document.addEventListener('mousemove', this.onMouseMove, false);
     document.addEventListener('onmousemove', this.onMouseMove, false);
     document.addEventListener('mouseup', this.onMouseUp, false);
@@ -104,10 +105,10 @@ class CropTool extends Component {
     const { offsetLeft, offsetTop } = this.image;
 
     return {
-      top: `${100*(Math.min(y0, y1) + offsetTop) / height}%`,
-      right: `${100*(width - Math.max(x0, x1) - offsetLeft) / width}%`,
-      bottom: `${100*(height - Math.max(y0, y1) - offsetTop) / height}%`,
-      left: `${100*(Math.min(x0, x1) + offsetLeft) / width}%`,
+      top: `${100 * (Math.min(y0, y1) + offsetTop) / height}%`,
+      right: `${100 * (width - Math.max(x0, x1) - offsetLeft) / width}%`,
+      bottom: `${100 * (height - Math.max(y0, y1) - offsetTop) / height}%`,
+      left: `${100 * (Math.min(x0, x1) + offsetLeft) / width}%`,
     };
   }
 
@@ -154,7 +155,7 @@ class CropTool extends Component {
       resizeVertical: !!resizeVertical,
       x0: invertX ? state.x1 : state.x0,
       y0: invertY ? state.y1 : state.y0,
-      x1: invertX ? state.x0: state.x1,
+      x1: invertX ? state.x0 : state.x1,
       y1: invertY ? state.y0 : state.y1,
     }));
   }
@@ -177,7 +178,7 @@ class CropTool extends Component {
   }
 
   onMouseMove(event) {
-    const { isResizing, isMoving }= this.state;
+    const { isResizing, isMoving } = this.state;
     if (isMoving) {
       this.handleMove(event);
     } else if (isResizing) {
@@ -187,7 +188,7 @@ class CropTool extends Component {
 
   onMouseUp(event) {
     const { isResizing, isMoving } = this.state;
-    if ( isResizing || isMoving) {
+    if (isResizing || isMoving) {
       event.preventDefault();
 
       this.setState(state => ({
@@ -249,13 +250,13 @@ class CropTool extends Component {
             className="brainhub-crop-tool__button brainhub-crop-tool__button--cancel"
             onClick={this.cancelEdition}
           >
-          Cancel
+            Cancel
           </button>
           <button
             className="brainhub-crop-tool__button brainhub-crop-tool__button--save"
             onClick={this.saveEdition}
           >
-          Save image
+            Save image
           </button>
         </div>
       </div>

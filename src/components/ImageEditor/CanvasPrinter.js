@@ -71,8 +71,8 @@ class CanvasPrinter extends PureComponent {
     };
 
     const sourceSize = {
-      width: (x1 - x0 ) * widthFactor,
-      height: (y1 - y0 ) * heightFactor,
+      width: (x1 - x0) * widthFactor,
+      height: (y1 - y0) * heightFactor,
     };
 
     return this.printImage(image, offset, sourceSize, scaleOptions || sourceSize);
@@ -108,7 +108,7 @@ class CanvasPrinter extends PureComponent {
     const baseWidth = (scaleOptions && scaleOptions.width) || naturalWidth;
     const baseHeight = (scaleOptions && scaleOptions.height) || naturalHeight;
 
-    const inverted = !(angle %2 === 0);
+    const inverted = !(angle % 2 === 0);
 
     const width = (inverted && baseHeight) || baseWidth;
     const height = (inverted && baseWidth) || baseHeight;
@@ -123,7 +123,7 @@ class CanvasPrinter extends PureComponent {
     const context = this.canvas.getContext('2d');
 
     context.translate(baseWidth / 2, baseHeight / 2);
-    context.rotate((angle * Math.PI) /2);
+    context.rotate((angle * Math.PI) / 2);
     context.drawImage(
       image,
       offset.x,
@@ -144,7 +144,7 @@ class CanvasPrinter extends PureComponent {
   rotateImage(image, angle) {
     const { naturalWidth, naturalHeight } = image;
 
-    const inverted = !(angle %2 === 0);
+    const inverted = !(angle % 2 === 0);
 
     const width = (inverted && naturalHeight) || naturalWidth;
     const height = (inverted && naturalWidth) || naturalHeight;
@@ -155,7 +155,7 @@ class CanvasPrinter extends PureComponent {
     const context = this.canvas.getContext('2d');
 
     context.translate(width / 2, height / 2);
-    context.rotate((angle * Math.PI) /2);
+    context.rotate((angle * Math.PI) / 2);
     context.drawImage(
       image,
       - naturalWidth / 2,

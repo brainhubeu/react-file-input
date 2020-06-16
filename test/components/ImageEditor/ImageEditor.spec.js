@@ -3,7 +3,6 @@ import { mount } from 'enzyme';
 import renderer from 'react-test-renderer';
 
 import ImageEditor from '../../../src/components/ImageEditor';
-
 import CanvasPrinter from '../../../src/components/ImageEditor/CanvasPrinter';
 import CropTool from '../../../src/components/ImageEditor/CropTool';
 import ImageRotator from '../../../src/components/ImageEditor/ImageRotator';
@@ -53,7 +52,7 @@ describe('components', () => {
       expect(imageEditor.find(CropTool)).toHaveLength(1);
     });
 
-    it('should finish edition if the image is rotated if there is no more steps', async() => {
+    it('should finish edition if the image is rotated if there is no more steps', async () => {
       const onEditionFinished = jest.fn();
       const { imageEditor } = setup({ onEditionFinished });
 
@@ -74,7 +73,7 @@ describe('components', () => {
       expect(onEditionFinished).toHaveBeenCalledWith(imageBlob);
     });
 
-    it('should finish edition if the image is rotated and scaled if there is no more steps', async() => {
+    it('should finish edition if the image is rotated and scaled if there is no more steps', async () => {
       const onEditionFinished = jest.fn();
       const scaleOptions = { width: 500, height: 500, keepAspectRatio: true };
       const { imageEditor } = setup({ scaleOptions, onEditionFinished });
@@ -96,7 +95,7 @@ describe('components', () => {
       expect(onEditionFinished).toHaveBeenCalledWith(imageBlob);
     });
 
-    it('should not finish edition after rotation step if cropTool option is enabled', async() => {
+    it('should not finish edition after rotation step if cropTool option is enabled', async () => {
       const onEditionFinished = jest.fn();
       const { imageEditor } = setup({ cropTool: true, onEditionFinished });
 
@@ -117,7 +116,7 @@ describe('components', () => {
       expect(onEditionFinished).not.toHaveBeenCalled();
     });
 
-    it('should finish edition if the image crop is canceled', async() => {
+    it('should finish edition if the image crop is canceled', async () => {
       const onEditionFinished = jest.fn();
       const { imageEditor } = setup({ cropTool: true, onEditionFinished });
 
@@ -131,7 +130,7 @@ describe('components', () => {
       expect(onEditionFinished).toHaveBeenCalledWith(imageBlob);
     });
 
-    it('should scale and finish edition if the image crop is canceled and there is scale options', async() => {
+    it('should scale and finish edition if the image crop is canceled and there is scale options', async () => {
       const onEditionFinished = jest.fn();
       const scaleOptions = { width: 500, height: 500, keepAspectRatio: true };
       const { imageEditor } = setup({ cropTool: true, scaleOptions, onEditionFinished });
@@ -153,7 +152,7 @@ describe('components', () => {
       expect(onEditionFinished).toHaveBeenCalledWith(imageBlob);
     });
 
-    it('should scale and finish edition if the image crop is canceled and there is scale options', async() => {
+    it('should scale and finish edition if the image crop is canceled and there is scale options', async () => {
       const onEditionFinished = jest.fn();
       const scaleOptions = { width: 500, height: 500, keepAspectRatio: true };
       const { imageEditor } = setup({ cropTool: true, scaleOptions, onEditionFinished });

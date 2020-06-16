@@ -3,7 +3,6 @@ import { mount } from 'enzyme';
 import renderer from 'react-test-renderer';
 
 import FileInput from '../../src/components/FileInput';
-
 import DropArea from '../../src/components/DropArea';
 import FileInfo from '../../src/components/FileInfo';
 import ImageEditor from '../../src/components/ImageEditor';
@@ -161,7 +160,7 @@ describe('components', () => {
       expect(fileInput.find('ImageThumbnail').length).toEqual(0);
     });
 
-    it('should handle image files with the file editor', async() => {
+    it('should handle image files with the file editor', async () => {
       const { dropArea, fileInput } = setup();
 
       const imageFile = new File(['imageFile'], 'MockFile.jpeg', { type: 'image/jpg' });
@@ -177,7 +176,7 @@ describe('components', () => {
     });
 
     it('should render an ImageEditor if it is handling an image file', () => {
-      const { fileInput } = setup( );
+      const { fileInput } = setup();
 
       fileInput.setState({ image: 'testImage' });
 

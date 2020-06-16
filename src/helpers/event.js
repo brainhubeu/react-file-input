@@ -24,7 +24,7 @@ const addPropsToFile = file => {
 };
 
 export const handleChangeEvent = event => {
-  if (!event.target || !event.target.files || !event.target.files.length ) {
+  if (!event.target || !event.target.files || !event.target.files.length) {
     return null;
   }
 

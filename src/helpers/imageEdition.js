@@ -54,7 +54,7 @@ export const resizeCorner = ({ pointX, pointY }, { height, width }, { x0, y0, x1
   if (point.x1 > width || point.y1 > height) {
     return {
       x1: vertical ? width : x0 + (resizeFactor * (height - y0) * ratio),
-      y1: vertical ? + y0 + safeDivision(resizeFactor * (width - x0), ratio, 0 ) : height,
+      y1: vertical ? + y0 + safeDivision(resizeFactor * (width - x0), ratio, 0) : height,
     };
   }
 
@@ -78,7 +78,7 @@ export const resizeSide = ({ pointX, pointY }, { height, width }, { x0, y0, x1, 
   const resizeFactor = ((x0 > x1 && y0 < y1) || (y0 > y1 && x0 < x1)) ? -1 : 1;
 
   const points = {
-    x0: vertical ? x0 - (resizeFactor * (y -y1) * ratio / 2) : x0,
+    x0: vertical ? x0 - (resizeFactor * (y - y1) * ratio / 2) : x0,
     y0: vertical ? y0 : y0 - safeDivision(resizeFactor * (x - x1) / 2, ratio, 0),
     x1: vertical ? x1 + (resizeFactor * (y - y1) * ratio / 2) : x,
     y1: vertical ? y : y1 + safeDivision(resizeFactor * (x - x1) / 2, ratio, 0),
@@ -110,7 +110,7 @@ export const resizeSide = ({ pointX, pointY }, { height, width }, { x0, y0, x1, 
       ? x1 + (adjustFactor * maxDX)
       : x1 + (adjustFactor * resizeFactor * maxDY * 2 * ratio),
     y1: vertical
-      ? y1 + (adjustFactor * resizeFactor * maxDX * 2 /ratio)
+      ? y1 + (adjustFactor * resizeFactor * maxDX * 2 / ratio)
       : y1 + (adjustFactor * maxDY),
   };
 };

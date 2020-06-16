@@ -95,7 +95,7 @@ describe('helpers', () => {
         const click = { pointX: 0, pointY: 80 };
         const canvas = { height: 100, width: 200 };
         const point = { x0: 50, y0: 20, x1: 60, y1: 50 };
-        const ratio = 1/3;
+        const ratio = 1 / 3;
         const values = resizeCorner(click, canvas, point, true, ratio);
 
         expect(values).toEqual({
@@ -107,7 +107,7 @@ describe('helpers', () => {
         const click = { pointX: 0, pointY: 120 };
         const canvas = { height: 100, width: 200 };
         const point = { x0: 50, y0: 20, x1: 60, y1: 50 };
-        const ratio = 1/3;
+        const ratio = 1 / 3;
         const values = resizeCorner(click, canvas, point, true, ratio);
 
         expect(values).toEqual({
@@ -119,7 +119,7 @@ describe('helpers', () => {
         const click = { pointX: 0, pointY: 0 };
         const canvas = { height: 100, width: 200 };
         const point = { x0: 50, y0: 20, x1: 60, y1: 50 };
-        const ratio = 1/3;
+        const ratio = 1 / 3;
         const values = resizeCorner(click, canvas, point, true, ratio);
 
         expect(values).toEqual({
@@ -131,7 +131,7 @@ describe('helpers', () => {
         const click = { pointX: 0, pointY: 10 };
         const canvas = { height: 100, width: 200 };
         const point = { x0: 50, y0: 70, x1: 60, y1: 40 };
-        const ratio = 1/3;
+        const ratio = 1 / 3;
         const values = resizeCorner(click, canvas, point, true, ratio);
 
         expect(values).toEqual({
@@ -143,7 +143,7 @@ describe('helpers', () => {
         const click = { pointX: 0, pointY: 90 };
         const canvas = { height: 100, width: 200 };
         const point = { x0: 185, y0: 0, x1: 195, y1: 30 };
-        const ratio = 1/3;
+        const ratio = 1 / 3;
         const values = resizeCorner(click, canvas, point, true, ratio);
 
         expect(values).toEqual({
@@ -291,13 +291,13 @@ describe('helpers', () => {
         const click = { pointX: 0, pointY: 80 };
         const canvas = { height: 100, width: 200 };
         const point = { x0: 50, y0: 20, x1: 60, y1: 50 };
-        const ratio = 1/3;
+        const ratio = 1 / 3;
         const values = resizeSide(click, canvas, point, true, ratio);
 
         expect(values).toEqual({
           ...point,
           x0: point.x0 - ((click.pointY - point.y1) * ratio / 2),
-          x1: point.x1 + ((click.pointY - point.y1) * ratio /2),
+          x1: point.x1 + ((click.pointY - point.y1) * ratio / 2),
           y1: click.pointY,
         });
       });
@@ -305,13 +305,13 @@ describe('helpers', () => {
         const click = { pointX: 0, pointY: 120 };
         const canvas = { height: 100, width: 200 };
         const point = { x0: 50, y0: 20, x1: 60, y1: 50 };
-        const ratio = 1/3;
+        const ratio = 1 / 3;
         const values = resizeSide(click, canvas, point, true, ratio);
 
         expect(values).toEqual({
           ...point,
-          x0: point.x0 - ((canvas.height - point.y1) * ratio/2),
-          x1: point.x1 + ((canvas.height - point.y1) * ratio/2),
+          x0: point.x0 - ((canvas.height - point.y1) * ratio / 2),
+          x1: point.x1 + ((canvas.height - point.y1) * ratio / 2),
           y1: canvas.height,
         });
       });
@@ -319,13 +319,13 @@ describe('helpers', () => {
         const click = { pointX: 0, pointY: 0 };
         const canvas = { height: 100, width: 200 };
         const point = { x0: 50, y0: 20, x1: 60, y1: 50 };
-        const ratio = 1/3;
+        const ratio = 1 / 3;
         const values = resizeSide(click, canvas, point, true, ratio);
 
         expect(values).toEqual({
           ...point,
-          x0: point.x0 - ((0 - point.y1) * ratio/2),
-          x1: point.x1 + ((0 - point.y1) * ratio/2),
+          x0: point.x0 - ((0 - point.y1) * ratio / 2),
+          x1: point.x1 + ((0 - point.y1) * ratio / 2),
           y1: 0,
         });
       });
@@ -333,7 +333,7 @@ describe('helpers', () => {
         const click = { pointX: 0, pointY: 10 };
         const canvas = { height: 100, width: 200 };
         const point = { x0: 50, y0: 70, x1: 60, y1: 40 };
-        const ratio = 1/3;
+        const ratio = 1 / 3;
         const values = resizeSide(click, canvas, point, true, ratio);
 
         expect(values).toEqual({
@@ -347,7 +347,7 @@ describe('helpers', () => {
         const click = { pointX: 0, pointY: 90 };
         const canvas = { height: 100, width: 200 };
         const point = { x0: 5, y0: 0, x1: 15, y1: 30 };
-        const ratio = 1/3;
+        const ratio = 1 / 3;
         const values = resizeSide(click, canvas, point, true, ratio);
 
         expect(values).toEqual({
