@@ -12,6 +12,7 @@ const whitelist = [
   '(WTFPL OR MIT)',
   '0BSD',
   'AFLv2.1',
+  'Apache 2.0',
   'Apache License, Version 2.0',
   'Apache-2.0',
   'Apache2',
