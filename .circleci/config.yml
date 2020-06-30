@@ -28,6 +28,7 @@ jobs:
     steps:
       - checkout
       - run: yarn install --non-interactive
+      - run: yarn danger ci --failOnErrors
       - run: yarn lint
       - run: yarn test:coverage
       - run: yarn build
