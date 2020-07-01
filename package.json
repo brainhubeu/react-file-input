@@ -1,6 +1,6 @@
 {
   "name": "@brainhubeu/react-file-input",
-  "version": "0.9.7",
+  "version": "0.9.8",
   "description": "⚛️  A file Input, width drag'n'drop and image editor for React",
   "engines": {
     "node": ">=8.9"
@@ -58,15 +58,15 @@
     "webpack-hot-middleware": "^2.25.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.10.1",
-    "@babel/core": "^7.10.2",
-    "@babel/plugin-proposal-class-properties": "^7.10.1",
-    "@babel/polyfill": "^7.8.7",
-    "@babel/preset-env": "^7.10.2",
-    "@babel/preset-react": "^7.10.1",
-    "@babel/register": "^7.10.1",
-    "@babel/plugin-transform-runtime": "^7.10.1",
-    "autoprefixer": "^9.8.0",
+    "@babel/cli": "^7.10.4",
+    "@babel/core": "^7.10.4",
+    "@babel/plugin-proposal-class-properties": "^7.10.4",
+    "@babel/polyfill": "^7.10.4",
+    "@babel/preset-env": "^7.10.4",
+    "@babel/preset-react": "^7.10.4",
+    "@babel/register": "^7.10.4",
+    "@babel/plugin-transform-runtime": "^7.10.4",
+    "autoprefixer": "^9.8.4",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.1.0",
     "babel-plugin-transform-react-constant-elements": "^6.23.0",
@@ -78,7 +78,7 @@
     "eslint": "^4.19.1",
     "eslint-config-brainhub": "^1.13.0",
     "eslint-watch": "^3.1.5",
-    "jest": "^26.0.1"
+    "jest": "^26.1.0"
   },
   "keywords": [
     "react",
